@@ -34,15 +34,13 @@ public class App {
 
     /*
 
-    Multiplayer - host game.
-
-     */
-    public static void hostGame() {
-        //we should be able to set port and ip in gui
-        int port = 8080;
-
+    # Multiplayer - host game.
+    We should be able to set port in gui
+    */
+    public static void hostGame(int port) {
         String host = "localhost";
-        String uri = "tcp://localhost:" + port + "/?conn";
+        String uri = "tcp://localhost:" + port + "/?keep";
+
         SpaceRepository repository = new SpaceRepository();
 
         // peer to peer communication
@@ -65,17 +63,14 @@ public class App {
 
     /*
 
-   Multiplayer - connect to game
+    # Multiplayer - connect to game
 
+    we should be able to set port and ip in gui
     */
-    public static void connectToGame() {
-        // we should be able to set port and ip in gui
-        int port = 8080;
-        String host = "localhost";
-
+    public static void connectToGame(int port, String host) {
         // peer to peer communication
-        String uriPlayer = "tcp://" + host + ":" + port + "/player?conn";
-        String uriZombies = "tcp://" + host + ":" + port + "/zombies?conn";
+        String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
+        String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
 
         try {
             Space player = new RemoteSpace(uriPlayer);
