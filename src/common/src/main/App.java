@@ -9,7 +9,7 @@ public class App {
 	public static void main(String[] argv) throws InterruptedException {
 		Space inbox = new RandomSpace();
 
-		inbox.put("Hello World!");
+		inbox.put("Hello World, marcus er en saftevands kande");
 		Object[] tuple = inbox.get(new FormalField(String.class));
 		System.out.println(tuple[0]);
 
