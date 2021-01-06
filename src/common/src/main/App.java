@@ -59,6 +59,13 @@ public class App {
         repository.add("shop", shop);
 
         while (true) {
+            try {
+                Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
+                System.out.println("Got message : " +t[0] + ":" + t[1]);
+                player.put("penis", "ekstra penis ");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 
         }
@@ -82,15 +89,22 @@ public class App {
             Space player = new RemoteSpace(uriPlayer);
             Space zombies = new RemoteSpace(uriZombies);
 
+
+
+        while (true) {
+            try {
+                player.put("Hello", "Mr. server");
+                System.out.println("Sent message");
+                Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
+                System.out.println("Got message : " +t[0] + ":" + t[1]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
         } catch (UnknownHostException e) {
         } catch (IOException e) {
         }
-
-        while (true) {
-
-
-        }
-
 
     }
 
