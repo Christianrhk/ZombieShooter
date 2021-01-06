@@ -7,14 +7,24 @@ import java.net.UnknownHostException;
 
 public class App {
 
+    public static void main(String[] argv) throws InterruptedException {
+        Space inbox = new RandomSpace();
+
+
+        inbox.put("Hello World, marcus er en saftevands¨kande");
+
+        Object[] tuple = inbox.get(new FormalField(String.class));
+        System.out.println(tuple[0]);
+
+
+    }
+
     /*
 
    Singleplayer mode
 
     */
-    public static void singlePlayer(){
-
-
+    public static void singlePlayer() {
 
 
     }
@@ -27,7 +37,7 @@ public class App {
     */
     public static void hostGame(int port) {
         String host = "localhost";
-        String uri = "tcp://"+ host +":" + port + "/?keep";
+        String uri = "tcp://" + host + ":" + port + "/?keep";
 
         SpaceRepository repository = new SpaceRepository();
 
@@ -46,10 +56,16 @@ public class App {
         repository.add("environment", environment);
         repository.add("shop", shop);
 
-        while (true) {
 
-
+        try {
+            Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
+            System.out.println("Got message = " + t[0] + ":" + t[1]);
+            player.put("This", "works");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+
     }
 
 
@@ -63,20 +79,22 @@ public class App {
         // peer to peer communication
         String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
         String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
-        String uriEnvironment  = "tcp://" + host + ":" + port + "/environment?keep";
-        String uriShop  = "tcp://" + host + ":" + port + "/shop?keep";
-        
+        String uriEnvironment = "tcp://" + host + ":" + port + "/environment?keep";
+        String uriShop = "tcp://" + host + ":" + port + "/shop?keep";
+
         try {
             Space player = new RemoteSpace(uriPlayer);
             Space zombies = new RemoteSpace(uriZombies);
 
+            player.put("This", "works");
+            Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
+            System.out.println("Got message = " + t[0] + ":" + t[1]);
+
+
         } catch (UnknownHostException e) {
         } catch (IOException e) {
-        }
-
-        while (true) {
-
-
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
