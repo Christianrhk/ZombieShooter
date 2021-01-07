@@ -65,10 +65,10 @@ class processShop implements Runnable {
 			//Runs in a while-loop, so the player can access the shop multiple times during each break
 			while (true) {
 				channel.get(new ActualField("AccessShop"));
-				Object[] objectMoney = channel.get(new ActualField("CurrentMoney"), new FormalField(Integer.class));
+				Object[] objectMoney = channel.get(new FormalField(Integer.class));
 
 				// Gets the new money that the player has generated
-				currentMoney = (int) objectMoney[1];
+				currentMoney = (int) objectMoney[0];
 
 				// Send command to open gui
 				channel.put("OpenShopGui");
@@ -90,6 +90,9 @@ class processShop implements Runnable {
 				// Enters while-loop if the player wants to buy an item
 				while (stringCommand.compareTo("CloseShop") != 0 && itemID != -1) {
 
+					//Inform player of loop taken:
+					channel.put("PlayerWannaBuy");
+					
 					// Finds the price of the item
 					int itemCost = items[itemID].getCost();
 
@@ -97,6 +100,9 @@ class processShop implements Runnable {
 					if (currentMoney - itemCost > -1) {
 						// The player can afford the item
 						channel.put("ItemBought", itemID);
+						channel.put("CurrentMoney", currentMoney-itemCost);
+						//<Signal this to the graphics/stat component>
+						
 					} else {
 						// The player can NOT afford the item
 						channel.put("NotEnoughMoney", itemID);
@@ -105,6 +111,9 @@ class processShop implements Runnable {
 					// Gets next command from the player
 					command = channel.get(new FormalField(String.class), new ActualField(Integer.class));
 				}
+				
+				//Inform player that the shop has been closed (by the player himself)
+				channel.put("CloseGUI");
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
