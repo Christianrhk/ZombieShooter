@@ -1,39 +1,58 @@
 package common.src.main;
 
 import javax.swing.*;
+
+import org.jspace.ActualField;
+import org.jspace.FormalField;
+import org.jspace.Space;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
-public class ContentsInFrame extends JPanel implements KeyListener, ActionListener{
+public class ContentsInFrame extends JPanel implements KeyListener, ActionListener {
 
 	Player p;
-	boolean press[] = {false, false, false, false};
+	ArrayList<String> allNames;
+	Space space;
+	boolean press[] = { false, false, false, false };
+	Point player2 = new Point(10, 10);
+	Timer t;
 
-    public ContentsInFrame(Player p){
-        super.setDoubleBuffered(true);
-        addKeyListener(this);
-        setFocusable(true);
-        requestFocusInWindow();
-        setFocusTraversalKeysEnabled(false);
-        Timer t = new Timer(4, this);
-        t.start();
-        this.p = p;
-    }
+	public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
+		super.setDoubleBuffered(true);
+		addKeyListener(this);
+		setFocusable(true);
+		requestFocusInWindow();
+		setFocusTraversalKeysEnabled(false);
 
-    @Override
-    public void paintComponent(Graphics g){
-    	super.paintComponent(g);
-    	
-        //using graphics 2d to draw
-        Graphics2D g2d = (Graphics2D) g;
+		t = new Timer(4, this);
+		t.start();
 
-        //drawing player
-        g2d.fillRect(p.getX(),p.getY(),10,10);
-    }
+		// init variables
+		this.p = p;
+		this.space = playerSpace;
+		this.allNames = allNames;
+	}
 
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		// using graphics 2d to draw
+		Graphics2D g2d = (Graphics2D) g;
+
+		// drawing player
+		g2d.fillRect(p.getX(), p.getY(), 10, 10);
+
+		// drawing other players
+		g2d.setColor(new Color(255, 0, 255));
+		g2d.fillRect(player2.x, player2.y, 10, 10);
+
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -41,28 +60,27 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		System.out.println("Key typed!");
 	}
 
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		//System.out.println("Key Pressed!");
+		// System.out.println("Key Pressed!");
 		// Switch on pressed keys
-		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			// Movement upwards
 			System.out.println("Up pressed");
 			press[0] = true;
 		}
-		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			// Movement downwards
 			System.out.println("Down pressed");
 			press[1] = true;
 		}
-		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			// Movement left
 			System.out.println("Left pressed");
 			press[2] = true;
 		}
-		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			// Movement right
 			System.out.println("Right pressed");
 			press[3] = true;
@@ -72,22 +90,22 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			// Movement upwards
 			System.out.println("Up released");
 			press[0] = false;
 		}
-		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			// Movement downwards
 			System.out.println("Down released");
 			press[1] = false;
 		}
-		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			// Movement left
 			System.out.println("Left released");
 			press[2] = false;
 		}
-		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			// Movement right
 			System.out.println("Right released");
 			press[3] = false;
@@ -96,22 +114,48 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		movePlayer();
-		
-		
+		sendUpdateToOtherPlayers();
+		tryToUpdateOtherPlayers();
+
 		repaint();
 	}
 
+	public void sendUpdateToOtherPlayers() {
+		try {
+			for (String name : allNames) {
+				if(!name.equals(p.NAME)) {
+					space.put("PLAYERUPDATE", name, p.getX(), p.getY());
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void tryToUpdateOtherPlayers() {
+		try {
+			Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME), new FormalField(Integer.class),
+					new FormalField(Integer.class));
+			if (otherPosition != null) {
+				player2.x = (int) otherPosition[2];
+				player2.y = (int) otherPosition[3];
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void movePlayer() {
-		if(press[0])
+		if (press[0])
 			p.moveUp();
-		if(press[1])
+		if (press[1])
 			p.moveDown();
-		if(press[2])
+		if (press[2])
 			p.moveLeft();
-		if(press[3])
+		if (press[3])
 			p.moveRight();
 	}
 
