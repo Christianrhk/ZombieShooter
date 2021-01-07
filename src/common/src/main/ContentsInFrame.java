@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener{
 
 	Player p;
+	boolean press[] = {false, false, false, false};
 
     public ContentsInFrame(Player p){
         super.setDoubleBuffered(true);
@@ -44,47 +45,74 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		System.out.println("Key Pressed!");
+		//System.out.println("Key Pressed!");
 		// Switch on pressed keys
-		switch (keyCode) {
-		case KeyEvent.VK_W:
-		case KeyEvent.VK_UP:
+		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			// Movement upwards
 			System.out.println("Up pressed");
-			p.moveUp();
-			break;
-		case KeyEvent.VK_S:
-		case KeyEvent.VK_DOWN:
+			press[0] = true;
+		}
+		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			// Movement downwards
 			System.out.println("Down pressed");
-			p.moveDown();
-			break;
-		case KeyEvent.VK_A:
-		case KeyEvent.VK_LEFT:
+			press[1] = true;
+		}
+		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			// Movement left
 			System.out.println("Left pressed");
-			p.moveLeft();
-			break;
-		case KeyEvent.VK_D:
-		case KeyEvent.VK_RIGHT:
+			press[2] = true;
+		}
+		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			// Movement right
 			System.out.println("Right pressed");
-			p.moveRight();
-			break;
+			press[3] = true;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("Key Released!");
+		int keyCode = e.getKeyCode();
+		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+			// Movement upwards
+			System.out.println("Up released");
+			press[0] = false;
+		}
+		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+			// Movement downwards
+			System.out.println("Down released");
+			press[1] = false;
+		}
+		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+			// Movement left
+			System.out.println("Left released");
+			press[2] = false;
+		}
+		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+			// Movement right
+			System.out.println("Right released");
+			press[3] = false;
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		movePlayer();
+		
+		
 		repaint();
 	}
 
 
-
+	public void movePlayer() {
+		if(press[0])
+			p.moveUp();
+		if(press[1])
+			p.moveDown();
+		if(press[2])
+			p.moveLeft();
+		if(press[3])
+			p.moveRight();
+	}
 
 }
