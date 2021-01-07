@@ -16,171 +16,186 @@ import java.util.ArrayList;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener {
 
-	boolean multiplayer = false;
+    boolean multiplayer = false;
 
-	Player p;
-	ArrayList<String> allNames;
-	Space space;
-	boolean press[] = { false, false, false, false };
-	Point player2;
-	Timer t;
+    Player p;
+    Boolean playerPosChange;
+    ArrayList<String> allNames;
+    Space space;
+    boolean press[] = {false, false, false, false};
+    Point player2;
+    Timer t;
 
-	public ContentsInFrame(Player p) {
-		super.setDoubleBuffered(true);
-		addKeyListener(this);
-		setFocusable(true);
-		requestFocusInWindow();
-		setFocusTraversalKeysEnabled(false);
+    public ContentsInFrame(Player p) {
+        super.setDoubleBuffered(true);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
+        setFocusTraversalKeysEnabled(false);
 
-		t = new Timer(4, this);
-		t.start();
+        t = new Timer(4, this);
+        t.start();
 
-		this.p = p;
-		multiplayer = false;
-	}
+        this.p = p;
+        multiplayer = false;
+    }
 
-	public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
-		super.setDoubleBuffered(true);
-		addKeyListener(this);
-		setFocusable(true);
-		requestFocusInWindow();
-		setFocusTraversalKeysEnabled(false);
+    public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
+        super.setDoubleBuffered(true);
+        addKeyListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
+        setFocusTraversalKeysEnabled(false);
 
-		player2 = new Point(0, 0);
+        player2 = new Point(0, 0);
 
-		t = new Timer(4, this);
-		t.start();
+        t = new Timer(4, this);
+        t.start();
 
-		// init variables
-		this.p = p;
-		this.space = playerSpace;
-		this.allNames = allNames;
+        // init variables
+        this.p = p;
+        this.space = playerSpace;
+        this.allNames = allNames;
 
-		multiplayer = true;
-	}
+        multiplayer = true;
+    }
 
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-		// using graphics 2d to draw
-		Graphics2D g2d = (Graphics2D) g;
+        // using graphics 2d to draw
+        Graphics2D g2d = (Graphics2D) g;
 
-		// drawing player
-		g2d.fillRect(p.getX(), p.getY(), 10, 10);
+        // drawing player
+        g2d.fillRect(p.getX(), p.getY(), 10, 10);
 
-		// drawing other players
-		if (multiplayer) {
-			g2d.setColor(new Color(255, 0, 255));
-			g2d.fillRect(player2.x, player2.y, 10, 10);
-		}
+        // drawing other players
+        if (multiplayer) {
+            g2d.setColor(new Color(255, 0, 255));
+            g2d.fillRect(player2.x, player2.y, 10, 10);
+        }
 
-	}
+    }
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Key typed!");
-	}
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+        System.out.println("Key typed!");
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		// System.out.println("Key Pressed!");
-		// Switch on pressed keys
-		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-			// Movement upwards
-			System.out.println("Up pressed");
-			press[0] = true;
-		}
-		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
-			// Movement downwards
-			System.out.println("Down pressed");
-			press[1] = true;
-		}
-		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
-			// Movement left
-			System.out.println("Left pressed");
-			press[2] = true;
-		}
-		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
-			// Movement right
-			System.out.println("Right pressed");
-			press[3] = true;
-		}
-	}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        // System.out.println("Key Pressed!");
+        // Switch on pressed keys
+        if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+            // Movement upwards
+            // System.out.println("Up pressed");
+            press[0] = true;
+        }
+        if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+            // Movement downwards
+            // System.out.println("Down pressed");
+            press[1] = true;
+        }
+        if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+            // Movement left
+            // System.out.println("Left pressed");
+            press[2] = true;
+        }
+        if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+            // Movement right
+            // System.out.println("Right pressed");
+            press[3] = true;
+        }
+    }
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
-			// Movement upwards
-			System.out.println("Up released");
-			press[0] = false;
-		}
-		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
-			// Movement downwards
-			System.out.println("Down released");
-			press[1] = false;
-		}
-		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
-			// Movement left
-			System.out.println("Left released");
-			press[2] = false;
-		}
-		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
-			// Movement right
-			System.out.println("Right released");
-			press[3] = false;
-		}
-	}
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+            // Movement upwards
+            //System.out.println("Up released");
+            press[0] = false;
+        }
+        if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+            // Movement downwards
+            //System.out.println("Down released");
+            press[1] = false;
+        }
+        if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+            // Movement left
+            //System.out.println("Left released");
+            press[2] = false;
+        }
+        if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+            // Movement right
+            //System.out.println("Right released");
+            press[3] = false;
+        }
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		t.start();
-		movePlayer();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        t.start();
+        movePlayer();
 
-		if (multiplayer) {
-			sendUpdateToOtherPlayers();
-			tryToUpdateOtherPlayers();
-		}
-		
-		repaint();
-	}
+        if (multiplayer) {
+            sendUpdateToOtherPlayers();
+            tryToUpdateOtherPlayers();
+        }
 
-	public void sendUpdateToOtherPlayers() {
-		try {
-			for (String name : allNames) {
-				space.put("PLAYERUPDATE", name, p.getX(), p.getY());
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+        repaint();
+    }
 
-	public void tryToUpdateOtherPlayers() {
-		try {
-			Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME),
-					new FormalField(Integer.class), new FormalField(Integer.class));
-			if (otherPosition != null) {
-				player2.x = (int) otherPosition[2];
-				player2.y = (int) otherPosition[3];
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public void sendUpdateToOtherPlayers() {
+        if (playerPosChange) {
+            try {
+                for (String name : allNames) {
+                    space.put("PLAYERUPDATE", name, p.getX(), p.getY());
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	public void movePlayer() {
-		if (press[0])
-			p.moveUp();
-		if (press[1])
-			p.moveDown();
-		if (press[2])
-			p.moveLeft();
-		if (press[3])
-			p.moveRight();
-	}
+    public void tryToUpdateOtherPlayers() {
+        try {
+            Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME),
+                    new FormalField(Integer.class), new FormalField(Integer.class));
+            if (otherPosition != null) {
+                System.out.println("Got position : " + otherPosition[2] + " " + otherPosition[3]);
+                player2.x = (int) otherPosition[2];
+                player2.y = (int) otherPosition[3];
+            } else {
+                System.out.println("Position is null");
+            }
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void movePlayer() {
+        playerPosChange = false;
+        if (press[0]) {
+            playerPosChange = true;
+            p.moveUp();
+        }
+        if (press[1]) {
+            playerPosChange = true;
+            p.moveDown();
+        }
+        if (press[2]) {
+            playerPosChange = true;
+            p.moveLeft();
+        }
+        if (press[3]) {
+            playerPosChange = true;
+            p.moveRight();
+        }
+    }
 
 }
