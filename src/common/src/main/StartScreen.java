@@ -45,7 +45,7 @@ public class StartScreen {
 			public void actionPerformed(ActionEvent e) {
 				int port = Integer.parseInt(portText.getText());
 				App.hostGame(port);
-				//this.dispose();
+				frame.dispose();
 			}
 		});
 
@@ -57,6 +57,7 @@ public class StartScreen {
 				int port = Integer.parseInt(portText.getText());
 				String host = hostText.getText();
 				App.connectToGame(port, host);
+				frame.dispose();
 			}
 		});
 
