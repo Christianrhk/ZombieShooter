@@ -25,7 +25,7 @@ public class Shop {
 		boolean startShopping = false;
 		boolean threadRunning = false;
 		int numberOfPlayers = 0; // Get data from App
-		String playerName = "FætterGuf"; //Get data from App
+		String playerName = "FaetterGuf"; //Get data from App
 		
 	    Thread thread = new Thread(new processShop(channel, items, playerName));
 		
