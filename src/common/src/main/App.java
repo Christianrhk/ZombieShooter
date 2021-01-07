@@ -102,7 +102,7 @@ public class App {
         String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
         String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
         //String uriEnvironment = "tcp://" + host + ":" + port + "/environment?keep";
-     //   String uriShop = "tcp://" + host + ":" + port + "/shop?keep";
+        //String uriShop = "tcp://" + host + ":" + port + "/shop?keep";
         //String uriInit = "tcp://" + host + ":" + port + "/init?conn";
 
             try {
