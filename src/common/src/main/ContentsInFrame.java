@@ -1,6 +1,7 @@
 package common.src.main;
 
 import javax.swing.*;
+import javax.swing.Timer;
 
 import org.jspace.ActualField;
 import org.jspace.FormalField;
@@ -19,7 +20,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	ArrayList<String> allNames;
 	Space space;
 	boolean press[] = { false, false, false, false };
-	Point player2 = new Point(10, 10);
+	Point player2;
 	Timer t;
 
 	public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
@@ -28,6 +29,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		setFocusable(true);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
+		
+		player2 = new Point(0,0);
 
 		t = new Timer(4, this);
 		t.start();
@@ -114,7 +117,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		t.start();
 		movePlayer();
 		sendUpdateToOtherPlayers();
 		tryToUpdateOtherPlayers();
