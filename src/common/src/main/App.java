@@ -61,6 +61,9 @@ public class App {
             Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
             System.out.println("Got message = " + t[0] + ":" + t[1]);
             player.put("This", "works");
+            
+            GameBoard game = new GameBoard(800,800);
+            
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -89,6 +92,8 @@ public class App {
             player.put("This", "works");
             Object[] t = player.get(new FormalField(String.class), new FormalField(String.class));
             System.out.println("Got message = " + t[0] + ":" + t[1]);
+            
+            GameBoard game = new GameBoard(800,800);
 
 
         } catch (UnknownHostException e) {
