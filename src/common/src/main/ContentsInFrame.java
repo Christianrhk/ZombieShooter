@@ -155,6 +155,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 for (String name : allNames) {
                     space.put("PLAYERUPDATE", name, p.getX(), p.getY());
                 }
+                playerPosChange = false;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -179,23 +180,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     public void movePlayer() {
-        playerPosChange = false;
-        if (press[0]) {
-            playerPosChange = true;
-            p.moveUp();
-        }
-        if (press[1]) {
-            playerPosChange = true;
-            p.moveDown();
-        }
-        if (press[2]) {
-            playerPosChange = true;
-            p.moveLeft();
-        }
-        if (press[3]) {
-            playerPosChange = true;
-            p.moveRight();
-        }
+        if (press[0])
+            playerPosChange = p.moveUp();
+        if (press[1])
+            playerPosChange = p.moveDown();
+        if (press[2])
+            playerPosChange = p.moveLeft();
+        if (press[3])
+            playerPosChange =  p.moveRight();
     }
 
 }
