@@ -30,7 +30,7 @@ public class StartScreen {
 		started = false;
 		System.out.println("Started Game");
 
-		JFrame frame = new JFrame("StartScreen xd");
+		JFrame frame = new JFrame("Zombie Shooter");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(300, 300);
 
