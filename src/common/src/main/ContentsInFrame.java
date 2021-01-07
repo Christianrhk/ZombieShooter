@@ -47,7 +47,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         requestFocusInWindow();
         setFocusTraversalKeysEnabled(false);
 
-        player2 = new Point(0, 0);
+        player2 = new Point(p.getX(), p.getY());
 
         t = new Timer(4, this);
         t.start();
