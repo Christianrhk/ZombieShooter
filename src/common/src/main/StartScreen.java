@@ -32,7 +32,7 @@ public class StartScreen {
 
 		JFrame frame = new JFrame("Zombie Shooter");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
+		frame.setSize(300, 350);
 
 		JPanel panel = new JPanel();
 		frame.add(panel);
@@ -155,7 +155,7 @@ public class StartScreen {
 		});
 
 		JButton startButton = new JButton("Start");
-		startButton.setBounds(10, 200, 80, 25);
+		startButton.setBounds(10, 200, 265, 25);
 		panel.add(startButton);
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -172,6 +172,16 @@ public class StartScreen {
 				App.hostGame(port, name, allNames);
 
 				
+				frame.dispose();
+			}
+		});
+		
+		JButton singlePlayer = new JButton("Singleplayer");
+		singlePlayer.setBounds(10, 230, 265, 25);
+		panel.add(singlePlayer);
+		singlePlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				App.singlePlayer();
 				frame.dispose();
 			}
 		});

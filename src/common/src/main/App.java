@@ -24,8 +24,7 @@ public class App {
 
     */
     public static void singlePlayer() {
-
-
+    	GameBoard game = new GameBoard(800, 800);
     }
 
 
