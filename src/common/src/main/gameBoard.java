@@ -5,22 +5,28 @@ import java.awt.*;
 
 public class gameBoard extends JFrame {
 
+
+
+
     public gameBoard(int width, int height){
-        setSize(width,height );
-        setTitle("Zombie Shooter");
+
+        // set jframe size etc.
+        super.setSize(width,height );
+        super.setTitle("Zombie Shooter");
+        super.setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setting layout to have a grid of widthxheight
-        setLayout(new GridLayout(height,width));
 
+        // adding content
+        super.add(new ContentsInFrame());
 
-
-
+        //show Jframe
         setVisible(true);
 
 
     }
 
-    public void insertPlayer(){
+    public static void main(String[] args){
+        new gameBoard(800,800);
 
 
     }
