@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener {
 
+	boolean multiplayer = false;
+
 	Player p;
 	ArrayList<String> allNames;
 	Space space;
@@ -23,14 +25,28 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	Point player2;
 	Timer t;
 
+	public ContentsInFrame(Player p) {
+		super.setDoubleBuffered(true);
+		addKeyListener(this);
+		setFocusable(true);
+		requestFocusInWindow();
+		setFocusTraversalKeysEnabled(false);
+
+		t = new Timer(4, this);
+		t.start();
+
+		this.p = p;
+		multiplayer = false;
+	}
+
 	public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
 		super.setDoubleBuffered(true);
 		addKeyListener(this);
 		setFocusable(true);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
-		
-		player2 = new Point(0,0);
+
+		player2 = new Point(0, 0);
 
 		t = new Timer(4, this);
 		t.start();
@@ -39,6 +55,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		this.p = p;
 		this.space = playerSpace;
 		this.allNames = allNames;
+
+		multiplayer = true;
 	}
 
 	@Override
@@ -52,8 +70,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		g2d.fillRect(p.getX(), p.getY(), 10, 10);
 
 		// drawing other players
-		g2d.setColor(new Color(255, 0, 255));
-		g2d.fillRect(player2.x, player2.y, 10, 10);
+		if (multiplayer) {
+			g2d.setColor(new Color(255, 0, 255));
+			g2d.fillRect(player2.x, player2.y, 10, 10);
+		}
 
 	}
 
@@ -119,18 +139,19 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void actionPerformed(ActionEvent e) {
 		t.start();
 		movePlayer();
-		sendUpdateToOtherPlayers();
-		tryToUpdateOtherPlayers();
 
+		if (multiplayer) {
+			sendUpdateToOtherPlayers();
+			tryToUpdateOtherPlayers();
+		}
+		
 		repaint();
 	}
 
 	public void sendUpdateToOtherPlayers() {
 		try {
 			for (String name : allNames) {
-				if(!name.equals(p.NAME)) {
-					space.put("PLAYERUPDATE", name, p.getX(), p.getY());
-				}
+				space.put("PLAYERUPDATE", name, p.getX(), p.getY());
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -139,8 +160,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	public void tryToUpdateOtherPlayers() {
 		try {
-			Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME), new FormalField(Integer.class),
-					new FormalField(Integer.class));
+			Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME),
+					new FormalField(Integer.class), new FormalField(Integer.class));
 			if (otherPosition != null) {
 				player2.x = (int) otherPosition[2];
 				player2.y = (int) otherPosition[3];
