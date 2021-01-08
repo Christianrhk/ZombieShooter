@@ -81,7 +81,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     @Override
     public void keyTyped(KeyEvent e) {
         // TODO Auto-generated method stub
-        System.out.println("Key typed!");
+        //System.out.println("Key typed!");
     }
 
     @Override
@@ -166,11 +166,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME),
                     new FormalField(Integer.class), new FormalField(Integer.class));
             if (otherPosition != null) {
-                System.out.println("Got position : " + otherPosition[2] + " " + otherPosition[3]);
+                //System.out.println("Got position : " + otherPosition[2] + " " + otherPosition[3]);
                 player2.x = (int) otherPosition[2];
                 player2.y = (int) otherPosition[3];
             } else {
-                System.out.println("Position is null");
+                //System.out.println("Position is null");
             }
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
