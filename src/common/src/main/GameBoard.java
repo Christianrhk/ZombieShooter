@@ -1,11 +1,15 @@
 package common.src.main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameBoard extends JFrame {
@@ -47,9 +51,8 @@ public class GameBoard extends JFrame {
 		super.setSize(WIDTH, HEIGHT);
 		super.setTitle("Zombie Shooter");
 		super.setResizable(false);
-		//super.setContentPane(new JLabel());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		//Creating player and setting position
 		p = new Player(playername);
 		p.POSITION.x = WIDTH/2;
@@ -59,3 +62,4 @@ public class GameBoard extends JFrame {
 
 
 }
+
