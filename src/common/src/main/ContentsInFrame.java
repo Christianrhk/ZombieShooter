@@ -19,7 +19,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean multiplayer = false;
 
     Player p;
-    Boolean playerPosChange;
+    Boolean playerPosChange = false;
     ArrayList<String> allNames;
     Space space;
     boolean press[] = {false, false, false, false};
@@ -146,7 +146,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // t.start();
+         t.start();
         movePlayer();
 
         // send player position and get other players position
@@ -165,11 +165,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 for (String name : allNames) { // send update to all players
                     space.put("PLAYERUPDATE", name, p.getX(), p.getY());
                 }
-                playerPosChange = false;
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
+       }
+       playerPosChange = false;
     }
 
     public void tryToUpdateOtherPlayers() {
