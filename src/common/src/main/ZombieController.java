@@ -9,7 +9,7 @@ public class ZombieController {
 	
 	public static int wave;
 	public static int numberOfZombies;
-	public static Point[] spawnLocations = {new Point(50, 400), new Point(400, 50), new Point(750, 400), new Point(400, 750), new Point(50,50), new Point(50,750), new Point(750,50), new Point(750,750)};
+	public static Point[] spawnLocations = {new Point(50, 400), new Point(400, 50), new Point(650, 400), new Point(400, 650), new Point(50,50), new Point(50,650), new Point(650,50), new Point(650,650)};
 	public static ArrayList<Zombie> zombies;
 	
 
@@ -17,6 +17,8 @@ public class ZombieController {
 		numberOfZombies = 0;
 		wave = 0;
 		zombies = new ArrayList<Zombie>();
+		
+		new Thread(new WaveController()).start();
 	}
 	
 	public static void moveZombies() {
@@ -35,8 +37,11 @@ public class ZombieController {
 			Random rand = new Random();
 			int r = rand.nextInt(spawnLocations.length);
 			Zombie z = new Zombie(spawnLocations[r]);
+			//Zombie z = new Zombie(new Point(100,100));
 			zombies.add(z);
 		}
+		
+		System.out.println("New zombies added");
 	}
 
 	public static void checkState() {
@@ -54,10 +59,11 @@ public class ZombieController {
 
 
 
-class waveController implements Runnable{
+class WaveController implements Runnable{
 
 	@Override
 	public void run() {
+		System.out.println("Thread started");
 		while(true) {
 			while(ZombieController.numberOfZombies > 0) {
 				ZombieController.moveZombies();
@@ -66,7 +72,7 @@ class waveController implements Runnable{
 			
 			// Wait 5 seconds before next round
 			try {
-				TimeUnit.SECONDS.sleep(5);
+				TimeUnit.SECONDS.sleep(3);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

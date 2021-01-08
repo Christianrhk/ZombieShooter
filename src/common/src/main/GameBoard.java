@@ -17,18 +17,7 @@ public class GameBoard extends JFrame{
 	ContentsInFrame content;
 	ContentShop contentShop;
 
-	// Multiplayer HOST constructor
-	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames, ZombieController ZC) {
-
-		setGameBoard(width, height, playerName);
-		// adding content
-		content = new ContentsInFrame(p, playerSpace, allNames);
-
-		//insert shop as a layered board
-		setLayeredBoard(width,height);
-	}
-	
-	// Multiplayer joiner constructor
+	// Multiplayer  constructor
 	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
 
 		setGameBoard(width, height, playerName);
@@ -37,12 +26,11 @@ public class GameBoard extends JFrame{
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
-
-
 	}
 	
+	
 	// Singleplayer constructor
-	public GameBoard(int width, int height, ZombieController ZC) { 
+	public GameBoard(int width, int height) { 
 		
 		setGameBoard(width, height, ""); // Singleplayer, no name needed for the communications protocols.
 		

@@ -38,7 +38,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     Point player2;
     Timer t;
     BufferedImage bg;
-    Zombie zombie;
+
 
     ContentShop shop;
     boolean shopVisible = false;
@@ -48,8 +48,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public ContentsInFrame(Player p) {
     	initContentsInFrame(p);
         multiplayer = false;
-        
-        this.zombie = new Zombie(50,50);
+
+        //this.zombie = new Zombie(50,50);
     }
 
     //Constructor for multiplayer
@@ -58,7 +58,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         player2 = new Point(p.getX(), p.getY());
 
-        this.zombie = new Zombie(100,100);
+        //this.zombie = new Zombie(100,100);
         
         this.space = playerSpace;
         this.allNames = allNames;
@@ -99,8 +99,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // Draw player
         g2d.drawImage(p.IMAGE,p.getX(),p.getY(),this);
         
-        // Draw zombie
-        zombie.drawZombie(g2d);
+        // Draw zombies
+        for(Zombie z : ZombieController.zombies) {
+        	z.drawZombie(g2d);
+        }
+          //zombie.drawZombie(g2d);
 
         // drawing other players
         if (multiplayer) {
@@ -185,7 +188,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         
         // Move players and zombies
         movePlayer();
-        zombie.zombieRunAnimation();
+        for(Zombie z : ZombieController.zombies) {
+        	z.zombieRunAnimation();
+        }
 
         // send player position and get other players position
         if (multiplayer) {
