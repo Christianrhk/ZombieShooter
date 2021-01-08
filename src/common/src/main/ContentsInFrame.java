@@ -19,9 +19,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean multiplayer = false;
 
     Player p;
-    Boolean playerPosChange = false;
+    // Boolean playerPosChange = false;
     ArrayList<String> allNames;
     Space space;
+    boolean playerPosChange[] = {false, false, false, false};
     boolean press[] = {false, false, false, false};
     Point player2;
     Timer t;
@@ -160,7 +161,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     public void sendUpdateToOtherPlayers() {
-        if (playerPosChange) { // only update if play position has changed
+        if (playerPosChange[0] ||playerPosChange[1] || playerPosChange[2] || playerPosChange[3]) { // only update if play position has changed
             try {
                 for (String name : allNames) { // send update to all players
                     space.put("PLAYERUPDATE", name, p.getX(), p.getY());
@@ -171,7 +172,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             }
 
        }
-       playerPosChange = false;
+       playerPosChange[0] = playerPosChange[1] = playerPosChange[2] = playerPosChange[3] = false;
     }
 
     public void tryToUpdateOtherPlayers() {
@@ -194,13 +195,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     public void movePlayer() {
         if (press[0])
-            playerPosChange = p.moveUp();
+            playerPosChange[0] = p.moveUp();
         if (press[1])
-            playerPosChange = p.moveDown();
+            playerPosChange[1] = p.moveDown();
         if (press[2])
-            playerPosChange = p.moveLeft();
+            playerPosChange[2] = p.moveLeft();
         if (press[3])
-            playerPosChange =  p.moveRight();
+            playerPosChange[3] =  p.moveRight();
     }
 
 }
