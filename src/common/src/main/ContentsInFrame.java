@@ -83,8 +83,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             player = ImageIO.read(new File("src/images/clown.png"));
             imagesSet = true;
         } catch (IOException e) {
-            imagesSet = false;
+           imagesSet = false;
         }
+
     }
     @Override
     public void paintComponent(Graphics g) {
