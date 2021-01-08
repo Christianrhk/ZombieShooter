@@ -195,7 +195,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             tryToUpdateOtherPlayers();
         }
         if (shopVisible){
-            //shop.repaint();
+            shop.repaint();
         }else {
             //update jFrame
             repaint();
