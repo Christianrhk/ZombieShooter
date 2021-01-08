@@ -24,7 +24,8 @@ public class GameBoard extends JFrame {
 		super.setTitle("Zombie Shooter");
 		super.setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
+		//Creating player and setting position
 		p = new Player(playerName);
 		p.POSITION.x = WIDTH/2;
 		p.POSITION.y = HEIGHT/2;
@@ -41,12 +42,14 @@ public class GameBoard extends JFrame {
 	public GameBoard(int width, int height) { 
 		this.WIDTH = width;
 		this.HEIGHT = height;
-		
+
+		// set jframe size etc.
 		super.setSize(WIDTH, HEIGHT);
 		super.setTitle("Zombie Shooter");
 		super.setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
+		//Creating player and setting position
 		p = new Player("");
 		p.POSITION.x = WIDTH/2;
 		p.POSITION.y = HEIGHT/2;

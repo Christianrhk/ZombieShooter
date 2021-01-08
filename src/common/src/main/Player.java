@@ -27,28 +27,36 @@ public class Player extends Entity {
 		return this.POSITION.y;
 	}
 
-	public void moveUp() {
+	public boolean moveUp() {
 		if (this.POSITION.y > 0 + player_offset) {
 			this.POSITION.y -= this.MOVEMENT_SPEED;
+			return true;
 		}
+		return false;
 	}
 
-	public void moveDown() {
+	public boolean moveDown() {
 		if (this.POSITION.y < MAX_Y - player_offset) {
 			this.POSITION.y += this.MOVEMENT_SPEED;
+			return true;
 		}
+		return false;
 	}
 
-	public void moveRight() {
+	public boolean moveRight() {
 		if (this.POSITION.x < MAX_X - player_offset) {
 			this.POSITION.x += this.MOVEMENT_SPEED;
+			return true;
 		}
+		return false;
 	}
 
-	public void moveLeft() {
+	public boolean moveLeft() {
 		if (this.POSITION.x > 0 + player_offset) {
 			this.POSITION.x -= this.MOVEMENT_SPEED;
+			return true;
 		}
+		return false;
 	}
 	
 	// Take damage based on incoming damage and armor left
