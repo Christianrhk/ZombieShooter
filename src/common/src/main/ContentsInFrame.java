@@ -259,7 +259,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Mouse clicked at: " + e.getX() + ", " + e.getY());
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("Mouse clicked at: " + x + ", " + y);
+		for(Zombie z : ZombieController.zombies) {
+			if(z.collision(x, y)) {
+				z.damageZombie(20);
+			}
+		}
 	}
 
 	@Override

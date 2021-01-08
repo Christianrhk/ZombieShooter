@@ -51,6 +51,7 @@ public class ZombieController {
 			if(z.isDead()) {
 				zombies.remove(z);
 				numberOfZombies--;
+				break;
 			}
 		}
 	}

@@ -12,6 +12,7 @@ public class Zombie extends Entity {
 	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
 	int AnimationSpeed;
 	int spriteSize;
+	int offset;
 
 	public Zombie(int x, int y) {
 		super();
@@ -33,6 +34,8 @@ public class Zombie extends Entity {
 		this.NAME = "ZOMBIE";
 
 		this.spriteSize = 64;
+		this.offset = spriteSize/2;
+		
 		this.AnimationSpeed = 32;
 		
 		this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";
@@ -49,6 +52,18 @@ public class Zombie extends Entity {
 	
 	public boolean isDead() {
 		return this.HEALTH_POINTS <= 0;
+	}
+	
+	public void damageZombie(int damage) {
+		this.HEALTH_POINTS -= damage;
+	}
+	
+	public boolean collision(int x, int y) {
+		boolean hit = false;
+		if(x > this.POSITION.x - this.offset && x < this.POSITION.x + this.offset && y > this.POSITION.y - this.offset && y < this.POSITION.y + this.offset){
+			hit = true;
+		}
+		return hit;
 	}
 
 	public void zombieRunAnimation() {
@@ -71,16 +86,16 @@ public class Zombie extends Entity {
 	public void drawZombie(Graphics g) {
 		switch (this.directionFacing) {
 		case DOWN:
-			this.zombieDown.drawAnimation(g, this.POSITION.x, this.POSITION.y);
+			this.zombieDown.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case UP:
-			this.zombieUp.drawAnimation(g, this.POSITION.x, this.POSITION.y);
+			this.zombieUp.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case RIGHT:
-			this.zombieRight.drawAnimation(g, this.POSITION.x, this.POSITION.y);
+			this.zombieRight.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case LEFT:
-			this.zombieLeft.drawAnimation(g, this.POSITION.x, this.POSITION.y);
+			this.zombieLeft.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		}
 	}

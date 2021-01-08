@@ -67,8 +67,8 @@ public class Animation {
 			count = 0;
 	}
 
-	public void drawAnimation(Graphics g, int x, int y) {
-		g.drawImage(currentImg, x, y, null);
+	public void drawAnimation(Graphics g, int x, int y, int offset) {
+		g.drawImage(currentImg, x-offset, y-offset, null);
 	}
 	
 	// Crop image from sprite sheet
