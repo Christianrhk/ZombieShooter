@@ -34,6 +34,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     BufferedImage player;
     boolean imagesSet;
 
+    ContentShop shop;
+    boolean shopVisible = false;
+
 
     // Contructor for singleplayer
     public ContentsInFrame(Player p) {
@@ -73,7 +76,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         this.allNames = allNames;
 
         multiplayer = true;
-
         loadImages();
     }
 
@@ -172,6 +174,15 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             //System.out.println("Right released");
             press[3] = false;
         }
+
+
+        if (keyCode == KeyEvent.VK_B && shopVisible ==false){
+            shopVisible = true;
+            shop.setVisible(true);
+        }else if (keyCode == KeyEvent.VK_B && shopVisible){
+            shopVisible = false;
+            shop.setVisible(false);
+        }
     }
 
     @Override
@@ -184,9 +195,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             sendUpdateToOtherPlayers();
             tryToUpdateOtherPlayers();
         }
+        if (shopVisible){
+            //shop.repaint();
+        }else {
+            //update jFrame
+            repaint();
+        }
 
-        //update jFrame
-        repaint();
+
     }
 
     public void sendUpdateToOtherPlayers() {
@@ -233,6 +249,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             playerPosChange[3] =  p.moveRight();
     }
 
+    public void addShop(ContentShop contentShop) {
+        shop = contentShop;
+        shop.setVisible(false);
+
+    }
 }
 
 
