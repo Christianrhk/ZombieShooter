@@ -24,6 +24,7 @@ public class App {
 
     */
     public static void singlePlayer() {
+    	ZombieController ZC = new ZombieController();
     	GameBoard game = new GameBoard(800, 800);
     }
 
@@ -84,6 +85,7 @@ public class App {
         repository.add("shop", shop);
       
         System.out.println("Size of all names: " + allNames.size());
+        ZombieController ZC = new ZombieController();
 		GameBoard game = new GameBoard(800,800, player, name, allNames);
 
 

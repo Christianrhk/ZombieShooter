@@ -17,7 +17,7 @@ public class GameBoard extends JFrame{
 	ContentsInFrame content;
 	ContentShop contentShop;
 
-	// Multiplayer constructor
+	// Multiplayer  constructor
 	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
 
 		setGameBoard(width, height, playerName);
@@ -26,9 +26,8 @@ public class GameBoard extends JFrame{
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
-
-
 	}
+	
 	
 	// Singleplayer constructor
 	public GameBoard(int width, int height) { 

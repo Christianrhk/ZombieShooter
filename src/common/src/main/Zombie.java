@@ -12,17 +12,30 @@ public class Zombie extends Entity {
 	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
 	int AnimationSpeed;
 	int spriteSize;
+	int offset;
 
-	public Zombie() {
+	public Zombie(int x, int y) {
 		super();
+		this.POSITION = new Point(x, y);
+		initZombie();
+	}
+	
+	public Zombie(Point p) {
+		super();
+		this.POSITION = p;
+		initZombie();
+	}
+	
+	public void initZombie() {
 		this.HEALTH_POINTS = 20;
 		this.ARMOR = 0;
 		this.ATTACK_SPEED = 1.2;
 		this.DAMAGE = 10;
 		this.NAME = "ZOMBIE";
-		this.POSITION = new Point(0, 0);
-		
+
 		this.spriteSize = 64;
+		this.offset = spriteSize/2;
+		
 		this.AnimationSpeed = 32;
 		
 		this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";
@@ -35,6 +48,22 @@ public class Zombie extends Entity {
 		}
 		
 		setSpriteSheetAnimations();
+	}
+	
+	public boolean isDead() {
+		return this.HEALTH_POINTS <= 0;
+	}
+	
+	public void damageZombie(int damage) {
+		this.HEALTH_POINTS -= damage;
+	}
+	
+	public boolean collision(int x, int y) {
+		boolean hit = false;
+		if(x > this.POSITION.x - this.offset && x < this.POSITION.x + this.offset && y > this.POSITION.y - this.offset && y < this.POSITION.y + this.offset){
+			hit = true;
+		}
+		return hit;
 	}
 
 	public void zombieRunAnimation() {
@@ -54,19 +83,19 @@ public class Zombie extends Entity {
 		}
 	}
 	
-	public void drawZombie(Graphics g, int x, int y) {
+	public void drawZombie(Graphics g) {
 		switch (this.directionFacing) {
 		case DOWN:
-			this.zombieDown.drawAnimation(g, x, y);
+			this.zombieDown.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case UP:
-			this.zombieUp.drawAnimation(g, x, y);
+			this.zombieUp.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case RIGHT:
-			this.zombieRight.drawAnimation(g, x, y);
+			this.zombieRight.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		case LEFT:
-			this.zombieLeft.drawAnimation(g, x, y);
+			this.zombieLeft.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
 			break;
 		}
 	}

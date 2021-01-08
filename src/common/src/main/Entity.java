@@ -13,6 +13,8 @@ public class Entity {
 	BufferedImage IMAGE;
 	String IMAGE_PATH;
 	
+	enum state {DEAD, ALIVE};
+	state state;
 	
 	enum direction {UP, DOWN, LEFT, RIGHT};
 	direction directionFacing;
@@ -20,6 +22,7 @@ public class Entity {
 	public Entity() {
 		this.MOVEMENT_SPEED = 1;
 		this.directionFacing = direction.DOWN;
+		this.state = state.ALIVE;
 	}
 	
 }
