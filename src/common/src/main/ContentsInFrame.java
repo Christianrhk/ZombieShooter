@@ -30,8 +30,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean press[] = {false, false, false, false};
     Point player2;
     Timer t;
+    BufferedImage bg;
+    BufferedImage player;
 
-    private Image man;
 
     // Contructor for singleplayer
     public ContentsInFrame(Player p) {
@@ -47,6 +48,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         this.p = p;
         multiplayer = false;
+
+        loadImages();
     }
 
     //Constructor for multiplayer
@@ -69,8 +72,19 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         this.allNames = allNames;
 
         multiplayer = true;
+
+        loadImages();
     }
 
+    private void loadImages(){
+        try {
+            bg = ImageIO.read(new File("src/images/zombiebanen.png"));
+            player = ImageIO.read(new File("src/images/clown.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,20 +93,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         Graphics2D g2d = (Graphics2D) g;
         
         //Setting background image
-        BufferedImage bg;
-		try {
-			bg = ImageIO.read(new File("src/images/zombiebanen.png"));
-	        g2d.drawImage(bg,0,0,this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        g2d.drawImage(bg,0,0,this);
 
         // drawing player
         //g2d.fillRect(p.getX(), p.getY(), 15, 20);
-        ImageIcon ii = new ImageIcon(this.getClass().getResource("man.png"));
-        man = ii.getImage();
-        g2d.drawImage(man,p.getX(),p.getY(),this);
+        g2d.drawImage(player,p.getX(),p.getY(),this);
 
         // drawing other players
         if (multiplayer) {
