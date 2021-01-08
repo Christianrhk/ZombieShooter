@@ -16,20 +16,8 @@ public class GameBoard extends JFrame {
 	// Multiplayer constructor
 	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
 
-		this.WIDTH = width;
-		this.HEIGHT = height;
+		setGameBoard(width, height, playerName);
 		
-		// set jframe size etc.
-		super.setSize(WIDTH, HEIGHT);
-		super.setTitle("Zombie Shooter");
-		super.setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//Creating player and setting position
-		p = new Player(playerName);
-		p.POSITION.x = WIDTH/2;
-		p.POSITION.y = HEIGHT/2;
-
 		// adding content
 		super.add(new ContentsInFrame(p, playerSpace, allNames));
 
@@ -40,19 +28,8 @@ public class GameBoard extends JFrame {
 	
 	// Singleplayer constructor
 	public GameBoard(int width, int height) { 
-		this.WIDTH = width;
-		this.HEIGHT = height;
-
-		// set jframe size etc.
-		super.setSize(WIDTH, HEIGHT);
-		super.setTitle("Zombie Shooter");
-		super.setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//Creating player and setting position
-		p = new Player("");
-		p.POSITION.x = WIDTH/2;
-		p.POSITION.y = HEIGHT/2;
+		
+		setGameBoard(width, height, ""); // Singleplayer, no name needed for the communications protocols.
 		
 		// adding content
 		super.add(new ContentsInFrame(p));
@@ -61,6 +38,24 @@ public class GameBoard extends JFrame {
 		setVisible(true);
 	}
 
+	
+	public void setGameBoard(int width, int height, String playername) {
+		this.WIDTH = width;
+		this.HEIGHT = height;
+		
+		// set jframe size etc.
+		super.setSize(WIDTH, HEIGHT);
+		super.setTitle("Zombie Shooter");
+		super.setResizable(false);
+		//super.setContentPane(new JLabel());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Creating player and setting position
+		p = new Player(playername);
+		p.POSITION.x = WIDTH/2;
+		p.POSITION.y = HEIGHT/2;
+
+	}
 
 
 }
