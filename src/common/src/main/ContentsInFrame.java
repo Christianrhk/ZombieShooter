@@ -32,6 +32,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     Timer t;
     BufferedImage bg;
     BufferedImage player;
+    boolean imagesSet;
 
 
     // Contructor for singleplayer
@@ -80,10 +81,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         try {
             bg = ImageIO.read(new File("src/images/zombiebanen.png"));
             player = ImageIO.read(new File("src/images/clown.png"));
+            imagesSet = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            imagesSet = false;
         }
-
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -91,13 +92,16 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         // using graphics 2d to draw
         Graphics2D g2d = (Graphics2D) g;
-        
-        //Setting background image
-        g2d.drawImage(bg,0,0,this);
 
-        // drawing player
-        //g2d.fillRect(p.getX(), p.getY(), 15, 20);
-        g2d.drawImage(player,p.getX(),p.getY(),this);
+        // Logic to handle if images were not loaded correctly
+        if (imagesSet){
+            //Setting background image and player
+            g2d.drawImage(bg,0,0,this);
+            g2d.drawImage(player,p.getX(),p.getY(),this);
+        }else {
+            g2d.fillRect(p.getX(), p.getY(), 15, 20);
+        }
+
 
         // drawing other players
         if (multiplayer) {
