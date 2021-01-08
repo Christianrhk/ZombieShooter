@@ -73,6 +73,7 @@ public class GameBoard extends JFrame{
 
 		//Adding shop
 		contentShop = new ContentShop();
+
 		//Setting shop on layer 1
 		contentShop.setBounds(width/8,height/8,width-(width/4),height-(height/4));
 		layeredBoard.add(contentShop,1);

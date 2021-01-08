@@ -22,7 +22,8 @@ public class StartScreen {
 
     public volatile static boolean started;
 
-    public volatile static JLabel currHOST, currJoined;
+    public volatile static JLabel currHOST;
+    public volatile static JLabel currJoined;
 
     public static Space hostSpace, joinSpace;
 
@@ -33,6 +34,7 @@ public class StartScreen {
         JFrame frame = new JFrame("Zombie Shooter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 350);
+
 
         JPanel panel = new JPanel();
         frame.add(panel);
@@ -123,7 +125,6 @@ public class StartScreen {
 
                 try {
                     joinSpace = App.initJoinGame(port, host, name);
-
                     joinSpace.put("NAME", name);
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);
@@ -134,6 +135,7 @@ public class StartScreen {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                currJoined.paintImmediately(currJoined.getVisibleRect());
 
                 ArrayList<String> allNames = null;
 
@@ -208,6 +210,9 @@ public class StartScreen {
                 currHOST.setText((String) list[1]);
             }
 
+            //currJoined.paintImmediately(currJoined.getVisibleRect());
+            //currHOST.paintImmediately(currHOST.getVisibleRect());
+
         } catch (InterruptedException e) {
         }
         return false;
@@ -256,7 +261,7 @@ class UpdateChecker implements Runnable {
     @Override
     public void run() {
         while (!StartScreen.started) {
-            // allNames = StartScreen.getNames(name, space);
+            allNames = StartScreen.getNames(name, space);
             StartScreen.started = StartScreen.queryStart(space);
         }
 

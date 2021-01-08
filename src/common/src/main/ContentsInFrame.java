@@ -22,9 +22,6 @@ import java.util.ArrayList;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	boolean multiplayer = false;
@@ -203,7 +200,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     public void sendUpdateToOtherPlayers() {
-        if (playerPosChange[0] ||playerPosChange[1] || playerPosChange[2] || playerPosChange[3]) { // only update if play position has changed
+        // only update if player position has changed
+        if (playerPosChange[0] ||playerPosChange[1] || playerPosChange[2] || playerPosChange[3]) {
             try {
                 for (String name : allNames) { // send update to all players
                     space.put("PLAYERUPDATE", name, p.getX(), p.getY());
