@@ -71,6 +71,7 @@ public class Animation {
 		g.drawImage(currentImg, x, y, null);
 	}
 	
+	// Crop image from sprite sheet
 	public static BufferedImage cropImage(BufferedImage sheet, int col, int row, int w, int h, int size) {
 		return sheet.getSubimage(col*size, row*size, w, h);
 	}

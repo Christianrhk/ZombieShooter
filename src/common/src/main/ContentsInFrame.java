@@ -13,14 +13,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ContentsInFrame extends JPanel implements KeyListener, ActionListener {
+public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener {
 
-    boolean multiplayer = false;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	boolean multiplayer = false;
 
     Player p;
     // Boolean playerPosChange = false;
@@ -39,53 +46,47 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     // Contructor for singleplayer
     public ContentsInFrame(Player p) {
-        super.setDoubleBuffered(true);
-        addKeyListener(this);
-        setFocusable(true);
-        requestFocusInWindow();
-        setFocusTraversalKeysEnabled(false);
-
-        //setting timer
-        t = new Timer(4, this);
-        t.start();
-
-        this.p = p;
+    	initContentsInFrame(p);
         multiplayer = false;
         
         this.zombie = new Zombie();
-
-        loadImages();
     }
 
     //Constructor for multiplayer
     public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
-        super.setDoubleBuffered(true);
-        addKeyListener(this);
-        setFocusable(true);
-        requestFocusInWindow();
-        setFocusTraversalKeysEnabled(false);
+    	initContentsInFrame(p);
 
         player2 = new Point(p.getX(), p.getY());
 
-        //setting timer
-        t = new Timer(4, this);
-        t.start();
-
-        // init variables
-        this.p = p;
+        this.zombie = new Zombie();
+        
         this.space = playerSpace;
         this.allNames = allNames;
 
         multiplayer = true;
-        loadImages();
+    }
+    
+    // Shared initialization for multiplayer and singleplayer
+    public void initContentsInFrame(Player p){
+    	super.setDoubleBuffered(true);
+        addKeyListener(this);
+        setFocusable(true);
+        addMouseListener(this);
+        requestFocusInWindow();
+        setFocusTraversalKeysEnabled(false);
+        
+        //setting timer
+        t = new Timer(4, this);
+        t.start();
+        
+        this.p = p;
+        
+        // Get background picture
+        try {
+			bg = ImageIO.read(new File("src/images/zombiebanen.png"));
+		} catch (IOException e) {}
     }
 
-    private void loadImages(){
-        try {
-            bg = ImageIO.read(new File("src/images/zombiebanen.png"));
-        } catch (IOException e) {
-        }
-    }
     
     @Override
     public void paintComponent(Graphics g) {
@@ -110,10 +111,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        //System.out.println("Key typed!");
-    }
+    public void keyTyped(KeyEvent e) {}
 
     /*
     To be able to verify if 2 keys are clicked simultaneously.
@@ -253,6 +251,23 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         shop.setVisible(false);
 
     }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("Mouse clicked at: " + e.getX() + ", " + e.getY());
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }
 
 
