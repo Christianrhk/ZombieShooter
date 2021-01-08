@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 public class GameBoard extends JFrame{
 
-	/**
-	 *
-	 */
+
 	private static final long serialVersionUID = 1L;
 	int WIDTH, HEIGHT;
 	Player p;
@@ -27,7 +25,7 @@ public class GameBoard extends JFrame{
 		content = new ContentsInFrame(p, playerSpace, allNames);
 
 		//insert shop as a layered board
-		setLayeredBoard();
+		setLayeredBoard(width,height);
 
 
 	}
@@ -41,7 +39,7 @@ public class GameBoard extends JFrame{
 		content = new ContentsInFrame(p);
 
 		//insert shop as a layered board
-		setLayeredBoard();
+		setLayeredBoard(width,height);
 
 	}
 
@@ -68,10 +66,11 @@ public class GameBoard extends JFrame{
 
 	}
 
-	public void setLayeredBoard(){
-		content.setBounds(0,0,800,800);
-		layeredBoard.add(content , JLayeredPane.DEFAULT_LAYER); // layer 0
+	public void setLayeredBoard(int width, int height){
 
+
+		content.setBounds(0,0,width,height);
+		layeredBoard.add(content , JLayeredPane.DEFAULT_LAYER); // layer 0
 
 		contentShop = new ContentShop();
 		contentShop.setBounds(100,100,500,500);
