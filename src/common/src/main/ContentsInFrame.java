@@ -33,6 +33,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         requestFocusInWindow();
         setFocusTraversalKeysEnabled(false);
 
+        //setting timer
         t = new Timer(4, this);
         t.start();
 
@@ -49,6 +50,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         player2 = new Point(p.getX(), p.getY());
 
+        //setting timer
         t = new Timer(4, this);
         t.start();
 
@@ -84,6 +86,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         System.out.println("Key typed!");
     }
 
+    /*
+    To be able to verify if 2 keys are clicked simultaneously.
+    When keys are released the boolean values will be set back to false.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -141,18 +147,20 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         t.start();
         movePlayer();
 
+        // send player position and get other players position
         if (multiplayer) {
             sendUpdateToOtherPlayers();
             tryToUpdateOtherPlayers();
         }
 
+        //update jFrame
         repaint();
     }
 
     public void sendUpdateToOtherPlayers() {
-        if (playerPosChange) {
+        if (playerPosChange) { // only update if play position has changed
             try {
-                for (String name : allNames) {
+                for (String name : allNames) { // send update to all players
                     space.put("PLAYERUPDATE", name, p.getX(), p.getY());
                 }
                 playerPosChange = false;
@@ -178,6 +186,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             e.printStackTrace();
         }
     }
+
 
     public void movePlayer() {
         if (press[0])
