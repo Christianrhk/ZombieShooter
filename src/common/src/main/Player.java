@@ -1,6 +1,10 @@
 package common.src.main;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
@@ -14,9 +18,13 @@ public class Player extends Entity {
 		this.ARMOR = 50;
 		this.ATTACK_SPEED = 1.2;
 		this.DAMAGE = 10;
-		this.MOVEMENT_SPEED = 1;
 		this.NAME = name;
 		this.POSITION = new Point(0, 0);
+		try {
+			this.IMAGE = ImageIO.read(new File("src/images/clown.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public int getX() {
