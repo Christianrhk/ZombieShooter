@@ -81,7 +81,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         //Setting background image
         BufferedImage bg;
 		try {
-			System.out.println("Added background image");
 			bg = ImageIO.read(new File("src/images/zombiebanen.png"));
 	        g2d.drawImage(bg,0,0,this);
 		} catch (IOException e) {
