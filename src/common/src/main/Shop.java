@@ -95,12 +95,15 @@ class processShop implements Runnable {
 					
 					// Finds the price of the item
 					int itemCost = items[itemID].getCost();
+					
+					int moneyLeft = currentMoney - itemCost;
 
 					// Checks if the player can afford the item
-					if (currentMoney - itemCost > -1) {
+					if (moneyLeft > -1) {
 						// The player can afford the item
 						channel.put("ItemBought", itemID);
-						channel.put("CurrentMoney", currentMoney-itemCost);
+						channel.put("CurrentMoney", moneyLeft);
+						currentMoney = moneyLeft;
 						//<Signal this to the graphics/stat component>
 						
 					} else {
