@@ -8,14 +8,12 @@ import java.awt.event.KeyListener;
 
 public class ContentShop extends JPanel {
 
-    private  boolean bHasBeenPressed;
+
     public ContentShop(){
         super.setDoubleBuffered(true);
         setFocusable(true);
         requestFocusInWindow();
         setFocusTraversalKeysEnabled(false);
-
-        bHasBeenPressed = false;
 
         setupShop();
 

@@ -6,12 +6,7 @@ import javax.swing.*;
 import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 public class GameBoard extends JFrame{
@@ -20,17 +15,19 @@ public class GameBoard extends JFrame{
 	Player p;
 	JLayeredPane layeredBoard;
 
+	ContentsInFrame content;
+	ContentShop contentShop;
+
 	// Multiplayer constructor
 	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
 
 		setGameBoard(width, height, playerName);
-
-		
 		// adding content
-		super.add(new ContentsInFrame(p, playerSpace, allNames));
+		content = new ContentsInFrame(p, playerSpace, allNames);
 
-		// show Jframe
-		setVisible(true);
+		//insert shop as a layered board
+		setLayeredBoard();
+
 
 	}
 	
@@ -40,22 +37,11 @@ public class GameBoard extends JFrame{
 		setGameBoard(width, height, ""); // Singleplayer, no name needed for the communications protocols.
 		
 		// adding content
-		ContentsInFrame contentPlayer = new ContentsInFrame(p);
-		contentPlayer.setBounds(0,0,800,800);
-		layeredBoard.add(contentPlayer , JLayeredPane.DEFAULT_LAYER); // layer 0
+		content = new ContentsInFrame(p);
 
+		//insert shop as a layered board
+		setLayeredBoard();
 
-		ContentShop contentShop = new ContentShop();
-		contentShop.setBounds(100,100,500,500);
-		layeredBoard.add(contentShop,1);
-
-		contentPlayer.addShop(contentShop);
-
-		super.add(layeredBoard);
-
-
-		// show Jframe
-		setVisible(true);
 	}
 
 	
@@ -79,6 +65,22 @@ public class GameBoard extends JFrame{
 		p.POSITION.x = WIDTH/2;
 		p.POSITION.y = HEIGHT/2;
 
+	}
+
+	public void setLayeredBoard(){
+		content.setBounds(0,0,800,800);
+		layeredBoard.add(content , JLayeredPane.DEFAULT_LAYER); // layer 0
+
+
+		contentShop = new ContentShop();
+		contentShop.setBounds(100,100,500,500);
+		layeredBoard.add(contentShop,1);
+
+		content.addShop(contentShop);
+		super.add(layeredBoard);
+
+		// show Jframe
+		setVisible(true);
 	}
 
 
