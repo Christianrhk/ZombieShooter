@@ -24,15 +24,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     Player p;
     // Boolean playerPosChange = false;
-    ArrayList<String> allNames;
+    ArrayList<String> allNames; // Names of all other players, used for communication
     Space space;
     boolean playerPosChange[] = {false, false, false, false};
     boolean press[] = {false, false, false, false};
     Point player2;
     Timer t;
     BufferedImage bg;
-    BufferedImage player;
-    boolean imagesSet;
+    Zombie zombie;
 
     ContentShop shop;
     boolean shopVisible = false;
@@ -52,6 +51,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         this.p = p;
         multiplayer = false;
+        
+        this.zombie = new Zombie();
 
         loadImages();
     }
@@ -82,29 +83,23 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     private void loadImages(){
         try {
             bg = ImageIO.read(new File("src/images/zombiebanen.png"));
-            player = ImageIO.read(new File("src/images/clown.png"));
-            imagesSet = true;
         } catch (IOException e) {
-           imagesSet = false;
         }
-
     }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // using graphics 2d to draw
         Graphics2D g2d = (Graphics2D) g;
 
-        // Logic to handle if images were not loaded correctly
-        if (imagesSet){
-            //Setting background image and player
-            g2d.drawImage(bg,0,0,this);
-            g2d.drawImage(player,p.getX(),p.getY(),this);
-        }else {
-            g2d.fillRect(p.getX(), p.getY(), 15, 20);
-        }
-
+        // Draw background
+        g2d.drawImage(bg,0,0,this);
+        
+        // Draw player
+        g2d.drawImage(p.IMAGE,p.getX(),p.getY(),this);
+        
+        // Draw zombie
+        zombie.drawZombie(g2d, 100, 100);
 
         // drawing other players
         if (multiplayer) {
@@ -187,8 +182,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-         t.start();
+    	// reset timer
+        t.start();
+        
+        // Move players and zombies
         movePlayer();
+        zombie.zombieDown.runAnimation();
 
         // send player position and get other players position
         if (multiplayer) {
