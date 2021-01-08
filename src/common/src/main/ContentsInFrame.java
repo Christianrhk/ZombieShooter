@@ -22,7 +22,12 @@ import java.util.ArrayList;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener {
 
-    boolean multiplayer = false;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	boolean multiplayer = false;
 
     Player p;
     // Boolean playerPosChange = false;

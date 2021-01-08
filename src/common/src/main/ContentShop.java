@@ -24,9 +24,7 @@ public class ContentShop extends JPanel {
 
     }
 
-
     private void setupShop(){
-
         super.setLayout(new GridLayout(10,10));
         System.out.println("Has set Grid");
 
