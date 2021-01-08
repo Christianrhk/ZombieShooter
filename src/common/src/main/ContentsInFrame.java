@@ -26,6 +26,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     Point player2;
     Timer t;
 
+    // Contructor for singleplayer
     public ContentsInFrame(Player p) {
         super.setDoubleBuffered(true);
         addKeyListener(this);
@@ -41,6 +42,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         multiplayer = false;
     }
 
+    //Constructor for multiplayer
     public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
         super.setDoubleBuffered(true);
         addKeyListener(this);
@@ -144,7 +146,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        t.start();
+        // t.start();
         movePlayer();
 
         // send player position and get other players position
