@@ -11,6 +11,7 @@ public class Zombie extends Entity {
 
 	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
 	int AnimationSpeed;
+	int spriteSize;
 
 	public Zombie() {
 		super();
@@ -21,10 +22,13 @@ public class Zombie extends Entity {
 		this.NAME = "ZOMBIE";
 		this.POSITION = new Point(0, 0);
 		
+		this.spriteSize = 64;
 		this.AnimationSpeed = 32;
 		
+		this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";
+		
 		try {
-			this.IMAGE = ImageIO.read(new File("src/images/fat-zombie-png-32.png"));
+			this.IMAGE = ImageIO.read(new File(this.IMAGE_PATH));
 		} catch (IOException e) {
 			System.out.println("Couldn't get zombie image sheet");
 			e.printStackTrace();
@@ -69,14 +73,14 @@ public class Zombie extends Entity {
 
 	public void setSpriteSheetAnimations() {
 		// Setting which sprites from spritesheet to use for a certain animation
-		zombieDown = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 0, 32, 32, 32),
-				Animation.cropImage(this.IMAGE, 1, 0, 32, 32, 32), Animation.cropImage(this.IMAGE, 2, 0, 32, 32, 32));
-		zombieRight = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 1, 32, 32, 32), 
-				Animation.cropImage(this.IMAGE, 1, 1, 32, 32, 32), Animation.cropImage(this.IMAGE, 2, 1, 32, 32, 32));
-		zombieUp = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 2, 32, 32, 32), 
-				Animation.cropImage(this.IMAGE, 1, 2, 32, 32, 32), Animation.cropImage(this.IMAGE, 2, 2, 32, 32, 32));
-		zombieLeft = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 3, 32, 32, 32), 
-				Animation.cropImage(this.IMAGE, 1, 3, 32, 32, 32), Animation.cropImage(this.IMAGE, 2, 3, 32, 32, 32));
+		zombieDown = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 0, spriteSize, spriteSize, spriteSize),
+				Animation.cropImage(this.IMAGE, 1, 0, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, 0, spriteSize, spriteSize, spriteSize));
+		zombieRight = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 1, spriteSize, spriteSize, spriteSize), 
+				Animation.cropImage(this.IMAGE, 1, 1, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, 1, spriteSize, spriteSize, spriteSize));
+		zombieUp = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 2, spriteSize, spriteSize, spriteSize), 
+				Animation.cropImage(this.IMAGE, 1, 2, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, 2, spriteSize, spriteSize, spriteSize));
+		zombieLeft = new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, 3, spriteSize, spriteSize, spriteSize), 
+				Animation.cropImage(this.IMAGE, 1, 3, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, 3, spriteSize, spriteSize, spriteSize));
 	}
 
 }
