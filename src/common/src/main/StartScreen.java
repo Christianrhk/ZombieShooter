@@ -146,9 +146,9 @@ public class StartScreen {
 
                 System.out.println("Done");
 
-                allNames = getNames(name, joinSpace);
+                // allNames = getNames(name, joinSpace,allNames);
 
-                System.out.println("Done finding names");
+                // System.out.println("Done finding names");
 
                 App.connectToGame(port, host, name, allNames);
 
@@ -163,7 +163,7 @@ public class StartScreen {
             public void actionPerformed(ActionEvent e) {
                 started = true;
                 ArrayList<String> allNames = null;
-                allNames = getNames(name, hostSpace);
+                allNames = getNames(name, hostSpace,allNames);
                 try {
                     hostSpace.put("START");
                 } catch (InterruptedException e1) {
@@ -218,7 +218,7 @@ public class StartScreen {
         return false;
     }
 
-    public static ArrayList<String> getNames(String name, Space init) {
+    public static ArrayList<String> getNames(String name, Space init,ArrayList<String> allNames ) {
         // System.out.println("GETTTING NAMES");
         List<Object[]> list = null;
         try {
@@ -227,17 +227,26 @@ public class StartScreen {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        ArrayList<String> allNames = new ArrayList<String>();
+
         if (list != null) {
             for (Object[] o : list) {
-                if (!((String) o[1]).equals(name)) {
+
+                if (!((String) o[1]).equals(name) && !allNames.contains( (String) o[1])) {
                     allNames.add((String) o[1]);
+                    if (currJoined.getText().matches("")) {
+                        currJoined.setText((String) o[1]);
+                    }else {
+                        currJoined.setText(currJoined.getText() + ", " + (String) o[1]);
+                    }
+                    currJoined.paintImmediately(currJoined.getVisibleRect());
+                    System.out.println((String) o[1]);
                 }
             }
         }
+        /*
         for (String s : allNames) {
             System.out.println(s);
-        }
+        }*/
         return allNames;
     }
 }
@@ -251,7 +260,7 @@ class UpdateChecker implements Runnable {
     public UpdateChecker(String name, Space space) {
         this.name = name;
         this.space = space;
-        allNames = null;
+        allNames = new ArrayList<String>();
     }
 
     public ArrayList<String> getAllNames() {
@@ -261,7 +270,7 @@ class UpdateChecker implements Runnable {
     @Override
     public void run() {
         while (!StartScreen.started) {
-            allNames = StartScreen.getNames(name, space);
+            allNames = StartScreen.getNames(name, space, allNames);
             StartScreen.started = StartScreen.queryStart(space);
         }
 
