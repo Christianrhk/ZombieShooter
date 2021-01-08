@@ -8,9 +8,6 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
-	int player_offset = 0;
-	int MAX_X = 800;
-	int MAX_Y = 800;
 
 	public Player(String name) {
 		super();
@@ -35,38 +32,6 @@ public class Player extends Entity {
 		return this.POSITION.y;
 	}
 
-	public boolean moveUp() {
-		if (this.POSITION.y > 0 + player_offset) {
-			this.POSITION.y -= this.MOVEMENT_SPEED;
-			return true;
-		}
-		return false;
-	}
-
-	public boolean moveDown() {
-		if (this.POSITION.y < MAX_Y - player_offset) {
-			this.POSITION.y += this.MOVEMENT_SPEED;
-			return true;
-		}
-		return false;
-	}
-
-	public boolean moveRight() {
-		if (this.POSITION.x < MAX_X - player_offset) {
-			this.POSITION.x += this.MOVEMENT_SPEED;
-			return true;
-		}
-		return false;
-	}
-
-	public boolean moveLeft() {
-		if (this.POSITION.x > 0 + player_offset) {
-			this.POSITION.x -= this.MOVEMENT_SPEED;
-			return true;
-		}
-		return false;
-	}
-	
 	// Take damage based on incoming damage and armor left
 	public void takeDamage(int damage) {
 		if(damage < this.ARMOR) {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import common.src.main.Entity.direction;
+
 public class ZombieController {
 	
 	public static int wave;
@@ -21,11 +23,44 @@ public class ZombieController {
 		new Thread(new WaveController()).start();
 	}
 	
-	public static void moveZombies() {
+	public static void moveZombies(Player p) {
 		
 		// have zombies move towards closest player (really simple AI)
 		// remmeber to update direction for animation
 		
+		int x = p.getX();
+		int y = p.getY();
+		
+		for(Zombie z : zombies) {
+			int dx = x - z.POSITION.x;
+			int dy = y - z.POSITION.y;
+			
+			double max = Math.max(Math.abs(dx), Math.abs(dy));
+			
+			int ddx = (int)Math.round((double)dx / max);
+			int ddy = (int)Math.round((double)dy / max);
+			
+			z.POSITION.x += ddx;
+			z.POSITION.y += ddy;
+			
+			if(max == Math.abs(dx)) {
+				if(dx >= 0) {
+					z.directionFacing = direction.RIGHT;
+				} else {
+					z.directionFacing = direction.LEFT;
+				}
+			} else {
+				if(dy >= 0) {
+					z.directionFacing = direction.DOWN;
+				} else {
+					z.directionFacing = direction.UP;
+				}
+			}
+			
+			
+			
+		}
+
 	}
 
 	public static void spawnNewZombies() {
@@ -67,7 +102,6 @@ class WaveController implements Runnable{
 		System.out.println("Thread started");
 		while(true) {
 			while(ZombieController.numberOfZombies > 0) {
-				ZombieController.moveZombies();
 				ZombieController.checkState();
 			}
 			
