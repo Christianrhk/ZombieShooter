@@ -1,21 +1,15 @@
 package common.src.main;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import org.jspace.SequentialSpace;
 import org.jspace.Space;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameBoard extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int WIDTH, HEIGHT;
 	Player p;
 	JLayeredPane layeredBoard;
