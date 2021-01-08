@@ -58,7 +58,6 @@ public class GameBoard extends JFrame{
 		layeredBoard = new JLayeredPane();
 
 
-		
 		//Creating player and setting position
 		p = new Player(playername);
 		p.POSITION.x = WIDTH/2;
@@ -68,12 +67,14 @@ public class GameBoard extends JFrame{
 
 	public void setLayeredBoard(int width, int height){
 
-
+		//Setting players in layer 0
 		content.setBounds(0,0,width,height);
 		layeredBoard.add(content , JLayeredPane.DEFAULT_LAYER); // layer 0
 
+		//Adding shop
 		contentShop = new ContentShop();
-		contentShop.setBounds(100,100,500,500);
+		//Setting shop on layer 1
+		contentShop.setBounds(width/8,height/8,width-(width/4),height-(height/4));
 		layeredBoard.add(contentShop,1);
 
 		content.addShop(contentShop);
