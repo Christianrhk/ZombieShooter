@@ -98,6 +98,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // drawing player
         //g2d.fillRect(p.getX(), p.getY(), 15, 20);
         g2d.drawImage(player,p.getX(),p.getY(),this);
+        
+        
 
         // drawing other players
         if (multiplayer) {
