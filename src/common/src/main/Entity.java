@@ -9,7 +9,10 @@ public class Entity {
 	int HEALTH_POINTS, ARMOR, DAMAGE, MOVEMENT_SPEED;
 	double ATTACK_SPEED;
 	Point POSITION;
+	
 	BufferedImage IMAGE;
+	String IMAGE_PATH;
+	
 	
 	enum direction {UP, DOWN, LEFT, RIGHT};
 	direction directionFacing;
