@@ -27,6 +27,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     Point player2;
     Timer t;
 
+    private Image man;
+
     // Contructor for singleplayer
     public ContentsInFrame(Player p) {
         super.setDoubleBuffered(true);
@@ -73,12 +75,15 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         Graphics2D g2d = (Graphics2D) g;
 
         // drawing player
-        g2d.fillRect(p.getX(), p.getY(), 10, 10);
+        //g2d.fillRect(p.getX(), p.getY(), 15, 20);
+        ImageIcon ii = new ImageIcon(this.getClass().getResource("man.png"));
+        man = ii.getImage();
+        g2d.drawImage(man,p.getX(),p.getY(),this);
 
         // drawing other players
         if (multiplayer) {
             g2d.setColor(new Color(255, 0, 255));
-            g2d.fillRect(player2.x, player2.y, 10, 10);
+            g2d.fillRect(player2.x, player2.y, 15, 20);
         }
 
     }
