@@ -34,7 +34,8 @@ public class ContentShop extends JPanel implements ActionListener {
 	}
 
 	private void setupShop() {
-
+		
+		int x = 1;
 		// Sets up all the itemPanels needed
 		int n = 3;
 		int numberOfItems = n * n;
