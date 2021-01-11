@@ -36,7 +36,12 @@ public class GameLoop implements Runnable{
 				loops++;
 			}
 			
-			content.repaint();
+			if (content.shopVisible) {
+				content.shop.repaint();
+			} else {
+				// update jFrame
+				content.repaint();
+			}
 		}
 		
 	}
