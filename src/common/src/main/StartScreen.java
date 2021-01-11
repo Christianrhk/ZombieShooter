@@ -209,8 +209,6 @@ public class StartScreen {
                 currHOST.setText((String) list[1]);
             }
 
-            //currJoined.paintImmediately(currJoined.getVisibleRect());
-            //currHOST.paintImmediately(currHOST.getVisibleRect());
 
         } catch (InterruptedException e) {
         }
@@ -229,10 +227,11 @@ public class StartScreen {
             e.printStackTrace();
         }
 
+        //updating joined field in startscreen
         if (list != null) {
             for (Object[] o : list) {
-
                 if (!((String) o[1]).equals(name) && !allNames.contains( (String) o[1])) {
+                    // adding all names to list
                     allNames.add((String) o[1]);
                     if (currJoined.getText().matches("")) {
                         currJoined.setText((String) o[1]);
@@ -245,6 +244,8 @@ public class StartScreen {
             }
         }
 
+
+        // updating host field in startscreen
         if (host != null && currHOST.getText().matches("")){
             for (Object[] o : host){
                 if (!name.matches((String) o[1])) {
