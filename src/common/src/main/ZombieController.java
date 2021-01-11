@@ -67,13 +67,8 @@ public class ZombieController {
                 // System.out.println("Zombiespawn at: " + z.POSITION.x + "," + z.POSITION.y);
 
                 double max = Math.max(Math.abs(dx), Math.abs(dy));
-
                 int ddx = (int) Math.round((double) dx / max);
                 int ddy = (int) Math.round((double) dy / max);
-
-
-                // System.out.println("DELTAVALUES: " + ddx + ", " + ddy);
-
 
                 z.POSITION.x += ddx;
                 z.POSITION.y += ddy;
@@ -161,14 +156,6 @@ public class ZombieController {
 
 }
 
-
-// Iterator<Zombie> itr = zombies.iterator();
-
-
-
-
-
-
 class WaveController implements Runnable {
 
     @Override
@@ -187,7 +174,6 @@ class WaveController implements Runnable {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
 
              ZombieController.wave++;
              ZombieController.spawnNewZombies();

@@ -106,16 +106,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                     for (Object[] o : zombies){
                         Zombie z = (Zombie) o[0];
                         z.drawZombie(g);
-
                     }
-                    g2d.setColor(new Color(255, 0, 255));
-                    g2d.fillRect(50, 50, 15, 20);
                 }while (ZombieController.numberOfZombies != zombies.size());
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
 
         }
 
