@@ -67,7 +67,7 @@ public class Zombie extends Entity {
 	}
 
 	public void zombieRunAnimation() {
-		System.out.println(this.directionFacing);
+		//System.out.println(this.directionFacing);
 		switch (this.directionFacing) {
 		case DOWN:
 			this.zombieDown.runAnimation();
@@ -110,7 +110,7 @@ public class Zombie extends Entity {
 	}
 	
 	public Animation getSpriteSheetRow(int row) {
-		return new Animation(this.AnimationSpeed, false, Animation.cropImage(this.IMAGE, 0, row, spriteSize, spriteSize, spriteSize), 
+		return new Animation(this.AnimationSpeed, Animation.cropImage(this.IMAGE, 0, row, spriteSize, spriteSize, spriteSize), 
 				Animation.cropImage(this.IMAGE, 1, row, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, row, spriteSize, spriteSize, spriteSize));
 	}
 

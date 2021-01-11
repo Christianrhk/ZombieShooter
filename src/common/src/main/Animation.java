@@ -19,6 +19,7 @@ public class Animation {
 		for (int i = 0; i < args.length; i++) {
 			images[i] = args[i];
 		}
+		currentImg = images[0];
 		frames = args.length;
 	}
 
