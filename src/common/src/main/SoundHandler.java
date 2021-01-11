@@ -5,11 +5,16 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class SoundHandler {
 
 	public void playBackGroundMusic(boolean playing, String filePath) {
 		new Thread(new BackGroundMusicPlayer(playing, filePath)).start();
+	}
+
+	public void playSound(String filePath) {
+		new Thread(new SoundSamplePlayer(filePath)).start();
 	}
 }
 
@@ -31,6 +36,8 @@ class BackGroundMusicPlayer implements Runnable {
 				AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundFile);
 				Clip clip = AudioSystem.getClip();
 				clip.open(audioInput);
+				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl.setValue(-30.0f); // Reduce volume by 10 decibels.
 				clip.start();
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 

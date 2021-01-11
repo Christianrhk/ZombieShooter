@@ -36,7 +36,7 @@ public class ZombieController {
         try {
             // Get all zombies. Make sure that no one else is making changes.
             zombieSpace.getp(new ActualField("token"));
-            List<Object[]> list  = zombieSpace.getAll(new FormalField(Zombie.class));
+            List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
 
             for (Object[] o : list) {
                 // Cast object to a zombie
@@ -65,7 +65,6 @@ public class ZombieController {
                         z.directionFacing = direction.UP;
                     }
                 }
-
                 // update zombie animation
                 z.zombieRunAnimation();
             }
@@ -74,9 +73,6 @@ public class ZombieController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public static void spawnNewZombies() {

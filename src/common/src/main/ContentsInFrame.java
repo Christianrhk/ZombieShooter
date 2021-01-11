@@ -91,7 +91,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // Draw zombies
         if (!multiplayer) {
             drawAllZombies(g);
-
         }
 
         // drawing other players
