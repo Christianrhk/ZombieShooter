@@ -6,18 +6,20 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class SoundHandler implements Runnable{
-	
+public class SoundHandler {
+
+	public void playBackGroundMusic(boolean playing, String filePath) {
+		new Thread(new BackGroundMusicPlayer(playing, filePath)).start();
+	}
+}
+
+class BackGroundMusicPlayer implements Runnable {
 	boolean playing;
 	String filePath;
-	
-	public SoundHandler(boolean playing, String filePath) {
+
+	public BackGroundMusicPlayer(boolean playing, String filePath) {
 		this.playing = playing;
 		this.filePath = filePath;
-	}
-
-	public void playMusic() {
-		new Thread(this).start();
 	}
 
 	@Override
@@ -31,10 +33,10 @@ public class SoundHandler implements Runnable{
 				clip.open(audioInput);
 				clip.start();
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
-				
-				while(playing) {
-					//making sure the daemon thread doesnt kill itself
-					//System.out.println("playing");
+
+				while (playing) {
+					// making sure the daemon thread doesnt kill itself
+					// System.out.println("playing");
 				}
 			} else {
 				System.out.print("Music path didnt exist");
@@ -44,4 +46,36 @@ public class SoundHandler implements Runnable{
 		}
 	}
 
+}
+
+class SoundSamplePlayer implements Runnable {
+	String filePath;
+
+	public SoundSamplePlayer(String soundPath) {
+		this.filePath = soundPath;
+	}
+
+	@Override
+	public void run() {
+		try {
+			File soundFile = new File(filePath);
+
+			if (soundFile.exists()) {
+				AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundFile);
+				Clip clip = AudioSystem.getClip();
+				clip.open(audioInput);
+				clip.start();
+				clip.loop(1);
+
+				while (clip.getMicrosecondLength() != clip.getMicrosecondPosition()) {
+
+				}
+			} else {
+				System.out.print("Music path didnt exist");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }
