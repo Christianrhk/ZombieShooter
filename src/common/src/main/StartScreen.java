@@ -90,10 +90,6 @@ public class StartScreen {
             public void actionPerformed(ActionEvent e) {
                 port = Integer.parseInt(portText.getText());
                 name = nameText.getText();
-                if (name.matches("")){
-                    currJoined.setText("No name has been set");
-                    return;
-                }
 
                 System.out.println("Host pressed");
 
@@ -124,10 +120,6 @@ public class StartScreen {
                 port = Integer.parseInt(portText.getText());
                 host = hostText.getText();
                 name = nameText.getText();
-                if (name.matches("")){
-                    currJoined.setText("No name has been set");
-                    return;
-                }
 
                 try {
                     joinSpace = App.initJoinGame(port, host, name);
@@ -135,14 +127,11 @@ public class StartScreen {
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);
                 } catch (InterruptedException e1) {
-                    System.out.println("penis 1");
                     e1.printStackTrace();
                 } catch (UnknownHostException e1) {
-                    System.out.println("penis 2");
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    currJoined.setText("Couldn't connect to peer");
-                    return;
+                    e1.printStackTrace();
                 }
                 currJoined.paintImmediately(currJoined.getVisibleRect());
 
@@ -219,6 +208,8 @@ public class StartScreen {
                 currHOST.setText((String) list[1]);
             }
 
+            //currJoined.paintImmediately(currJoined.getVisibleRect());
+            //currHOST.paintImmediately(currHOST.getVisibleRect());
 
         } catch (InterruptedException e) {
         }
@@ -237,11 +228,10 @@ public class StartScreen {
             e.printStackTrace();
         }
 
-        //updating joined field in startscreen
         if (list != null) {
             for (Object[] o : list) {
+
                 if (!((String) o[1]).equals(name) && !allNames.contains( (String) o[1])) {
-                    // adding all names to list
                     allNames.add((String) o[1]);
                     if (currJoined.getText().matches("")) {
                         currJoined.setText((String) o[1]);
@@ -254,8 +244,6 @@ public class StartScreen {
             }
         }
 
-
-        // updating host field in startscreen
         if (host != null && currHOST.getText().matches("")){
             for (Object[] o : host){
                 if (!name.matches((String) o[1])) {
@@ -264,7 +252,7 @@ public class StartScreen {
                 }
 
             }
-            System.out.println("HOST = " + currHOST.getText());
+            System.out.println("HOST = " +currHOST.getText());
             currHOST.paintImmediately(currJoined.getVisibleRect());
         }
 

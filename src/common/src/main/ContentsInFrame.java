@@ -120,7 +120,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		System.out.println("Key Pressed!");
+		//System.out.println("Key Pressed!");
 		// Switch on pressed keys
 		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			// Movement upwards

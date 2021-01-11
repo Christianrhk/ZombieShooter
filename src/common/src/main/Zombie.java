@@ -67,6 +67,7 @@ public class Zombie extends Entity {
 	}
 
 	public void zombieRunAnimation() {
+		System.out.println(this.directionFacing);
 		switch (this.directionFacing) {
 		case DOWN:
 			this.zombieDown.runAnimation();
