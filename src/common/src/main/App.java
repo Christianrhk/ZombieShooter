@@ -24,7 +24,7 @@ public class App {
 
     */
     public static void singlePlayer() {
-    	ZombieController ZC = new ZombieController();
+    	ZombieController ZC = new ZombieController(new SequentialSpace());
     	GameBoard game = new GameBoard(800, 800);
     }
 

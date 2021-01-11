@@ -68,10 +68,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         requestFocusInWindow();
         setFocusTraversalKeysEnabled(false);
 
-        // setting timer
-        //t = new Timer(4, this);
-        //t.start();
-
         this.p = p;
 
         // Get background picture
@@ -94,20 +90,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         // Draw zombies
         if (!multiplayer) {
-            try {
-                List<Object[]> zombies;
-                do {
-                    zombies = ZombieController.zombieSpace.queryAll(new FormalField(Zombie.class));
-
-                    System.out.println(zombies.size());
-                    for (Object[] o : zombies){
-                        Zombie z = (Zombie) o[0];
-                        z.drawZombie(g);
-                    }
-                }while (ZombieController.numberOfZombies != zombies.size());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            drawAllZombies(g);
 
         }
 
@@ -117,6 +100,24 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             g2d.fillRect(player2.x, player2.y, 15, 20);
         }
 
+    }
+
+    private void drawAllZombies(Graphics g) {
+        try {
+            List<Object[]> zombies;
+            do {
+                // Get all zombies from tuple space
+                zombies = ZombieController.zombieSpace.queryAll(new FormalField(Zombie.class));
+                for (Object[] o : zombies){
+                    Zombie z = (Zombie) o[0];
+                    z.drawZombie(g);
+                }
+                // If the space is being updated, then the space will be empty.
+                // Therefore a check to see if we have drawn all zombies.
+            }while (ZombieController.numberOfZombies != zombies.size());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
