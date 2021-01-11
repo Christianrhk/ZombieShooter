@@ -14,7 +14,7 @@ public class GameBoard extends JFrame{
 	Player p;
 	JLayeredPane layeredBoard;
 
-	ContentsInFrame content;
+	GameLoop gl;
 	ContentShop contentShop;
 
 	// Multiplayer  constructor
@@ -22,7 +22,8 @@ public class GameBoard extends JFrame{
 
 		setGameBoard(width, height, playerName);
 		// adding content
-		content = new ContentsInFrame(p, playerSpace, allNames);
+		gl = new GameLoop(p, playerSpace, allNames);
+		new Thread(gl).start();
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
@@ -35,7 +36,8 @@ public class GameBoard extends JFrame{
 		setGameBoard(width, height, ""); // Singleplayer, no name needed for the communications protocols.
 		
 		// adding content
-		content = new ContentsInFrame(p);
+		gl = new GameLoop(p);
+		new Thread(gl).start();
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
@@ -67,8 +69,8 @@ public class GameBoard extends JFrame{
 	public void setLayeredBoard(int width, int height){
 
 		//Setting players in layer 0
-		content.setBounds(0,0,width,height);
-		layeredBoard.add(content , JLayeredPane.DEFAULT_LAYER); // layer 0
+		gl.getContent().setBounds(0,0,width,height);
+		layeredBoard.add(gl.getContent() , JLayeredPane.DEFAULT_LAYER); // layer 0
 
 		//Adding shop
 		contentShop = new ContentShop();
@@ -77,7 +79,7 @@ public class GameBoard extends JFrame{
 		contentShop.setBounds(width/8,height/8,width-(width/4),height-(height/4));
 		layeredBoard.add(contentShop,1);
 
-		content.addShop(contentShop);
+		gl.getContent().addShop(contentShop);
 		super.add(layeredBoard);
 
 		// show Jframe

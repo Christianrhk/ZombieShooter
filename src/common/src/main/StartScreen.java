@@ -24,7 +24,6 @@ public class StartScreen {
 
     public volatile static JLabel currHOST;
     public volatile static JLabel currJoined;
-
     public static Space hostSpace, joinSpace;
 
     public static void main(String[] args) throws IOException {
