@@ -30,7 +30,6 @@ public class GameLoop implements Runnable{
 			loops = 0;
 			while(System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP) {
 				
-				//System.out.println("Update game");
 				content.updateGame();
 				
 				next_game_tick += SKIP_TICKS;
@@ -38,7 +37,6 @@ public class GameLoop implements Runnable{
 			}
 			
 			System.out.println("repaint");
-			//content.repaint();
 		}
 		
 	}
