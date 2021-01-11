@@ -26,8 +26,8 @@ public class GameLoop implements Runnable{
 	}
 	
 	public void startMusic() {
-		SoundHandler sh = new SoundHandler(playing,"src/sounds/backgroundMusic.WAV");
-		sh.playMusic();
+		SoundHandler sh = new SoundHandler();
+		sh.playBackGroundMusic(playing,"src/sounds/backgroundMusic.WAV");
 	}
 	
 	@Override
