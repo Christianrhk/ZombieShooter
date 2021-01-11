@@ -16,18 +16,11 @@ public class GameLoop implements Runnable{
 	public GameLoop(Player p) {
 		content = new ContentsInFrame(p);
 		this.playing = true;
-		startMusic();
 	}
 	
 	public GameLoop(Player p, Space playerSpace, ArrayList<String> allNames) {
 		content = new ContentsInFrame(p, playerSpace, allNames);
 		this.playing = true;
-		startMusic();
-	}
-	
-	public void startMusic() {
-		SoundHandler sh = new SoundHandler();
-		sh.playBackGroundMusic(playing,"src/sounds/backgroundMusic.WAV");
 	}
 	
 	@Override

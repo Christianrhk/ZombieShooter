@@ -9,8 +9,8 @@ import javax.sound.sampled.FloatControl;
 
 public class SoundHandler {
 
-	public void playBackGroundMusic(boolean playing, String filePath) {
-		new Thread(new BackGroundMusicPlayer(playing, filePath)).start();
+	public void playBackGroundMusic(String filePath) {
+		new Thread(new BackGroundMusicPlayer(filePath)).start();
 	}
 
 	public void playSound(String filePath) {
@@ -22,8 +22,8 @@ class BackGroundMusicPlayer implements Runnable {
 	boolean playing;
 	String filePath;
 
-	public BackGroundMusicPlayer(boolean playing, String filePath) {
-		this.playing = playing;
+	public BackGroundMusicPlayer(String filePath) {
+		this.playing = true;
 		this.filePath = filePath;
 	}
 
@@ -71,8 +71,9 @@ class SoundSamplePlayer implements Runnable {
 				AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundFile);
 				Clip clip = AudioSystem.getClip();
 				clip.open(audioInput);
+				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+				gainControl.setValue(-15.0f);
 				clip.start();
-				clip.loop(1);
 
 				while (clip.getMicrosecondLength() != clip.getMicrosecondPosition()) {
 

@@ -25,6 +25,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean multiplayer = false;
 
     Player p;
+    
+    // SoundHandler
+    SoundHandler sh;
+    
     // Boolean playerPosChange = false;
     ArrayList<String> allNames; // Names of all other players, used for communication
     Space space;
@@ -66,6 +70,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         addMouseListener(this);
         requestFocusInWindow();
         setFocusTraversalKeysEnabled(false);
+        sh = new SoundHandler();
+        starBackGroundMusic();
 
         this.p = p;
 
@@ -75,6 +81,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         } catch (IOException e) {
         }
     }
+    
+	public void starBackGroundMusic() {
+		sh.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
+	}
+	
 
     @Override
     public void paintComponent(Graphics g) {
@@ -263,6 +274,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         int x = e.getX();
         int y = e.getY();
         System.out.println("Mouse clicked at: " + x + ", " + y);
+        sh.playSound("src/sounds/shoot.wav");
         try {
             ZombieController.zombieSpace.getAll(new ActualField("token"));
             java.util.List<Object[]> list = ZombieController.zombieSpace.getAll(new FormalField(Zombie.class));
@@ -296,4 +308,5 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
 }
