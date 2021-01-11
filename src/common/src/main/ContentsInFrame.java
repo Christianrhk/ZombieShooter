@@ -52,7 +52,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         player2 = new Point(p.getX(), p.getY());
 
         // this.zombie = new Zombie(100,100);
-
         this.space = playerSpace;
         this.allNames = allNames;
 
