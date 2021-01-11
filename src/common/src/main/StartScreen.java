@@ -90,6 +90,10 @@ public class StartScreen {
             public void actionPerformed(ActionEvent e) {
                 port = Integer.parseInt(portText.getText());
                 name = nameText.getText();
+                if (name.matches("")){
+                    currJoined.setText("No name has been set");
+                    return;
+                }
 
                 System.out.println("Host pressed");
 
@@ -120,6 +124,10 @@ public class StartScreen {
                 port = Integer.parseInt(portText.getText());
                 host = hostText.getText();
                 name = nameText.getText();
+                if (name.matches("")){
+                    currJoined.setText("No name has been set");
+                    return;
+                }
 
                 try {
                     joinSpace = App.initJoinGame(port, host, name);
@@ -127,11 +135,14 @@ public class StartScreen {
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);
                 } catch (InterruptedException e1) {
+                    System.out.println("penis 1");
                     e1.printStackTrace();
                 } catch (UnknownHostException e1) {
+                    System.out.println("penis 2");
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    currJoined.setText("Couldn't connect to peer");
+                    return;
                 }
                 currJoined.paintImmediately(currJoined.getVisibleRect());
 
@@ -253,7 +264,7 @@ public class StartScreen {
                 }
 
             }
-            System.out.println("HOST = " +currHOST.getText());
+            System.out.println("HOST = " + currHOST.getText());
             currHOST.paintImmediately(currJoined.getVisibleRect());
         }
 
