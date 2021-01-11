@@ -35,6 +35,7 @@ public class StartScreen {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 350);
 
+        frame.setResizable(false);
 
         JPanel panel = new JPanel();
         frame.add(panel);
@@ -98,18 +99,16 @@ public class StartScreen {
 
                 System.out.println("Got space");
                 try {
-                    hostSpace.put("NAME", name);
+                    //hostSpace.put("NAME", name);
                     hostSpace.put("HOST", name);
                 } catch (InterruptedException e1) {
                 }
                 currHOST.setText(name);
-                System.out.println("Got here");
+                //System.out.println("Got here");
 
                 new Thread(new UpdateChecker(name, hostSpace)).start();
 
-                // App.hostGame(port, name, allNames);
-
-                System.out.println("We never get here!");
+               //System.out.println("We never get here!");
 
             }
         });
@@ -139,14 +138,14 @@ public class StartScreen {
 
                 ArrayList<String> allNames = new ArrayList<String>();
 
-                new Thread(new UpdateChecker(name, joinSpace)).start();
+                UpdateChecker update = new UpdateChecker(name, joinSpace);
+                new Thread(update).start();
                 while (!started) {
 
                 }
 
-                System.out.println("Done");
 
-                allNames = getNames(name, joinSpace,allNames);
+                allNames = update.getAllNames();
 
                 System.out.println("Done finding names");
 
@@ -221,8 +220,10 @@ public class StartScreen {
     public static ArrayList<String> getNames(String name, Space init,ArrayList<String> allNames ) {
         // System.out.println("GETTTING NAMES");
         List<Object[]> list = null;
+        List<Object[]> host = null;
         try {
             list = init.queryAll(new ActualField("NAME"), new FormalField(String.class));
+            host = init.queryAll(new ActualField("HOST"), new FormalField(String.class));
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -238,11 +239,26 @@ public class StartScreen {
                     }else {
                         currJoined.setText(currJoined.getText() + ", " + (String) o[1]);
                     }
-                    currJoined.paintImmediately(currJoined.getVisibleRect());
                     System.out.println((String) o[1]);
+                    currJoined.paintImmediately(currJoined.getVisibleRect());
                 }
             }
         }
+
+        if (host != null && currHOST.getText().matches("")){
+            for (Object[] o : host){
+                if (!name.matches((String) o[1])) {
+                    currHOST.setText((String) o[1]);
+                    allNames.add((String) o[1]);
+                }
+
+            }
+            System.out.println("HOST = " +currHOST.getText());
+            currHOST.paintImmediately(currJoined.getVisibleRect());
+        }
+
+
+
         /*
         for (String s : allNames) {
             System.out.println(s);
