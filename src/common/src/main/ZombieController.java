@@ -2,11 +2,9 @@ package common.src.main;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import common.src.main.Entity.direction;
 import org.jspace.ActualField;
 import org.jspace.FormalField;

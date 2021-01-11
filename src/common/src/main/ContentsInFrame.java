@@ -2,12 +2,9 @@ package common.src.main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Timer;
-
 import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
