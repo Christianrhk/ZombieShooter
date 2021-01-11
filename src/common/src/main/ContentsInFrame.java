@@ -94,6 +94,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         // Draw background
         g2d.drawImage(bg, 0, 0, this);
+        
+        // Draw blood
 
         // Draw player
         g2d.drawImage(p.IMAGE, p.getX(), p.getY(), this);
@@ -111,6 +113,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     }
 
+    
     private void drawAllZombies(Graphics g) {
         try {
             List<Object[]> zombies;
@@ -282,6 +285,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
                     z.damageZombie(20);
+                   
                 }
                 ZombieController.zombieSpace.put(z);
             }
