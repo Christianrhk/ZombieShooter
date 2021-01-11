@@ -100,7 +100,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         for(Zombie z : ZombieController.zombies) {
         	z.drawZombie(g2d);
         }
-          //zombie.drawZombie(g2d);
 
         // drawing other players
         if (multiplayer) {
@@ -183,8 +182,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     	// reset timer
         t.start();
         
-        // Move players and zombies
+        // Move players 
         movePlayer();
+        
+        //Move zombies
+        ZombieController.moveZombies(p);
+        
+        //Animate zombies
         for(Zombie z : ZombieController.zombies) {
         	z.zombieRunAnimation();
         }

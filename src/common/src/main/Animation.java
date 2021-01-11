@@ -75,4 +75,5 @@ public class Animation {
 	public static BufferedImage cropImage(BufferedImage sheet, int col, int row, int w, int h, int size) {
 		return sheet.getSubimage(col*size, row*size, w, h);
 	}
+	
 }
