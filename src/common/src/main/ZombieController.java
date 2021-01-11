@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import common.src.main.Entity.direction;
+import org.jspace.Space;
 
 public class ZombieController {
 
@@ -16,12 +17,24 @@ public class ZombieController {
 			new Point(400, 650), new Point(50, 50), new Point(50, 650), new Point(650, 50), new Point(650, 650) };
 	public static ArrayList<Zombie> zombies;
 
-	public ZombieController() {
+	Space zombieSpace;
+
+	public ZombieController(Space zombieSpace) {
 		numberOfZombies = 0;
 		wave = 0;
 		zombies = new ArrayList<Zombie>();
 
 		new Thread(new WaveController()).start();
+	}
+
+	public ZombieController(){
+		numberOfZombies = 0;
+		wave = 0;
+		zombies = new ArrayList<Zombie>();
+
+		new Thread(new WaveController()).start();
+
+
 	}
 
 	public static void moveZombies(Player p) {

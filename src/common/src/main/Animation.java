@@ -45,6 +45,7 @@ public class Animation {
 			}
 			frames = args.length;
 		}
+
 	}
 
 	public void runAnimation() {

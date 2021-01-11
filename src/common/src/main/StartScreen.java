@@ -41,6 +41,8 @@ public class StartScreen {
 
         panel.setLayout(null);
 
+
+
         JLabel portLabel = new JLabel("Port");
         portLabel.setBounds(10, 20, 80, 25);
         panel.add(portLabel);
@@ -88,6 +90,7 @@ public class StartScreen {
         panel.add(hostButton);
         hostButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                currJoined.setText("");
                 port = Integer.parseInt(portText.getText());
                 name = nameText.getText();
                 if (name.matches("")){
