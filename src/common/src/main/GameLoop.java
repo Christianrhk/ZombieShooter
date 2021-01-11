@@ -36,7 +36,7 @@ public class GameLoop implements Runnable{
 				loops++;
 			}
 			
-			System.out.println("repaint");
+			content.repaint();
 		}
 		
 	}
