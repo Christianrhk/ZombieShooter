@@ -137,7 +137,7 @@ public class StartScreen {
                 }
                 currJoined.paintImmediately(currJoined.getVisibleRect());
 
-                ArrayList<String> allNames = null;
+                ArrayList<String> allNames = new ArrayList<String>();
 
                 new Thread(new UpdateChecker(name, joinSpace)).start();
                 while (!started) {
@@ -146,9 +146,9 @@ public class StartScreen {
 
                 System.out.println("Done");
 
-                // allNames = getNames(name, joinSpace,allNames);
+                allNames = getNames(name, joinSpace,allNames);
 
-                // System.out.println("Done finding names");
+                System.out.println("Done finding names");
 
                 App.connectToGame(port, host, name, allNames);
 
@@ -162,7 +162,7 @@ public class StartScreen {
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 started = true;
-                ArrayList<String> allNames = null;
+                ArrayList<String> allNames = new ArrayList<>();
                 allNames = getNames(name, hostSpace,allNames);
                 try {
                     hostSpace.put("START");
