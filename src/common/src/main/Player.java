@@ -17,6 +17,7 @@ public class Player extends Entity {
 		this.DAMAGE = 10;
 		this.NAME = name;
 		this.POSITION = new Point(0, 0);
+		this.MOVEMENT_SPEED = 2;
 		try {
 			this.IMAGE = ImageIO.read(new File("src/images/clown.png"));
 		} catch (IOException e) {
