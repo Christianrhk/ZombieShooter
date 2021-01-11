@@ -35,8 +35,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean playerPosChange[] = {false, false, false, false};
     boolean press[] = {false, false, false, false};
     Point player2;
-    //Timer t;
     BufferedImage bg;
+    BufferedImage blood;
 
     ContentShop shop;
     boolean shopVisible = false;
@@ -45,8 +45,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public ContentsInFrame(Player p) {
         initContentsInFrame(p);
         multiplayer = false;
-
-        // this.zombie = new Zombie(50,50);
     }
 
     // Constructor for multiplayer
@@ -55,7 +53,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         player2 = new Point(p.getX(), p.getY());
 
-        // this.zombie = new Zombie(100,100);
         this.space = playerSpace;
         this.allNames = allNames;
 
@@ -75,9 +72,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         this.p = p;
 
-        // Get background picture
+        // Get images
         try {
             bg = ImageIO.read(new File("src/images/zombiebanen.png"));
+            blood = ImageIO.read(new File("src/images/blood.png"));
         } catch (IOException e) {
         }
     }
@@ -94,16 +92,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         // Draw background
         g2d.drawImage(bg, 0, 0, this);
-        
-        // Draw blood
-
-        // Draw player
-        g2d.drawImage(p.IMAGE, p.getX(), p.getY(), this);
 
         // Draw zombies
         if (!multiplayer) {
             drawAllZombies(g);
         }
+        
+        // Draw player
+        g2d.drawImage(p.IMAGE, p.getX(), p.getY(), this);
 
         // drawing other players
         if (multiplayer) {
