@@ -33,7 +33,7 @@ public class ZombieController {
 		// remmeber to update direction for animation
 
 		try {
-			zombieSpace.getp(new ActualField("token"));
+			zombieSpace.get(new ActualField("token"));
 			List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
 
 			for (Object[] o : list) {
@@ -81,7 +81,7 @@ public class ZombieController {
 		// Possible change number of zombies to increase difficulty
 		numberOfZombies = wave;
 		try {
-			zombieSpace.getp(new ActualField("token"));
+			zombieSpace.get(new ActualField("token"));
 			for (int i = 0; i < numberOfZombies; i++) {
 				Random rand = new Random();
 				int r = rand.nextInt(spawnLocations.length);
@@ -103,8 +103,9 @@ public class ZombieController {
 
 	public static void checkState() {
 		// If all dead, stop wave and spawn next round
+
 		try {
-			zombieSpace.getp(new ActualField("token"));
+			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
 
 			for (Object[] z : zombies) {
@@ -131,7 +132,12 @@ class WaveController implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Thread started");
-		while (true) {
+        try {
+            ZombieController.zombieSpace.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while (true) {
 			while (ZombieController.numberOfZombies > 0) {
 				ZombieController.checkState();
 			}

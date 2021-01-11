@@ -113,20 +113,20 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     private void drawAllZombies(Graphics g) {
         try {
-            List<Object[]> zombies;
-            do {
-                // Get all zombies from tuple space
-                zombies = ZombieController.zombieSpace.queryAll(new FormalField(Zombie.class));
-                for (Object[] o : zombies){
-                    Zombie z = (Zombie) o[0];
-                    z.drawZombie(g);
-                }
-                // If the space is being updated, then the space will be empty.
-                // Therefore a check to see if we have drawn all zombies.
-            }while (ZombieController.numberOfZombies != zombies.size());
+            ZombieController.zombieSpace.get(new ActualField("token"));
+            List<Object[]> zombies = ZombieController.zombieSpace.queryAll(new FormalField(Zombie.class));
+
+            for (Object[] o : zombies){
+                Zombie z = (Zombie) o[0];
+                z.drawZombie(g);
+            }
+
+            ZombieController.zombieSpace.put("token");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
@@ -276,8 +276,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         System.out.println("Mouse clicked at: " + x + ", " + y);
         sh.playSound("src/sounds/shoot.wav");
         try {
-            ZombieController.zombieSpace.getAll(new ActualField("token"));
+
+            ZombieController.zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = ZombieController.zombieSpace.getAll(new FormalField(Zombie.class));
+            System.out.println("Got here, list size = " + list.size());
             for (Object[] o : list) {
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
