@@ -12,7 +12,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
-public class ContentShop extends JPanel implements ActionListener{
+public class ContentShop extends JPanel implements ActionListener {
 
 	private boolean bHasBeenPressed;
 
@@ -23,101 +23,81 @@ public class ContentShop extends JPanel implements ActionListener{
 		setFocusTraversalKeysEnabled(false);
 
 		bHasBeenPressed = false;
-		
-		//Create border:
+
+		// Create border:
 		Border windowsBorder = BorderFactory.createLineBorder(Color.black, 10);
 		super.setBorder(BorderFactory.createTitledBorder(windowsBorder, "Shop", TitledBorder.CENTER, TitledBorder.TOP));
-		//JButton button = new JButton("Show message");
-		//super.add(button);
-		
+
+		// Setups up the content of the shop
 		setupShop();
-
-
 
 	}
 
 	private void setupShop() {
-		
-		
-		//Sets up all the labels needed
+
+		// Sets up all the itemPanels needed
 		int n = 3;
-		int numberOfItems = n*n;
+		int numberOfItems = n * n;
 		super.setLayout(new GridLayout(n, n, 10, 10));
-		
-		for(int i=0;i<numberOfItems-1;i++ ) {
-			JPanel itemPanel = createItemPanel(i+"");
+
+		for (int i = 0; i < numberOfItems; i++) {
+			JPanel itemPanel = createItemPanel("Good weapon", "tons", "fast", "69", "Cuba");
 			super.add(itemPanel, new Integer(i));
 		}
-		//super.add(createItemPanel("test"));
-		/*
-		
-		JLabel label0 = createColoredLabel("0", Color.green);
-		JLabel label1 = createColoredLabel("1", Color.green);
-		JLabel label2 = createColoredLabel("2", Color.green);
-		JLabel label3 = createColoredLabel("3", Color.green);
-		JLabel label4 = createColoredLabel("4", Color.green);
-		super.setLayout(new GridLayout(n, n));
-		super.add(label0, new Integer(0));
-		super.add(label1, new Integer(1));
-		super.add(label2, new Integer(2));
-		super.add(label3, new Integer(3));
-		super.add(label4, new Integer(4));
-		*/
-
-		JButton b = new JButton("Test");
-		super.add(b);
-		System.out.println("Has set Grid");
 	}
 
-	private JLabel createColoredLabel(String text, Color color) {
-		JLabel label = new JLabel(text);
-		label.setVerticalAlignment(JLabel.TOP);
-		label.setHorizontalAlignment(JLabel.CENTER);
-		label.setOpaque(true);
-		label.setBackground(color);
-		label.setForeground(Color.black);
-		label.setBorder(BorderFactory.createLineBorder(Color.black));
-		label.setPreferredSize(new Dimension(50, 50));
-		return label;
-	}
-	
-	private JPanel createItemPanel(String name) {
+	private JPanel createItemPanel(String name, String dmg, String rof, String ammo, String range) {
+		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
 		itemPanel.setBackground(Color.cyan);
 		itemPanel.setForeground(Color.black);
 		itemPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		itemPanel.setPreferredSize(new Dimension(100, 100));
-		
-		JButton itemButton = new JButton(name);
+		itemPanel.setLayout(null);
 
+		// Sets up the item icon
 		try {
-			Image img = ImageIO.read(new File("src/images/clown.png"));
-			
+			Image img = ImageIO.read(new File("src/images/redbox.png"));
+
 			Icon icon = new ImageIcon(img);
-			itemButton.setIcon(icon);
-			//Image img = ImageIO.read(new File("src/images/clown.png"));
-			//itemButton.setIcon(new ImageIcon(img));
+			JLabel iconLabel = new JLabel(icon);
+			iconLabel.setBounds(115, 145, 59, 32);
+			itemPanel.add(iconLabel);
 		} catch (IOException e) {
-			System.out.println("Image for button could not be located!\n");
+			System.out.println("Icon for item could not be located!\n");
 			e.printStackTrace();
 		}
-		
-		itemButton.setPreferredSize(new Dimension(100,100));
-		itemButton.setToolTipText("Guy in the White House lmao");
-		itemButton.setActionCommand("Bought");
-		
-		itemPanel.setLayout(new GridBagLayout());
-		itemPanel.add(itemButton);
-		
+
+		// Sets up the name of the item
+		JLabel itemName = new JLabel("Very good weapon");
+		itemName.setBounds(10, 10, 150, 25);
+		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 18));
+
+		// Sets up the specifications of the item
+		JTextArea itemStats = new JTextArea(
+				"Dmg: \t " + dmg + " \nRate of Fire: \t " + rof + " \nAmmo: \t " + ammo + " \nRange: \t " + range, 50,
+				50);
+		itemStats.setBounds(10, 40, 164, 100);
+		itemStats.setFont(new Font("Helvetica", Font.PLAIN, 18));
+
+		// Sets up the buy-button for the item
+		JButton buyButton = new JButton("Buy item");
+		buyButton.setBounds(10, 145, 100, 32);
+
+		// Adds the remaining objects to the JPanel
+		itemPanel.add(buyButton);
+		itemPanel.add(itemName);
+		itemPanel.add(itemStats);
+
 		return itemPanel;
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
