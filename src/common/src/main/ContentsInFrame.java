@@ -211,6 +211,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				}
 
 			} catch (InterruptedException e) {
+			    System.out.println("Failed to send player position ");
 				e.printStackTrace();
 			}
 

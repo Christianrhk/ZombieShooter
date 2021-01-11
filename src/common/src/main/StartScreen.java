@@ -41,6 +41,8 @@ public class StartScreen {
 
         panel.setLayout(null);
 
+
+
         JLabel portLabel = new JLabel("Port");
         portLabel.setBounds(10, 20, 80, 25);
         panel.add(portLabel);
@@ -88,8 +90,15 @@ public class StartScreen {
         panel.add(hostButton);
         hostButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                currJoined.setText("");
                 port = Integer.parseInt(portText.getText());
                 name = nameText.getText();
+
+                if (name.matches("")){
+                    currJoined.setText("No name has been set");
+                    return;
+                }
+
 
                 System.out.println("Host pressed");
 
@@ -120,6 +129,10 @@ public class StartScreen {
                 port = Integer.parseInt(portText.getText());
                 host = hostText.getText();
                 name = nameText.getText();
+                if (name.matches("")){
+                    currJoined.setText("No name has been set");
+                    return;
+                }
 
                 try {
                     joinSpace = App.initJoinGame(port, host, name);
@@ -131,7 +144,8 @@ public class StartScreen {
                 } catch (UnknownHostException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    currJoined.setText("Couldn't connect to peer");
+                    return;
                 }
                 currJoined.paintImmediately(currJoined.getVisibleRect());
 
@@ -228,6 +242,7 @@ public class StartScreen {
             e.printStackTrace();
         }
 
+        //updating joined field in startscreen
         if (list != null) {
             for (Object[] o : list) {
 
@@ -243,7 +258,7 @@ public class StartScreen {
                 }
             }
         }
-
+        // updating host field in startscreen
         if (host != null && currHOST.getText().matches("")){
             for (Object[] o : host){
                 if (!name.matches((String) o[1])) {
@@ -252,7 +267,7 @@ public class StartScreen {
                 }
 
             }
-            System.out.println("HOST = " +currHOST.getText());
+            System.out.println("HOST = " + currHOST.getText());
             currHOST.paintImmediately(currJoined.getVisibleRect());
         }
 
