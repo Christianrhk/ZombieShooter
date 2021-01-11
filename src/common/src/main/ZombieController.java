@@ -1,14 +1,16 @@
 package common.src.main;
 
+
+
+
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
 import common.src.main.Entity.direction;
 import org.jspace.ActualField;
 import org.jspace.FormalField;
-import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 public class ZombieController {
@@ -19,14 +21,18 @@ public class ZombieController {
             new Point(400, 650), new Point(50, 50), new Point(50, 650), new Point(650, 50), new Point(650, 650)};
 
 
+
     public static Space zombieSpace;
 
     public ZombieController(Space zombieSpace) {
         numberOfZombies = 0;
         wave = 0;
+
         this.zombieSpace = zombieSpace;
         new Thread(new WaveController()).start();
     }
+
+
 
     public static void moveZombies(Player p) {
 
@@ -34,20 +40,23 @@ public class ZombieController {
         // remmeber to update direction for animation
 
         try {
-            // Get all zombies. Make sure that no one else is making changes.
             zombieSpace.getp(new ActualField("token"));
             List<Object[]> list  = zombieSpace.getAll(new FormalField(Zombie.class));
 
             for (Object[] o : list) {
-                // Cast object to a zombie
                 Zombie z = (Zombie) o[0];
                 int dx = p.getX() - z.POSITION.x;
                 int dy = p.getY() - z.POSITION.y;
                 // System.out.println("Zombiespawn at: " + z.POSITION.x + "," + z.POSITION.y);
 
                 double max = Math.max(Math.abs(dx), Math.abs(dy));
+
                 int ddx = (int) Math.round((double) dx / max);
                 int ddy = (int) Math.round((double) dy / max);
+
+
+                // System.out.println("DELTAVALUES: " + ddx + ", " + ddy);
+
 
                 z.POSITION.x += ddx;
                 z.POSITION.y += ddy;
@@ -66,8 +75,9 @@ public class ZombieController {
                     }
                 }
 
-                // update zombie animation
                 z.zombieRunAnimation();
+
+                zombieSpace.put(z);
             }
             zombieSpace.put("token");
 
@@ -80,10 +90,10 @@ public class ZombieController {
     }
 
     public static void spawnNewZombies() {
+
         // Possible change number of zombies to increase difficulty
         numberOfZombies = wave;
         try {
-            // Getting token to make sure nothing else is interacting with tuple.
             zombieSpace.getp(new ActualField("token"));
             for (int i = 0; i < numberOfZombies; i++) {
                 Random rand = new Random();
@@ -91,6 +101,8 @@ public class ZombieController {
                 Point newP = new Point(spawnLocations[r]);
                 Zombie z = new Zombie(newP);
                 System.out.println("Zombie added at " + z.POSITION.x + ", " + z.POSITION.y);
+                // Zombie z = new Zombie(new Point(100,100));
+                zombieSpace.put(z);
             }
 
             zombieSpace.put("token");
@@ -108,6 +120,7 @@ public class ZombieController {
         try {
             zombieSpace.getp(new ActualField("token"));
             List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
+
 
             for (Object[] z : zombies) {
                 Zombie q = (Zombie) z[0];
@@ -129,6 +142,9 @@ public class ZombieController {
 
 }
 
+
+
+
 class WaveController implements Runnable {
 
     @Override
@@ -148,8 +164,9 @@ class WaveController implements Runnable {
                 e.printStackTrace();
             }
 
-             ZombieController.wave++;
-             ZombieController.spawnNewZombies();
+
+            ZombieController.wave++;
+            ZombieController.spawnNewZombies();
 
 
         }
