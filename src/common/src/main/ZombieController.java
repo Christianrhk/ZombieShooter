@@ -78,6 +78,8 @@ public class ZombieController {
 		}
 	}
 
+	
+
 	public static void spawnNewZombies() {
 
 		// Possible change number of zombies to increase difficulty
@@ -124,7 +126,6 @@ class WaveController implements Runnable {
 					// Only update when there has been shot.
 					Object[] s = ZombieController.zombieSpace.get(new ActualField("updateZombies"));
 					System.out.println((String) s[0]);
-					//ZombieController.checkState();
 					ZombieController.numberOfZombies--;
 				} catch (InterruptedException e) {
 					e.printStackTrace();

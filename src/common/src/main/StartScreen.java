@@ -159,7 +159,7 @@ public class StartScreen {
 
                 System.out.println("Done finding names");
 
-                App.connectToGame(port, host, name, allNames);
+                App.connectToGame(port, host, name);
 
                 frame.dispose();
             }
@@ -180,7 +180,7 @@ public class StartScreen {
                     e1.printStackTrace();
                 }
 
-                App.hostGame(port, name, allNames);
+                App.hostGame(port, name);
 
 
                 frame.dispose();

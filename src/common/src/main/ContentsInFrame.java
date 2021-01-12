@@ -2,9 +2,11 @@ package common.src.main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener {
@@ -24,17 +25,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     boolean multiplayer = false;
 
-    Player p;
-    
+
     // SoundHandler
     SoundHandler sh;
-    
-    // Boolean playerPosChange = false;
-    ArrayList<String> allNames; // Names of all other players, used for communication
+
     Space space;
     boolean playerPosChange[] = {false, false, false, false};
     boolean press[] = {false, false, false, false};
-    Point player2;
     BufferedImage bg;
     Space zombieSpace;
     BufferedImage blood;
@@ -46,30 +43,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     boolean host;
 
-    // Contructor for singleplayer
-    public ContentsInFrame(Player p, Space zombieSpace ) {
-        initContentsInFrame(p, zombieSpace);
-        multiplayer = false;
-
-        // this.zombie = new Zombie(50,50);
-    }
+    String name;
 
     // Constructor for multiplayer
-    public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames, Space zombieSpace, boolean host) {
-        initContentsInFrame(p, zombieSpace);
-        this.host = host;
-
-        player2 = new Point(p.getX(), p.getY());
-
-        // this.zombie = new Zombie(100,100);
-        this.space = playerSpace;
-        this.allNames = allNames;
-
-        multiplayer = true;
-    }
-
-    // Shared initialization for multiplayer and singleplayer
-    public void initContentsInFrame(Player p, Space zombieSpace) {
+    public ContentsInFrame(String name, Space playerSpace, Space zombieSpace, boolean host) {
         super.setDoubleBuffered(true);
         addKeyListener(this);
         setFocusable(true);
@@ -80,7 +57,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         starBackGroundMusic();
         ZG = new ZombieGraphics();
 
-        this.p = p;
+        this.name = name;
 
         // Get images
         try {
@@ -89,12 +66,26 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         } catch (IOException e) {
         }
         this.zombieSpace = zombieSpace;
+        this.host = host;
+
+        // this.zombie = new Zombie(100,100);
+        this.space = playerSpace;
+        if (host){
+            try {
+                space.put("token");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
-    
-	public void starBackGroundMusic() {
-		sh.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
-	}
-	
+
+
+    public void starBackGroundMusic() {
+        sh.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -107,14 +98,30 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // Draw zombies
         drawAllZombies(g);
 
-        // Draw player
-        g2d.drawImage(p.IMAGE, p.getX(), p.getY(), this);
 
         // drawing other players
-        if (multiplayer) {
-            g2d.setColor(new Color(255, 0, 255));
-            g2d.fillRect(player2.x, player2.y, 15, 20);
+        drawAllPlayers(g2d);
+
+
+    }
+
+    private void drawAllPlayers(Graphics2D g2d) {
+        try {
+            space.get(new ActualField("token"));
+            List<Object[]> getUpdate = space.queryAll(new FormalField(String.class), new FormalField(Player.class));
+            space.put("token");
+            for (Object[] o : getUpdate) {
+                Player temp = (Player) o[1];
+                //g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
+                g2d.setColor(new Color(255, 0, 255));
+                g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
+            }
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
 
     }
 
@@ -124,7 +131,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             zombieSpace.get(new ActualField("token"));
             List<Object[]> zombies = zombieSpace.queryAll(new FormalField(Zombie.class));
 
-            for (Object[] o : zombies){
+            for (Object[] o : zombies) {
                 Zombie z = (Zombie) o[0];
                 ZG.drawZombie(g, z);
             }
@@ -213,103 +220,92 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // Move players
         movePlayer();
 
-        if (!multiplayer || host) {
+        if (host) {
             // Move zombies and animate
-            ZombieController.moveZombies(p);
-            
-        }
-
-        // send player position and get other players position
-        if (multiplayer) {
-            sendUpdateToOtherPlayers();
-            tryToUpdateOtherPlayers();
+            ZombieController.moveZombies(getPlayer());
         }
     }
 
-    public void sendUpdateToOtherPlayers() {
-        // only update if player position has changed
-        if (playerPosChange[0] || playerPosChange[1] || playerPosChange[2] || playerPosChange[3]) {
-            try {
-                for (String name : allNames) { // send update to all players
-                    space.put("PLAYERUPDATE", name, p.getX(), p.getY());
-                }
-
-            } catch (InterruptedException e) {
-                System.out.println("Failed to send player position ");
-                e.printStackTrace();
-            }
-
-        }
-        playerPosChange[0] = playerPosChange[1] = playerPosChange[2] = playerPosChange[3] = false;
-    }
-
-    public void tryToUpdateOtherPlayers() {
+    private Player getPlayer() {
         try {
-            Object[] otherPosition = space.getp(new ActualField("PLAYERUPDATE"), new ActualField(p.NAME),
-                    new FormalField(Integer.class), new FormalField(Integer.class));
-            if (otherPosition != null) {
-                // System.out.println("Got position : " + otherPosition[2] + " " +
-                // otherPosition[3]);
-                player2.x = (int) otherPosition[2];
-                player2.y = (int) otherPosition[3];
-            } else {
-                // System.out.println("Position is null");
-            }
+            space.get(new ActualField("token"));
+            Object[] o = space.query(new ActualField(name),new FormalField(Player.class));
+            space.put("token");
+            return (Player) o[1];
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        return null;
     }
 
+
     public void movePlayer() {
-        if (press[0])
-            playerPosChange[0] = p.moveUp();
-        if (press[1])
-            playerPosChange[1] = p.moveDown();
-        if (press[2])
-            playerPosChange[2] = p.moveLeft();
-        if (press[3])
-            playerPosChange[3] = p.moveRight();
+        try {
+            space.get(new ActualField("token"));
+            Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
+            Player p = (Player) o[1];
+            if (press[0])
+                playerPosChange[0] = p.moveUp();
+            if (press[1])
+                playerPosChange[1] = p.moveDown();
+            if (press[2])
+                playerPosChange[2] = p.moveLeft();
+            if (press[3])
+                playerPosChange[3] = p.moveRight();
+
+            space.put(name, p);
+            space.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void addShop(ContentShop contentShop) {
         shop = contentShop;
         shop.setVisible(false);
     }
-    
+
     public void addHUD(ContentOverlayHUD HUD) {
-    	this.HUD = HUD;
-    	this.HUD.setVisible(true);
+        this.HUD = HUD;
+        this.HUD.setVisible(true);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        
+
         sh.playSound("src/sounds/shoot.wav");
         try {
+            space.get(new ActualField("token"));
+            Object[] k = space.get(new ActualField(name), new FormalField(Player.class));
+            Player p = (Player) k[1];
+
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
 
             for (Object[] o : list) {
-            	boolean dead = false;
+                boolean dead = false;
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
-                	int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
-                    if(z.takeDamage(damage)) {
-                    	this.p.giveMoney(2);
-                    	this.HUD.updateMoney();
-                    	dead = true;
-                    } 
+                    int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+                    if (z.takeDamage(damage)) {
+                        p.giveMoney(2);
+                        this.HUD.updateMoney(p);
+                        dead = true;
+                    }
                 }
-                if(dead) {
-                	zombieSpace.put("updateZombies");
+                if (dead) {
+                    zombieSpace.put("updateZombies");
                 } else {
-                	zombieSpace.put(z);
+                    zombieSpace.put(z);
                 }
             }
             zombieSpace.put("token");
+            space.put(name,p);
+            space.put("token");
 
         } catch (InterruptedException e1) {
             e1.printStackTrace();

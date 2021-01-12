@@ -14,8 +14,7 @@ import javax.swing.JPanel;
 public class ContentOverlayHUD extends JPanel {
 	
 	JLabel HP, armor, money;
-	Player p;
-	
+
 	BufferedImage heart, shield, dollar;
 	
 	public ContentOverlayHUD(Player p) {
@@ -26,8 +25,7 @@ public class ContentOverlayHUD extends JPanel {
 		super.setBackground(new Color (0,0,0,0));
 		super.setLayout(null);
 		
-		this.p = p;
-		
+
 		// Get images
         try {
             heart = ImageIO.read(new File("src/images/heart.png"));
@@ -70,15 +68,15 @@ public class ContentOverlayHUD extends JPanel {
 		super.add(money);
 	}
 	
-	public void updateHP() {
+	public void updateHP(Player p) {
 		this.HP.setText(String.valueOf(p.getHP()));
 	}
 	
-	public void updateArmor() {
+	public void updateArmor(Player p) {
 		this.armor.setText(String.valueOf(p.getArmor()));
 	}
 	
-	public void updateMoney() { 
+	public void updateMoney(Player p) {
 		this.money.setText(String.valueOf(p.getMoney()));
 	}
 	
