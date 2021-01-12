@@ -1,5 +1,6 @@
 package common.src.main;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import org.jspace.Space;
@@ -15,11 +16,13 @@ public class GameLoop implements Runnable{
 	
 	public GameLoop(Player p, Space zombieSpace) {
 		content = new ContentsInFrame(p, zombieSpace);
+		content.setPreferredSize(new Dimension(800,800));
 		this.playing = true;
 	}
 	
 	public GameLoop(Player p, Space playerSpace, ArrayList<String> allNames, Space zombieSpace, boolean host) {
 		content = new ContentsInFrame(p, playerSpace, allNames, zombieSpace, host);
+		content.setPreferredSize(new Dimension(800,800));
 		this.playing = true;
 	}
 	

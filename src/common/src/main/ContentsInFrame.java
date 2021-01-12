@@ -89,6 +89,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         } catch (IOException e) {
         }
         this.zombieSpace = zombieSpace;
+        super.setPreferredSize(getPreferredSize());
     }
     
 	public void starBackGroundMusic() {
@@ -133,9 +134,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
     }
+    
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(800,800);
+	}
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -286,6 +290,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+        System.out.println("Mouse clicked: " + x + " " + y);
         
         sh.playSound("src/sounds/shoot.wav");
         try {

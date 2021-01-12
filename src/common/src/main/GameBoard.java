@@ -3,7 +3,7 @@ package common.src.main;
 import javax.swing.*;
 import org.jspace.Space;
 
-
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 public class GameBoard extends JFrame{
@@ -30,6 +30,8 @@ public class GameBoard extends JFrame{
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
+		
+		super.pack();
 	}
 	
 	
@@ -44,6 +46,8 @@ public class GameBoard extends JFrame{
 
 		//insert shop as a layered board
 		setLayeredBoard(width,height);
+		
+		super.pack();
 
 	}
 
@@ -66,14 +70,21 @@ public class GameBoard extends JFrame{
 		p = new Player(playername);
 		p.POSITION.x = WIDTH/2;
 		p.POSITION.y = HEIGHT/2;
+		
 
 	}
 
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(WIDTH,HEIGHT);
+	}
+	
 	public void setLayeredBoard(int width, int height){
 
 		//Setting players in layer 0
 		gl.getContent().setBounds(0,0,width,height);
 		layeredBoard.add(gl.getContent() , JLayeredPane.DEFAULT_LAYER); // layer 0
+		layeredBoard.setPreferredSize(getPreferredSize());
 
 		//Adding shop
 		contentShop = new ContentShop();
@@ -94,7 +105,7 @@ public class GameBoard extends JFrame{
 		super.add(layeredBoard);
 
 		// show Jframe
-		layeredBoard.setVisible(true);
+		super.pack();
 		setVisible(true);
 	}
 
