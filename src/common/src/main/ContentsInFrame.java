@@ -288,7 +288,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         //System.out.println("Mouse clicked at: " + x + ", " + y);
         sh.playSound("src/sounds/shoot.wav");
         try {
-
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
             //System.out.println("Got here, list size = " + list.size());
@@ -299,9 +298,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                     this.p.giveMoney(2);
                     this.HUD.updateMoney();
                 }
-                zombieSpace.put(z);
+                if (z.isDead()){
+                    zombieSpace.put("updateZombies");
+                }else {
+                    zombieSpace.put(z);
+                }
             }
-            zombieSpace.put("updateZombies");
             zombieSpace.put("token");
 
         } catch (InterruptedException e1) {

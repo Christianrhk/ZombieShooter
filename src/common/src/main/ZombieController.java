@@ -104,35 +104,6 @@ public class ZombieController {
 
 	}
 
-	public static void checkState() {
-		// If all dead, stop wave and spawn next round
-
-		try {
-
-			zombieSpace.get(new ActualField("token"));
-			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
-            // System.out.println("This is some joinkers, size = " + zombies.size());
-
-			for (Object[] z : zombies) {
-				Zombie q = (Zombie) z[0];
-				if (q.isDead()) {
-
-					numberOfZombies--;
-				} else {
-					zombieSpace.put(z);
-
-				}
-			}
-
-			zombieSpace.put("token");
-		} catch (InterruptedException e1) {
-
-			e1.printStackTrace();
-		}catch (Exception e){
-            System.out.println("Yes i fail right here ");
-        }
-	}
-
 }
 
 class WaveController implements Runnable {
@@ -153,7 +124,8 @@ class WaveController implements Runnable {
 					// Only update when there has been shot.
 					Object[] s = ZombieController.zombieSpace.get(new ActualField("updateZombies"));
 					System.out.println((String) s[0]);
-					ZombieController.checkState();
+					//ZombieController.checkState();
+					ZombieController.numberOfZombies--;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
