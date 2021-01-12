@@ -241,20 +241,23 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     public void movePlayer() {
         try {
-            space.get(new ActualField("token"));
-            Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
-            Player p = (Player) o[1];
-            if (press[0])
-                playerPosChange[0] = p.moveUp();
-            if (press[1])
-                playerPosChange[1] = p.moveDown();
-            if (press[2])
-                playerPosChange[2] = p.moveLeft();
-            if (press[3])
-                playerPosChange[3] = p.moveRight();
+            // only update if a key has been pressed
+            if (press[0] || press [1] || press[2] || press[3]){
+                space.get(new ActualField("token"));
+                Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
+                Player p = (Player) o[1];
+                if (press[0])
+                    playerPosChange[0] = p.moveUp();
+                if (press[1])
+                    playerPosChange[1] = p.moveDown();
+                if (press[2])
+                    playerPosChange[2] = p.moveLeft();
+                if (press[3])
+                    playerPosChange[3] = p.moveRight();
 
-            space.put(name, p);
-            space.put("token");
+                space.put(name, p);
+                space.put("token");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
