@@ -1,3 +1,5 @@
+//Chris lokal fil
+
 package common.src.main;
 
 import javax.imageio.ImageIO;
@@ -18,6 +20,7 @@ public class ContentShop extends JPanel {
 
 	private boolean bHasBeenPressed;
 	Space channel = new SequentialSpace();
+	boolean shopVisible;
 
 	public ContentShop() {
 		super.setDoubleBuffered(true);
@@ -49,11 +52,10 @@ public class ContentShop extends JPanel {
 		items[0] = new item("TestItem", "TestType", 100);
 		String playerName = "FaetterGuf"; // Get data from App
 
-		new Thread(new setupTransactionLogic(channel, items, playerName)).start();
+		// new Thread(new setupTransactionLogic(channel, items, playerName)).start();
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private void setupShop() {
 
 		// Sets up all the itemPanels needed
@@ -68,6 +70,7 @@ public class ContentShop extends JPanel {
 		super.add(createItemPanel(7, "Armor", "20", "", "", ""), new Integer(7));
 		super.add(createItemPanel(8, "Health Potion", "40", "3", "", ""), new Integer(8));
 		super.add(createItemPanel(9, "Boots", "30", "", "", ""), new Integer(9));
+
 	}
 
 	private JPanel createItemPanel(int itemID, String name, String arg1, String arg2, String arg3, String arg4) {
@@ -79,19 +82,6 @@ public class ContentShop extends JPanel {
 		itemPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		itemPanel.setPreferredSize(new Dimension(100, 100));
 		itemPanel.setLayout(null);
-
-		// Sets up the item icon
-		try {
-			Image img = ImageIO.read(new File("src/images/redbox.png"));
-
-			Icon icon = new ImageIcon(img);
-			JLabel iconLabel = new JLabel(icon);
-			iconLabel.setBounds(115, 145, 59, 32);
-			itemPanel.add(iconLabel);
-		} catch (IOException e) {
-			System.out.println("Icon for item could not be located!\n");
-			e.printStackTrace();
-		}
 
 		// Sets up the name of the item
 		JLabel itemName = new JLabel(name);
@@ -112,53 +102,107 @@ public class ContentShop extends JPanel {
 		}
 		itemStats.setBounds(10, 40, 164, 100);
 		itemStats.setFont(new Font("Helvetica", Font.PLAIN, 18));
+		itemStats.setEditable(false);
 
 		// Sets up the buy-button for the item
 		JButton buyButton = new JButton("Buy item");
 		buyButton.setBounds(10, 145, 100, 32);
+		buyButton.setToolTipText("Buy this item");
 
 		buyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button pressed!");
 
-				try {
-
-					channel.put("Buy", itemID);
-
-					// Gets signal from the shop, informing the player of the branch taken
-					Object[] responseBuyOrQuit = channel.get(new FormalField(String.class));
-
-					Object[] responseBuy = channel.get(new FormalField(String.class), new ActualField(itemID));
-
-					if (responseBuy[0].equals("ItemBought")) {
-						Object[] moneyBack = channel.get(new FormalField(String.class), new FormalField(Integer.class));
-						int currentMoney = (int) moneyBack[1];
-
-						// Equip the user with the new item //Use the currentMoney variable to update
-						// the players money //Display a message, so that the player knows that he
-						// successfully bought the item
-
-					} else {
-
-						// Display a message, so that the player know the he did not have enough money
-						// to buy the item
-						System.out.println("test");
-					}
-
-				} catch (InterruptedException e1) {
-					System.out.println("Button did not send command to shop!");
-					e1.printStackTrace();
-				}
+				// The reason for removing/adding the same components is because the player got
+				// stuck when pressing a buy button.
+				// By re-adding the components, the problem is somehow fixed
+				itemPanel.removeAll();
+				itemPanel.add(buyButton);
+				itemPanel.add(itemName);
+				itemPanel.add(itemStats);
+				itemPanel.add(addIcon());
 
 			}
 		});
-
+		/*
+		 * try {
+		 * 
+		 * channel.put("Buy", itemID);
+		 * 
+		 * // Gets signal from the shop, informing the player of the branch taken
+		 * Object[] responseBuyOrQuit = channel.get(new FormalField(String.class));
+		 * 
+		 * Object[] responseBuy = channel.get(new FormalField(String.class), new
+		 * ActualField(itemID));
+		 * 
+		 * if (responseBuy[0].equals("ItemBought")) { Object[] moneyBack =
+		 * channel.get(new FormalField(String.class), new FormalField(Integer.class));
+		 * int currentMoney = (int) moneyBack[1];
+		 * 
+		 * // Equip the user with the new item //Use the currentMoney variable to update
+		 * // the players money //Display a message, so that the player knows that he //
+		 * successfully bought the item
+		 * 
+		 * } else {
+		 * 
+		 * // Display a message, so that the player know the he did not have enough
+		 * money // to buy the item System.out.println("test"); }
+		 * 
+		 * } catch (InterruptedException e1) {
+		 * System.out.println("Button did not send command to shop!");
+		 * e1.printStackTrace(); }
+		 * 
+		 * } });
+		 */
 		itemPanel.add(buyButton);
 		itemPanel.add(itemName);
 		itemPanel.add(itemStats);
+		itemPanel.add(addIcon());
 
 		return itemPanel;
 	}
 
+	public JLabel addIcon() {
+
+		try {
+			Image img = ImageIO.read(new File("src/images/redbox.png"));
+
+			Icon icon = new ImageIcon(img);
+			JLabel iconLabel = new JLabel(icon);
+			iconLabel.setBounds(115, 145, 59, 32);
+			return iconLabel;
+		} catch (IOException e) {
+			System.out.println("Icon for item could not be located!\n");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/*
+	 * @Override public void keyPressed(KeyEvent e) { int keyCode = e.getKeyCode();
+	 * if (keyCode == KeyEvent.VK_B && shopVisible == false) { shopVisible = true;
+	 * super.setVisible(true); System.out.println("B-press registered"); } else if
+	 * (keyCode == KeyEvent.VK_B && shopVisible) { shopVisible = false;
+	 * super.setVisible(false); // sendToBack(super);
+	 * System.out.println("B-press registered"); } }
+	 * 
+	 * @Override public void keyReleased(KeyEvent e) { // TODO Auto-generated method
+	 * stub int keyCode = e.getKeyCode(); if (keyCode == KeyEvent.VK_B &&
+	 * shopVisible == false) { shopVisible = true; super.setVisible(true);
+	 * System.out.println("B-press registered"); } else if (keyCode == KeyEvent.VK_B
+	 * && shopVisible) { shopVisible = false; super.setVisible(false); //
+	 * sendToBack(super); System.out.println("B-press registered"); }
+	 * 
+	 * }
+	 * 
+	 * @Override public void keyTyped(KeyEvent e) { // TODO Auto-generated method
+	 * stub int keyCode = e.getKeyCode(); if (keyCode == KeyEvent.VK_B &&
+	 * shopVisible == false) { shopVisible = true; super.setVisible(true);
+	 * System.out.println("B-press registered"); } else if (keyCode == KeyEvent.VK_B
+	 * && shopVisible) { shopVisible = false; super.setVisible(false); //
+	 * sendToBack(super); System.out.println("B-press registered"); }
+	 * 
+	 * }
+	 */
 }
 
 class setupTransactionLogic implements Runnable {
