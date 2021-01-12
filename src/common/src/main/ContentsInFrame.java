@@ -217,7 +217,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     public void updateGame() {
-        // Move players
+        // Move player
         movePlayer();
 
         if (host) {
@@ -262,7 +262,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             e.printStackTrace();
         }
 
-
     }
 
     public void addShop(ContentShop contentShop) {
@@ -282,15 +281,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         sh.playSound("src/sounds/shoot.wav");
         try {
-            space.get(new ActualField("token"));
-            Object[] k = space.get(new ActualField(name), new FormalField(Player.class));
-            Player p = (Player) k[1];
+
+            Player p = getPlayer();
 
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-
+            boolean dead;
             for (Object[] o : list) {
-                boolean dead = false;
+                dead = false;
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
                     int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
@@ -307,12 +305,29 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 }
             }
             zombieSpace.put("token");
-            space.put(name,p);
-            space.put("token");
+
+            updatePlayer(p);
+
+
+
+
 
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+    }
+
+    private void updatePlayer(Player p) {
+        try {
+            space.get(new ActualField("token"));
+            space.get(new ActualField(name), new FormalField(Player.class));
+            space.put(name,p);
+            space.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
