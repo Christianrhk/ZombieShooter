@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Zombie extends Entity {
-	boolean HIT; // Used to determine if a zombie has been hit by a player
+	boolean HIT;// Used to determine if a zombie has been hit by a player
 
 	public Zombie(int x, int y) {
 		super();

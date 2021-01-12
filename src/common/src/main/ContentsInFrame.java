@@ -301,6 +301,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 }
                 zombieSpace.put(z);
             }
+            zombieSpace.put("updateZombies");
             zombieSpace.put("token");
 
         } catch (InterruptedException e1) {

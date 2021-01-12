@@ -147,8 +147,16 @@ class WaveController implements Runnable {
         }
         while (true) {
 
+        	// update zombies to check id any has been shot
 			while (ZombieController.numberOfZombies > 0) {
-				ZombieController.checkState();
+				try {
+					// Only update when there has been shot.
+					Object[] s = ZombieController.zombieSpace.get(new ActualField("updateZombies"));
+					System.out.println((String) s[0]);
+					ZombieController.checkState();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 
 			// Wait 5 seconds before next round
