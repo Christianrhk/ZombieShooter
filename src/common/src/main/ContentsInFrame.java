@@ -216,6 +216,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         if (!multiplayer || host) {
             // Move zombies and animate
             ZombieController.moveZombies(p);
+            
         }
 
         // send player position and get other players position
@@ -285,23 +286,27 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        //System.out.println("Mouse clicked at: " + x + ", " + y);
+        
         sh.playSound("src/sounds/shoot.wav");
         try {
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-            //System.out.println("Got here, list size = " + list.size());
+
             for (Object[] o : list) {
+            	boolean dead = false;
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
-                    z.damageZombie(20);
-                    this.p.giveMoney(2);
-                    this.HUD.updateMoney();
+                	int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+                    if(z.takeDamage(damage)) {
+                    	this.p.giveMoney(2);
+                    	this.HUD.updateMoney();
+                    	dead = true;
+                    } 
                 }
-                if (z.isDead()){
-                    zombieSpace.put("updateZombies");
-                }else {
-                    zombieSpace.put(z);
+                if(dead) {
+                	zombieSpace.put("updateZombies");
+                } else {
+                	zombieSpace.put(z);
                 }
             }
             zombieSpace.put("token");

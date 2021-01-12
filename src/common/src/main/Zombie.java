@@ -1,11 +1,5 @@
 package common.src.main;
-
-import java.awt.Graphics;
 import java.awt.Point;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Zombie extends Entity {
 	boolean HIT;// Used to determine if a zombie has been hit by a player
@@ -31,16 +25,7 @@ public class Zombie extends Entity {
 		this.HIT = false;
 		this.offset = 32;
 	}
-	
-	public boolean isDead() {
-		return this.HEALTH_POINTS <= 0;
-	}
-	
-	public void damageZombie(int damage) {
-		this.HEALTH_POINTS -= damage;
-		this.HIT = true;
-	}
-	
+
 	public boolean collision(int x, int y) {
 		boolean hit = false;
 		if(x > this.POSITION.x - this.offset && x < this.POSITION.x + this.offset && y > this.POSITION.y - this.offset && y < this.POSITION.y + this.offset){

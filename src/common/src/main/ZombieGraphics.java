@@ -11,14 +11,14 @@ public class ZombieGraphics {
 	String IMAGE_PATH;
 	BufferedImage IMAGE;
 	
-	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
+	public static Animation zombieDown, zombieUp, zombieRight, zombieLeft;
 	int AnimationSpeed;
 	int spriteSize;
 	
 	public ZombieGraphics() {
 		this.spriteSize = 64;
 		
-		this.AnimationSpeed = 32;
+		this.AnimationSpeed = 16;
 		
 		this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";
 		
@@ -31,20 +31,20 @@ public class ZombieGraphics {
 		setSpriteSheetAnimations();
 	}
 	
-	public void zombieRunAnimation(Zombie z) {
+	public static void zombieRunAnimation(Zombie z) {
 		//System.out.println(this.directionFacing);
 		switch (z.directionFacing) {
 		case DOWN:
-			this.zombieDown.runAnimation();
+			zombieDown.runAnimation();
 			break;
 		case UP:
-			this.zombieUp.runAnimation();
+			zombieUp.runAnimation();
 			break;
 		case RIGHT:
-			this.zombieRight.runAnimation();
+			zombieRight.runAnimation();
 			break;
 		case LEFT:
-			this.zombieLeft.runAnimation();
+			zombieLeft.runAnimation();
 			break;
 		}
 	}

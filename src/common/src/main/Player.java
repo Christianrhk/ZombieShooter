@@ -51,21 +51,4 @@ public class Player extends Entity {
 		this.MONEY += amount;
 	}
 
-	// Take damage based on incoming damage and armor left
-	public void takeDamage(int damage) {
-		if (damage < this.ARMOR) {
-			this.ARMOR -= damage;
-		} else if (this.ARMOR > 0 && damage > this.ARMOR) {
-			this.HEALTH_POINTS -= (damage - this.ARMOR);
-			this.ARMOR = 0;
-		} else {
-			this.HEALTH_POINTS -= damage;
-		}
-
-		if (this.HEALTH_POINTS <= 0) {
-			// Player dies
-			// do something here
-		}
-	}
-
 }

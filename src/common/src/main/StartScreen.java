@@ -1,15 +1,12 @@
 package common.src.main;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
 import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
 import org.jspace.SpaceRepository;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;

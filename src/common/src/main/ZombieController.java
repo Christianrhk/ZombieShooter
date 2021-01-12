@@ -19,14 +19,14 @@ public class ZombieController {
 
 	public static Space zombieSpace;
 
-	public static ZombieGraphics ZG;
+	public ZombieGraphics ZG;
 	
 	public ZombieController(Space zombieSpace) {
 		numberOfZombies = 0;
 		wave = 0;
 
 		ZombieController.zombieSpace = zombieSpace;
-		ZG = new ZombieGraphics();
+		//ZG = new ZombieGraphics();
 		new Thread(new WaveController()).start();
 	}
 
@@ -68,7 +68,7 @@ public class ZombieController {
 						z.directionFacing = direction.UP;
 					}
 				}
-				ZG.zombieRunAnimation(z);
+				ZombieGraphics.zombieRunAnimation(z);
 
 				zombieSpace.put(z);
 			}
