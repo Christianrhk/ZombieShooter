@@ -8,11 +8,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Zombie extends Entity {
-
-	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
-	int AnimationSpeed;
-	int spriteSize;
-	int offset;
 	boolean HIT; // Used to determine if a zombie has been hit by a player
 
 	public Zombie(int x, int y) {
@@ -34,22 +29,7 @@ public class Zombie extends Entity {
 		this.DAMAGE = 10;
 		this.NAME = "ZOMBIE";
 		this.HIT = false;
-
-		this.spriteSize = 64;
-		this.offset = spriteSize/2;
-		
-		this.AnimationSpeed = 32;
-		
-		this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";
-		
-		try {
-			this.IMAGE = ImageIO.read(new File(this.IMAGE_PATH));
-		} catch (IOException e) {
-			System.out.println("Couldn't get zombie image sheet");
-			e.printStackTrace();
-		}
-		
-		setSpriteSheetAnimations();
+		this.offset = 32;
 	}
 	
 	public boolean isDead() {
@@ -67,54 +47,6 @@ public class Zombie extends Entity {
 			hit = true;
 		}
 		return hit;
-	}
-
-	public void zombieRunAnimation() {
-		//System.out.println(this.directionFacing);
-		switch (this.directionFacing) {
-		case DOWN:
-			this.zombieDown.runAnimation();
-			break;
-		case UP:
-			this.zombieUp.runAnimation();
-			break;
-		case RIGHT:
-			this.zombieRight.runAnimation();
-			break;
-		case LEFT:
-			this.zombieLeft.runAnimation();
-			break;
-		}
-	}
-	
-	public void drawZombie(Graphics g) {
-		switch (this.directionFacing) {
-		case DOWN:
-			this.zombieDown.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
-			break;
-		case UP:
-			this.zombieUp.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
-			break;
-		case RIGHT:
-			this.zombieRight.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
-			break;
-		case LEFT:
-			this.zombieLeft.drawAnimation(g, this.POSITION.x, this.POSITION.y, this.offset);
-			break;
-		}
-	}
-
-	public void setSpriteSheetAnimations() {
-		// Setting which sprites from spritesheet to use for a certain animation
-		zombieDown = getSpriteSheetRow(0);
-		zombieRight = getSpriteSheetRow(1);
-		zombieUp = getSpriteSheetRow(2);
-		zombieLeft = getSpriteSheetRow(3);
-	}
-	
-	public Animation getSpriteSheetRow(int row) {
-		return new Animation(this.AnimationSpeed, Animation.cropImage(this.IMAGE, 0, row, spriteSize, spriteSize, spriteSize), 
-				Animation.cropImage(this.IMAGE, 1, row, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, row, spriteSize, spriteSize, spriteSize));
 	}
 
 }

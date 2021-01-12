@@ -14,6 +14,8 @@ public class Entity {
 	BufferedImage IMAGE;
 	String IMAGE_PATH;
 	
+	int offset;
+	
 	enum state {DEAD, ALIVE};
 	state state;
 	

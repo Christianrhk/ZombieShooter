@@ -118,7 +118,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
             for (Object[] o : zombies){
                 Zombie z = (Zombie) o[0];
-                z.drawZombie(g);
+                ZombieGraphics ZG = new ZombieGraphics(z);
+                ZG.drawZombie(g);
             }
 
             ZombieController.zombieSpace.put("token");

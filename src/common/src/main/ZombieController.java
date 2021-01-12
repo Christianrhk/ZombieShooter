@@ -65,7 +65,8 @@ public class ZombieController {
 						z.directionFacing = direction.UP;
 					}
 				}
-				z.zombieRunAnimation();
+				ZombieGraphics ZG = new ZombieGraphics(z);
+				ZG.zombieRunAnimation();
 
 				zombieSpace.put(z);
 			}
