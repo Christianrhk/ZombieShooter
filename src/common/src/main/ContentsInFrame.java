@@ -285,13 +285,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        System.out.println("Mouse clicked at: " + x + ", " + y);
+        //System.out.println("Mouse clicked at: " + x + ", " + y);
         sh.playSound("src/sounds/shoot.wav");
         try {
 
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-            System.out.println("Got here, list size = " + list.size());
+            //System.out.println("Got here, list size = " + list.size());
             for (Object[] o : list) {
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {

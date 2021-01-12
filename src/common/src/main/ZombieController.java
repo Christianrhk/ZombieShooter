@@ -82,6 +82,7 @@ public class ZombieController {
 
 		// Possible change number of zombies to increase difficulty
 		numberOfZombies = wave;
+		System.out.println("Wave number: " + wave);
 		try {
 			zombieSpace.get(new ActualField("token"));
 			for (int i = 0; i < numberOfZombies; i++) {
@@ -89,7 +90,7 @@ public class ZombieController {
 				int r = rand.nextInt(spawnLocations.length);
 				Point newP = new Point(spawnLocations[r]);
 				Zombie z = new Zombie(newP);
-				System.out.println("Zombie added at " + z.POSITION.x + ", " + z.POSITION.y);
+				//System.out.println("Zombie added at " + z.POSITION.x + ", " + z.POSITION.y);
 				// Zombie z = new Zombie(new Point(100,100));
 				zombieSpace.put(z);
 			}
@@ -99,7 +100,7 @@ public class ZombieController {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("New zombies added");
+		//System.out.println("New zombies added");
 
 	}
 
@@ -138,7 +139,7 @@ class WaveController implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Thread started");
+		//System.out.println("Thread started");
         try {
 			ZombieController.zombieSpace.put("token");
         } catch (InterruptedException e) {
@@ -152,7 +153,7 @@ class WaveController implements Runnable {
 
 			// Wait 5 seconds before next round
 			try {
-				System.out.println("Sleeping");
+				//System.out.println("Sleeping");
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
