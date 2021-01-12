@@ -70,4 +70,16 @@ public class ContentOverlayHUD extends JPanel {
 		super.add(money);
 	}
 	
+	public void updateHP() {
+		this.HP.setText(String.valueOf(p.getHP()));
+	}
+	
+	public void updateArmor() {
+		this.armor.setText(String.valueOf(p.getArmor()));
+	}
+	
+	public void updateMoney() { 
+		this.money.setText(String.valueOf(p.getMoney()));
+	}
+	
 }
