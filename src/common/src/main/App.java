@@ -26,8 +26,9 @@ public class App {
     */
     public static void singlePlayer() {
         Space zombieSpace = new SequentialSpace();
+        Space playerSpace = new SequentialSpace();
     	ZombieController ZC = new ZombieController(zombieSpace);
-    	GameBoard game = new GameBoard(800, 800,zombieSpace);
+    	GameBoard game = new GameBoard(800, 800,playerSpace,"player1",zombieSpace,true);
     }
 
 
@@ -65,14 +66,8 @@ public class App {
     }
     
     
-    public static void hostGame(int port, String name, ArrayList<String> allNames) {
-//        String host = "localhost";
-//        String uri = "tcp://" + host + ":" + port + "/?keep";
-//
-//        SpaceRepository repository = new SpaceRepository();
-
+    public static void hostGame(int port, String name) {
         // peer to peer communication
-       // repository.addGate(uri);
 
         //creating spaces
         Space player = new SequentialSpace();
@@ -86,15 +81,9 @@ public class App {
         repository.add("environment", environment);
         repository.add("shop", shop);
 
-        try {
-            System.out.println(Arrays.toString(zombies.getp((new FormalField(String.class)))));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        System.out.println("Size of all names: " + allNames.size());
         ZombieController ZC = new ZombieController(zombies);
-		GameBoard game = new GameBoard(800,800, player, name, allNames, zombies, true);
+		GameBoard game = new GameBoard(800,800, player, name, zombies, true);
 
 
     }
@@ -106,7 +95,7 @@ public class App {
 
     we should be able to set port and ip in gui
     */
-    public static void connectToGame(int port, String host, String name, ArrayList<String> allNames) {
+    public static void connectToGame(int port, String host, String name) {
         // peer to peer communication
         String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
         String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
@@ -118,14 +107,10 @@ public class App {
                 Space player = new RemoteSpace(uriPlayer);
 				Space zombies = new RemoteSpace(uriZombies);
 
-				zombies.put("This is some big anus");
-				System.out.println("Size of all names: " + allNames.size());
-	            GameBoard game = new GameBoard(800,800, player, name, allNames, zombies, false);
+	            GameBoard game = new GameBoard(800,800, player, name, zombies, false);
 	            
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
     }
