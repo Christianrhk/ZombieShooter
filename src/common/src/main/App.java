@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -24,8 +25,9 @@ public class App {
 
     */
     public static void singlePlayer() {
-    	ZombieController ZC = new ZombieController(new SequentialSpace());
-    	GameBoard game = new GameBoard(800, 800);
+        Space zombieSpace = new SequentialSpace();
+    	ZombieController ZC = new ZombieController(zombieSpace);
+    	GameBoard game = new GameBoard(800, 800,zombieSpace);
     }
 
 
@@ -83,10 +85,16 @@ public class App {
         repository.add("zombies", zombies);
         repository.add("environment", environment);
         repository.add("shop", shop);
-      
+
+        try {
+            System.out.println(Arrays.toString(zombies.getp((new FormalField(String.class)))));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Size of all names: " + allNames.size());
         ZombieController ZC = new ZombieController(zombies);
-		GameBoard game = new GameBoard(800,800, player, name, allNames);
+		GameBoard game = new GameBoard(800,800, player, name, allNames, zombies, true);
 
 
     }
@@ -108,14 +116,18 @@ public class App {
 
             try {
                 Space player = new RemoteSpace(uriPlayer);
-				//Space zombies = new RemoteSpace(uriZombies);
+				Space zombies = new RemoteSpace(uriZombies);
+
+				zombies.put("This is some big anus");
 				System.out.println("Size of all names: " + allNames.size());
-	            GameBoard game = new GameBoard(800,800, player, name, allNames);
+	            GameBoard game = new GameBoard(800,800, player, name, allNames, zombies, false);
 	            
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			} catch (InterruptedException e) {
+                e.printStackTrace();
+            }
     }
 
 }

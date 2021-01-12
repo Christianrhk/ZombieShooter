@@ -36,24 +36,31 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     boolean press[] = {false, false, false, false};
     Point player2;
     BufferedImage bg;
+    Space zombieSpace;
     BufferedImage blood;
 
     ContentShop shop;
     ContentOverlayHUD HUD;
     boolean shopVisible = false;
 
+    boolean host;
+
     // Contructor for singleplayer
-    public ContentsInFrame(Player p) {
-        initContentsInFrame(p);
+    public ContentsInFrame(Player p, Space zombieSpace ) {
+        initContentsInFrame(p, zombieSpace);
         multiplayer = false;
+
+        // this.zombie = new Zombie(50,50);
     }
 
     // Constructor for multiplayer
-    public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames) {
-        initContentsInFrame(p);
+    public ContentsInFrame(Player p, Space playerSpace, ArrayList<String> allNames, Space zombieSpace, boolean host) {
+        initContentsInFrame(p, zombieSpace);
+        this.host = host;
 
         player2 = new Point(p.getX(), p.getY());
 
+        // this.zombie = new Zombie(100,100);
         this.space = playerSpace;
         this.allNames = allNames;
 
@@ -61,7 +68,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     // Shared initialization for multiplayer and singleplayer
-    public void initContentsInFrame(Player p) {
+    public void initContentsInFrame(Player p, Space zombieSpace) {
         super.setDoubleBuffered(true);
         addKeyListener(this);
         setFocusable(true);
@@ -79,6 +86,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             blood = ImageIO.read(new File("src/images/blood.png"));
         } catch (IOException e) {
         }
+        this.zombieSpace = zombieSpace;
     }
     
 	public void starBackGroundMusic() {
@@ -95,10 +103,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         g2d.drawImage(bg, 0, 0, this);
 
         // Draw zombies
-        if (!multiplayer) {
-            drawAllZombies(g);
-        }
-        
+        drawAllZombies(g);
+
         // Draw player
         g2d.drawImage(p.IMAGE, p.getX(), p.getY(), this);
 
@@ -110,11 +116,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     }
 
-    
     private void drawAllZombies(Graphics g) {
         try {
-            ZombieController.zombieSpace.get(new ActualField("token"));
-            List<Object[]> zombies = ZombieController.zombieSpace.queryAll(new FormalField(Zombie.class));
+            //System.out.println("I try to print the zombies ");
+            zombieSpace.get(new ActualField("token"));
+            List<Object[]> zombies = zombieSpace.queryAll(new FormalField(Zombie.class));
 
             for (Object[] o : zombies){
                 Zombie z = (Zombie) o[0];
@@ -122,7 +128,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 ZG.drawZombie(g);
             }
 
-            ZombieController.zombieSpace.put("token");
+            zombieSpace.put("token");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -206,7 +212,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         // Move players
         movePlayer();
 
-        if (!multiplayer) {
+        if (!multiplayer || host) {
             // Move zombies and animate
             ZombieController.moveZombies(p);
         }
@@ -282,23 +288,21 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         sh.playSound("src/sounds/shoot.wav");
         try {
 
-            ZombieController.zombieSpace.get(new ActualField("token"));
-            java.util.List<Object[]> list = ZombieController.zombieSpace.getAll(new FormalField(Zombie.class));
+            zombieSpace.get(new ActualField("token"));
+            java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
             System.out.println("Got here, list size = " + list.size());
             for (Object[] o : list) {
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
                     z.damageZombie(20);
-                   
                 }
-                ZombieController.zombieSpace.put(z);
+                zombieSpace.put(z);
             }
-            ZombieController.zombieSpace.put("token");
+            zombieSpace.put("token");
 
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
-
     }
 
     @Override

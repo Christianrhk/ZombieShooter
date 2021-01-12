@@ -19,11 +19,13 @@ public class GameBoard extends JFrame{
 	ContentOverlayHUD HUD;
 
 	// Multiplayer  constructor
-	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
+	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames, Space zombieSpace, boolean host) {
 
 		setGameBoard(width, height, playerName);
+
+		if (host) super.setTitle("Zombie Shooter - host");
 		// adding content
-		gl = new GameLoop(p, playerSpace, allNames);
+		gl = new GameLoop(p, playerSpace, allNames, zombieSpace, host);
 		new Thread(gl).start();
 
 		//insert shop as a layered board
@@ -32,12 +34,12 @@ public class GameBoard extends JFrame{
 	
 	
 	// Singleplayer constructor
-	public GameBoard(int width, int height) { 
+	public GameBoard(int width, int height, Space zombieSpace) {
 		
 		setGameBoard(width, height, ""); // Singleplayer, no name needed for the communications protocols.
 		
 		// adding content
-		gl = new GameLoop(p);
+		gl = new GameLoop(p, zombieSpace);
 		new Thread(gl).start();
 
 		//insert shop as a layered board

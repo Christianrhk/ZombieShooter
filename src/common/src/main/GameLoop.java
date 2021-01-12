@@ -13,13 +13,13 @@ public class GameLoop implements Runnable{
 	
 	ContentsInFrame content;
 	
-	public GameLoop(Player p) {
-		content = new ContentsInFrame(p);
+	public GameLoop(Player p, Space zombieSpace) {
+		content = new ContentsInFrame(p, zombieSpace);
 		this.playing = true;
 	}
 	
-	public GameLoop(Player p, Space playerSpace, ArrayList<String> allNames) {
-		content = new ContentsInFrame(p, playerSpace, allNames);
+	public GameLoop(Player p, Space playerSpace, ArrayList<String> allNames, Space zombieSpace, boolean host) {
+		content = new ContentsInFrame(p, playerSpace, allNames, zombieSpace, host);
 		this.playing = true;
 	}
 	

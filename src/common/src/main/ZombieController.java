@@ -71,7 +71,6 @@ public class ZombieController {
 				zombieSpace.put(z);
 			}
 			zombieSpace.put("token");
-
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -106,8 +105,10 @@ public class ZombieController {
 		// If all dead, stop wave and spawn next round
 
 		try {
+
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
+            // System.out.println("This is some joinkers, size = " + zombies.size());
 
 			for (Object[] z : zombies) {
 				Zombie q = (Zombie) z[0];
@@ -122,8 +123,11 @@ public class ZombieController {
 
 			zombieSpace.put("token");
 		} catch (InterruptedException e1) {
+
 			e1.printStackTrace();
-		}
+		}catch (Exception e){
+            System.out.println("Yes i fail right here ");
+        }
 	}
 
 }
@@ -134,11 +138,12 @@ class WaveController implements Runnable {
 	public void run() {
 		System.out.println("Thread started");
         try {
-            ZombieController.zombieSpace.put("token");
+			ZombieController.zombieSpace.put("token");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         while (true) {
+
 			while (ZombieController.numberOfZombies > 0) {
 				ZombieController.checkState();
 			}
@@ -149,6 +154,7 @@ class WaveController implements Runnable {
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
+                System.out.println("This is fucked ");
 				e.printStackTrace();
 			}
 
