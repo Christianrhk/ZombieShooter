@@ -53,6 +53,7 @@ public class ContentShop extends JPanel {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private void setupShop() {
 
 		// Sets up all the itemPanels needed

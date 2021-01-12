@@ -16,6 +16,7 @@ public class GameBoard extends JFrame{
 
 	GameLoop gl;
 	ContentShop contentShop;
+	ContentOverlayHUD HUD;
 
 	// Multiplayer  constructor
 	public GameBoard(int width, int height, Space playerSpace, String playerName, ArrayList<String> allNames) {
@@ -74,15 +75,24 @@ public class GameBoard extends JFrame{
 
 		//Adding shop
 		contentShop = new ContentShop();
+		
+		// Adding HUD
+		HUD = new ContentOverlayHUD(p);
+		HUD.setBounds(0, 0, 251, 40);
+		HUD.setVisible(true);
 
 		//Setting shop on layer 1
 		contentShop.setBounds(width/8,height/8,width-(width/4),height-(height/4));
-		layeredBoard.add(contentShop,1);
+		layeredBoard.add(contentShop, new Integer(1));
+		layeredBoard.add(HUD, new Integer(2));
+		layeredBoard.moveToFront(HUD);
 
 		gl.getContent().addShop(contentShop);
+		gl.getContent().addHUD(HUD);
 		super.add(layeredBoard);
 
 		// show Jframe
+		layeredBoard.setVisible(true);
 		setVisible(true);
 	}
 

@@ -39,6 +39,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     BufferedImage blood;
 
     ContentShop shop;
+    ContentOverlayHUD HUD;
     boolean shopVisible = false;
 
     // Contructor for singleplayer
@@ -265,7 +266,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void addShop(ContentShop contentShop) {
         shop = contentShop;
         shop.setVisible(false);
-
+    }
+    
+    public void addHUD(ContentOverlayHUD HUD) {
+    	this.HUD = HUD;
+    	this.HUD.setVisible(true);
     }
 
     @Override
