@@ -1,7 +1,5 @@
 package common.src.main;
 
-import java.util.ArrayList;
-
 import org.jspace.Space;
 
 public class GameLoop implements Runnable {

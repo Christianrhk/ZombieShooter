@@ -13,6 +13,11 @@ import javax.swing.JPanel;
 
 public class ContentOverlayHUD extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	JLabel HP, armor, money;
 
 	BufferedImage heart, shield, dollar;

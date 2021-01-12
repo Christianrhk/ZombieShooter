@@ -1,10 +1,6 @@
 package common.src.main;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
 
