@@ -14,12 +14,8 @@ public class ZombieGraphics {
 	Animation zombieDown, zombieUp, zombieRight, zombieLeft;
 	int AnimationSpeed;
 	int spriteSize;
-	Zombie z;
 	
-	public ZombieGraphics(Zombie z) {
-
-		this.z = z;
-		
+	public ZombieGraphics() {
 		this.spriteSize = 64;
 		
 		this.AnimationSpeed = 32;
@@ -32,13 +28,12 @@ public class ZombieGraphics {
 			System.out.println("Couldn't get zombie image sheet");
 			e.printStackTrace();
 		}
-		
 		setSpriteSheetAnimations();
 	}
 	
-	public void zombieRunAnimation() {
+	public void zombieRunAnimation(Zombie z) {
 		//System.out.println(this.directionFacing);
-		switch (this.z.directionFacing) {
+		switch (z.directionFacing) {
 		case DOWN:
 			this.zombieDown.runAnimation();
 			break;
@@ -54,19 +49,19 @@ public class ZombieGraphics {
 		}
 	}
 	
-	public void drawZombie(Graphics g) {
-		switch (this.z.directionFacing) {
+	public void drawZombie(Graphics g, Zombie z) {
+		switch (z.directionFacing) {
 		case DOWN:
-			this.zombieDown.drawAnimation(g, this.z.POSITION.x, this.z.POSITION.y, this.z.offset);
+			this.zombieDown.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case UP:
-			this.zombieUp.drawAnimation(g, this.z.POSITION.x, this.z.POSITION.y, this.z.offset);
+			this.zombieUp.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case RIGHT:
-			this.zombieRight.drawAnimation(g, this.z.POSITION.x, this.z.POSITION.y, this.z.offset);
+			this.zombieRight.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case LEFT:
-			this.zombieLeft.drawAnimation(g, this.z.POSITION.x, this.z.POSITION.y, this.z.offset);
+			this.zombieLeft.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		}
 	}

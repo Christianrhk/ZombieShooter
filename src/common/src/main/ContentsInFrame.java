@@ -38,6 +38,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     BufferedImage bg;
     Space zombieSpace;
     BufferedImage blood;
+    ZombieGraphics ZG;
 
     ContentShop shop;
     ContentOverlayHUD HUD;
@@ -77,6 +78,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         setFocusTraversalKeysEnabled(false);
         sh = new SoundHandler();
         starBackGroundMusic();
+        ZG = new ZombieGraphics();
 
         this.p = p;
 
@@ -124,8 +126,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
             for (Object[] o : zombies){
                 Zombie z = (Zombie) o[0];
-                ZombieGraphics ZG = new ZombieGraphics(z);
-                ZG.drawZombie(g);
+                ZG.drawZombie(g, z);
             }
 
             zombieSpace.put("token");
@@ -295,6 +296,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 Zombie z = (Zombie) o[0];
                 if (z.collision(x, y)) {
                     z.damageZombie(20);
+                    this.p.giveMoney(2);
+                    this.HUD.updateMoney();
                 }
                 zombieSpace.put(z);
             }

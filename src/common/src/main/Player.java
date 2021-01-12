@@ -46,6 +46,10 @@ public class Player extends Entity {
 	public int getMoney() {
 		return this.MONEY;
 	}
+	
+	public void giveMoney(int amount) {
+		this.MONEY += amount;
+	}
 
 	// Take damage based on incoming damage and armor left
 	public void takeDamage(int damage) {
