@@ -103,9 +103,7 @@ public class ZombieController {
 			e.printStackTrace();
 		}
 		//System.out.println("New zombies added");
-
 	}
-
 }
 
 class WaveController implements Runnable {

@@ -51,7 +51,7 @@ public class ContentShop extends JPanel {
 		item[] items = new item[10];
 		items[0] = new item("TestItem", "TestType", 100);
 		String playerName = "FaetterGuf"; // Get data from App
-
+		
 		// new Thread(new setupTransactionLogic(channel, items, playerName)).start();
 
 	}
