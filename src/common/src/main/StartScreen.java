@@ -146,16 +146,10 @@ public class StartScreen {
                 }
                 currJoined.paintImmediately(currJoined.getVisibleRect());
 
-                ArrayList<String> allNames = new ArrayList<String>();
-
                 UpdateChecker update = new UpdateChecker(name, joinSpace);
                 new Thread(update).start();
                 while (!started) {
-
                 }
-
-
-                allNames = update.getAllNames();
 
                 System.out.println("Done finding names");
 
@@ -176,7 +170,6 @@ public class StartScreen {
                 try {
                     hostSpace.put("START");
                 } catch (InterruptedException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
 
@@ -219,23 +212,19 @@ public class StartScreen {
                 currHOST.setText((String) list[1]);
             }
 
-            //currJoined.paintImmediately(currJoined.getVisibleRect());
-            //currHOST.paintImmediately(currHOST.getVisibleRect());
-
         } catch (InterruptedException e) {
         }
         return false;
     }
 
     public static ArrayList<String> getNames(String name, Space init,ArrayList<String> allNames ) {
-        // System.out.println("GETTTING NAMES");
+
         List<Object[]> list = null;
         List<Object[]> host = null;
         try {
             list = init.queryAll(new ActualField("NAME"), new FormalField(String.class));
             host = init.queryAll(new ActualField("HOST"), new FormalField(String.class));
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

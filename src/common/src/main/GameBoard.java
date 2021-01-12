@@ -6,9 +6,6 @@ import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
 
-
-import java.util.ArrayList;
-
 public class GameBoard extends JFrame {
 
 
@@ -69,7 +66,8 @@ public class GameBoard extends JFrame {
 
 
 
-    public void setLayeredBoard(int width, int height, Player p) {
+    @SuppressWarnings("deprecation")
+	public void setLayeredBoard(int width, int height, Player p) {
 
 
         //Setting players in layer 0
