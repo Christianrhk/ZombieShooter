@@ -22,6 +22,7 @@ public class Entity {
 	enum direction {UP, DOWN, LEFT, RIGHT};
 	direction directionFacing;
 	
+	@SuppressWarnings("static-access")
 	public Entity() {
 		this.MOVEMENT_SPEED = 1;
 		this.directionFacing = direction.DOWN;

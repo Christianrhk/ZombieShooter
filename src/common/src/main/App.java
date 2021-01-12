@@ -2,15 +2,9 @@ package common.src.main;
 
 import org.jspace.*;
 
-import java.awt.Component;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class App {
 
@@ -27,8 +21,8 @@ public class App {
     public static void singlePlayer() {
         Space zombieSpace = new SequentialSpace();
         Space playerSpace = new SequentialSpace();
-    	ZombieController ZC = new ZombieController(zombieSpace);
-    	GameBoard game = new GameBoard(800, 800,playerSpace,"player1",zombieSpace,true);
+    	new ZombieController(zombieSpace);
+    	new GameBoard(800, 800,playerSpace,"player1",zombieSpace,true);
     }
 
 
@@ -82,8 +76,8 @@ public class App {
         repository.add("shop", shop);
 
 
-        ZombieController ZC = new ZombieController(zombies);
-		GameBoard game = new GameBoard(800,800, player, name, zombies, true);
+        new ZombieController(zombies);
+		new GameBoard(800,800, player, name, zombies, true);
 
 
     }
@@ -107,7 +101,7 @@ public class App {
                 Space player = new RemoteSpace(uriPlayer);
 				Space zombies = new RemoteSpace(uriZombies);
 
-	            GameBoard game = new GameBoard(800,800, player, name, zombies, false);
+	            new GameBoard(800,800, player, name, zombies, false);
 	            
 			} catch (IOException e) {
                 // TODO Auto-generated catch block
