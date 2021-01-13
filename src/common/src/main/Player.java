@@ -47,5 +47,9 @@ public class Player extends Entity {
 	public void giveMoney(int amount) {
 		this.MONEY += amount;
 	}
+	
+	public void subtractMoney(int amount) {
+		this.MONEY -= amount;
+	}
 
 }

@@ -78,4 +78,5 @@ public class ZombieGraphics {
 		return new Animation(this.AnimationSpeed, Animation.cropImage(this.IMAGE, 0, row, spriteSize, spriteSize, spriteSize), 
 				Animation.cropImage(this.IMAGE, 1, row, spriteSize, spriteSize, spriteSize), Animation.cropImage(this.IMAGE, 2, row, spriteSize, spriteSize, spriteSize));
 	}
+	
 }
