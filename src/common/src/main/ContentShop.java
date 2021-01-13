@@ -23,7 +23,7 @@ public class ContentShop extends JPanel {
 	static Space channelPlayerShop = new SequentialSpace();
 	boolean shopVisible;
 
-	public ContentShop(Player p) {
+	public ContentShop(Player p, ContentOverlayHUD HUD) {
 		super.setDoubleBuffered(true);
 		setFocusable(true);
 		requestFocusInWindow();
@@ -39,7 +39,7 @@ public class ContentShop extends JPanel {
 		// player is currently carrying
 
 		// Setups up the content of the shop
-		setupShop();
+		setupShop(p, HUD);
 
 		//item[] items = new item[10];
 		//items[0] = new item("TestItem", "TestType", 100);
@@ -47,7 +47,7 @@ public class ContentShop extends JPanel {
 
 	}
 
-	private void setupShop() {
+	private void setupShop(Player p, ContentOverlayHUD HUD) {
 
 		// Sets up all the itemPanels needed
 		int n = 3;
@@ -55,12 +55,12 @@ public class ContentShop extends JPanel {
 		super.setLayout(new GridLayout(n, n, 3, 3));
 
 		for (int i = 0; i < numberOfItems; i++) {
-			JPanel itemPanel = createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba");
+			JPanel itemPanel = createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba", p, HUD);
 			super.add(itemPanel, new Integer(i));
 		}
-		super.add(createItemPanel(7, "Armor", "20", "", "", ""), new Integer(7));
-		super.add(createItemPanel(8, "Health Potion", "40", "3", "", ""), new Integer(8));
-		super.add(createItemPanel(9, "Boots", "30", "", "", ""), new Integer(9));
+		super.add(createItemPanel(7, "Armor", "20", "", "", "", p, HUD), new Integer(7));
+		super.add(createItemPanel(8, "Health Potion", "40", "3", "", "", p, HUD), new Integer(8));
+		super.add(createItemPanel(9, "Boots", "30", "", "", "", p, HUD), new Integer(9));
 		
 		JButton closeButton = new JButton("Close");
 		//super.add(closeButton);
@@ -98,7 +98,7 @@ public class ContentShop extends JPanel {
 
 	}
 
-	private JPanel createItemPanel(int itemID, String name, String arg1, String arg2, String arg3, String arg4) {
+	private JPanel createItemPanel(int itemID, String name, String arg1, String arg2, String arg3, String arg4, Player p, ContentOverlayHUD HUD) {
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
@@ -144,41 +144,49 @@ public class ContentShop extends JPanel {
 				// By re-adding the components, the problem is somehow fixed
 
 				
-				try {
-					
-					channelPlayerShop.put("Buy", itemID);
-					System.out.println("Button pressed!\n");
-
-					// Gets signal from the shop, informing the player of the branch taken
-					Object[] responseBuyOrQuit = channelShopPlayer.get(new FormalField(String.class));
-
-					Object[] responseBuy = channelShopPlayer.get(new FormalField(String.class), new ActualField(itemID));
-					
-					System.out.println("Both responses received!\n");
-
-			
-					if (responseBuy[0].equals("ItemBought")) {
-						Object[] moneyBack = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
-						int currentMoney = (int) moneyBack[1];
+					try {
 						
+						channelPlayerShop.put("Buy", itemID);
+						System.out.println("Player wants to buy item: "+itemID+"\n");
 
-						// Equip the user with the new item //Use the currentMoney variable to update
-						// the players money //Display a message, so that the player knows that he //
-						// successfully bought the item
+						// Gets signal from the shop, informing the player of the branch taken
+						Object[] responseBuyOrQuit = channelShopPlayer.get(new FormalField(String.class));
 						
-						System.out.println("The player received the item!\n");
+						System.out.println("Player got response: "+responseBuyOrQuit[0].toString());
 
-					} else {
+						Object[] responseBuy = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
+						
+						System.out.println("Player got response: "+responseBuy[0].toString()+" "+responseBuy[1].toString());
+						System.out.println("Both responses received!\n");
 
-						// Display a message, so that the player know the he did not have enough
-						// money // to buy the item System.out.println("test"); }
+				
+						if (responseBuy[0].equals("ItemBought")) {
+							Object[] moneyBack = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
+							int currentMoney = (int) moneyBack[1];
+							p.setMoney(currentMoney);
+							HUD.updateMoney(p);
+							
+							System.out.println("The player money was set to: "+currentMoney+"\n");
+							
 
+							// Equip the user with the new item //Use the currentMoney variable to update
+							// the players money //Display a message, so that the player knows that he //
+							// successfully bought the item
+							
+							System.out.println("The player received the item!\n");
+
+						} else {
+
+							// Display a message, so that the player know the he did not have enough
+							// money // to buy the item System.out.println("test"); }
+
+						}
+						
+					} catch (InterruptedException e1) {
+						System.out.println("Button did not send command to shop!");
+						e1.printStackTrace();
 					}
-					
-				} catch (InterruptedException e1) {
-					System.out.println("Button did not send command to shop!");
-					e1.printStackTrace();
-				}
+				
 				
 
 				itemPanel.removeAll();
@@ -197,6 +205,7 @@ public class ContentShop extends JPanel {
 
 		return itemPanel;
 	}
+	
 
 	public JLabel addIcon() {
 
@@ -212,6 +221,14 @@ public class ContentShop extends JPanel {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static Space getChannelSP() {
+		return channelShopPlayer;
+	}
+	
+	public static Space getChannelPS() {
+		return channelPlayerShop;
 	}
 }
 
@@ -251,7 +268,7 @@ class setupTransactionLogic implements Runnable {
 				Object[] command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 				String stringCommand = command[0].toString();
 				int itemID = (int) command[1];
-				System.out.print("Shop received command: "+stringCommand+"\n");
+				System.out.print("Shop received command: "+stringCommand+" "+itemID+"\n");
 
 				// Enters while-loop if the player wants to buy an item
 				while (stringCommand.compareTo("CloseShop") != 0 && itemID != -1) {
@@ -285,7 +302,8 @@ class setupTransactionLogic implements Runnable {
 					//channelPS.put("CloseShop",-1);
 					command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 					stringCommand=command[0].toString();
-					System.out.println("Read a new command from the player: "+command[0].toString()+"\n");
+					itemID = (int) command[1];
+					System.out.println("Read a new command from the player: "+command[0].toString()+" "+itemID+"\n");
 					//break;
 					
 				}
@@ -302,3 +320,5 @@ class setupTransactionLogic implements Runnable {
 		}
 	}
 }
+
+
