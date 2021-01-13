@@ -5,6 +5,9 @@ import java.awt.Point;
 public class Player extends Entity {
 
 	int MONEY;
+	
+	enum WeaponInHand {SPACE_GUN}; // ADD POSSIBLE WEAPONS HERE.
+	WeaponInHand weapon;
 
 	public Player(String name) {
 		super();
@@ -17,6 +20,7 @@ public class Player extends Entity {
 		this.MOVEMENT_SPEED = 2;
 		this.MONEY = 0;
 		this.offset = 32;
+		this.weapon = WeaponInHand.SPACE_GUN;
 		/*
 		try {
 			this.IMAGE = ImageIO.read(new File("src/images/clown.png"));

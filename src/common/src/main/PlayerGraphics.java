@@ -30,7 +30,7 @@ public class PlayerGraphics {
 			this.IDLE_LEFT = ImageIO.read(new File(this.IDLE_LEFT_PATH));
 			this.IDLE_RIGHT = ImageIO.read(new File(this.IDLE_RIGHT_PATH));
 		} catch (IOException e) {
-			System.out.println("Couldn't get run right image image sheet");
+			System.out.println("Couldn't get player image sheet");
 			e.printStackTrace();
 		}
 

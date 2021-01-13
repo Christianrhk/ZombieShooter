@@ -28,16 +28,20 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	boolean multiplayer = false;
 
 	// SoundHandler
-	SoundHandler sh;
+	SoundHandler zombieSoundHandler;
+	SoundHandler bulletSoundHandler;
 
 	Space space;
 	boolean playerPosChange[] = { false, false, false, false };
 	boolean press[] = { false, false, false, false };
 	BufferedImage bg;
 	Space zombieSpace;
-	BufferedImage blood;
+	
+	
+	// Graphic controllers
 	ZombieGraphics ZG;
 	PlayerGraphics PG;
+	GunGraphics GG;
 
 	ContentShop shop;
 	ContentOverlayHUD HUD;
@@ -55,17 +59,25 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		addMouseListener(this);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
-		sh = new SoundHandler();
+		
+		// Sounds
+		
+		zombieSoundHandler = new SoundHandler();
+		bulletSoundHandler = new SoundHandler();
+		new Thread(zombieSoundHandler).start();
+		new Thread(bulletSoundHandler).start();
 		starBackGroundMusic();
+		
+		// Graphics
 		ZG = new ZombieGraphics();
 		PG = new PlayerGraphics();
+		GG = new GunGraphics();
 
 		this.name = name;
 
 		// Get images
 		try {
 			bg = ImageIO.read(new File("src/images/zombiebanen.png"));
-			blood = ImageIO.read(new File("src/images/blood.png"));
 		} catch (IOException e) {
 		}
 		this.zombieSpace = zombieSpace;
@@ -84,7 +96,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void starBackGroundMusic() {
-		sh.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
+		zombieSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
 	}
 
 	@Override
@@ -100,6 +112,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		// drawing other players
 		drawAllPlayers(g2d);
+		
 
 	}
 
@@ -114,6 +127,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				//g2d.setColor(new Color(255, 0, 255));
 				//g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
 				PG.drawPlayer(g2d, p);
+				GG.drawGun(g2d, p);
 			}
 
 		} catch (InterruptedException e) {
@@ -297,8 +311,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+        
+        System.out.println("Mouse clicked at (" + x + "," + y + ")");
 
-        sh.playSound("src/sounds/shoot.wav");
+        bulletSoundHandler.playSound("src/sounds/aBullet.wav");
         try {
 
             Player p = getPlayer();
@@ -312,7 +328,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 if (z.collision(x, y)) { 
                 	// Zombie is hit!
                 	
-                	sh.playSound("src/sounds/zombieDMG.wav");
+                	zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
                 	
                     int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
                     if (z.takeDamage(damage)) {
