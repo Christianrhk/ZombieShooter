@@ -74,13 +74,13 @@ public class GameBoard extends JFrame {
         gl.getContent().setBounds(0, 0, width, height);
         layeredBoard.add(gl.getContent(), JLayeredPane.DEFAULT_LAYER); // layer 0
 
-        //Adding shop
-        contentShop = new ContentShop();
-
         // Adding HUD
         HUD = new ContentOverlayHUD(p);
         HUD.setBounds(0, 0, 251, 40);
         HUD.setVisible(true);
+        
+      //Adding shop
+        contentShop = new ContentShop(p, HUD);
 
         //Setting shop on layer 1
         contentShop.setBounds(width / 8, height / 8, width - (width / 4), height - (height / 4));
