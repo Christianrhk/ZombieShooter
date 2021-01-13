@@ -16,13 +16,13 @@ public class PlayerGraphics {
 	int spriteSize;
 
 	public PlayerGraphics() {
-		this.spriteSize = 64;
+		this.spriteSize = 40;
 		this.animationSpeed = 12;
 
-		this.RUNRIGHT_PATH = "src/images/sPlayerRun_strip_right.png";
-		this.RUNLEFT_PATH = "src/images/sPlayerRun_strip_left.png";
-		this.IDLE_LEFT_PATH = "src/images/sPlayerIdle_strip_left.png";
-		this.IDLE_RIGHT_PATH = "src/images/sPlayerIdle_strip.png";
+		this.RUNRIGHT_PATH = "src/images/sPlayerRun_strip_right_small.png";
+		this.RUNLEFT_PATH = "src/images/sPlayerRun_strip_left_small.png";
+		this.IDLE_LEFT_PATH = "src/images/sPlayerIdle_strip_left_small.png";
+		this.IDLE_RIGHT_PATH = "src/images/sPlayerIdle_strip_small.png";
 
 		try {
 			this.RUN_RIGHT = ImageIO.read(new File(this.RUNRIGHT_PATH));

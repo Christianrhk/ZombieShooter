@@ -47,9 +47,9 @@ public class GunGraphics {
 		switch (p.weapon) {
 		case SPACE_GUN:
 			if (itsRight) {
-				spaceGunRight.drawAnimation(g, p.getX(), p.getY(), p.offset);
+				spaceGunRight.drawAnimation(g, p.getX()+p.offset, p.getY()+p.offset/2, p.offset);
 			} else {
-				spaceGunLeft.drawAnimation(g, p.getX(), p.getY(), p.offset);
+				spaceGunLeft.drawAnimation(g, p.getX()-p.offset, p.getY()+p.offset/2, p.offset);
 			}
 			break;
 		}

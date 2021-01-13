@@ -108,7 +108,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		g2d.drawImage(bg, 0, 0, this);
 
 		// Draw zombies
-		drawAllZombies(g);
+		drawAllZombies(g2d);
 
 		// drawing other players
 		drawAllPlayers(g2d);
@@ -126,8 +126,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
 				//g2d.setColor(new Color(255, 0, 255));
 				//g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
-				PG.drawPlayer(g2d, p);
 				GG.drawGun(g2d, p);
+				PG.drawPlayer(g2d, p);
 			}
 
 		} catch (InterruptedException e) {
@@ -154,6 +154,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
+	
+	
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
