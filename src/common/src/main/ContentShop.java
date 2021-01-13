@@ -11,20 +11,19 @@ import org.jspace.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
 public class ContentShop extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private boolean bHasBeenPressed;
-	Space channel = new SequentialSpace();
+	static Space channelShopPlayer = new SequentialSpace();
+	static Space channelPlayerShop = new SequentialSpace();
 	boolean shopVisible;
 
-	public ContentShop() {
+	public ContentShop(Player p) {
 		super.setDoubleBuffered(true);
 		setFocusable(true);
 		requestFocusInWindow();
@@ -36,25 +35,15 @@ public class ContentShop extends JPanel {
 		Border windowsBorder = BorderFactory.createLineBorder(Color.black, 10);
 		super.setBorder(BorderFactory.createTitledBorder(windowsBorder, "Shop", TitledBorder.CENTER, TitledBorder.TOP));
 
-		// Sets up the channel(tupleSpace) and protocol
-		Space channel = new SequentialSpace();
-		int currentMoney = 10; // Get from player;
-		try {
-			channel.put(currentMoney);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} // Initialize by sending the amount of money the
-			// player is currently carrying
+		// Initialize by sending the amount of money the
+		// player is currently carrying
 
 		// Setups up the content of the shop
 		setupShop();
 
-		item[] items = new item[10];
-		items[0] = new item("TestItem", "TestType", 100);
-		String playerName = "FaetterGuf"; // Get data from App
-		
-		// new Thread(new setupTransactionLogic(channel, items, playerName)).start();
+		//item[] items = new item[10];
+		//items[0] = new item("TestItem", "TestType", 100);
+		// String playerName = "FaetterGuf"; // Get data from App
 
 	}
 
@@ -63,7 +52,7 @@ public class ContentShop extends JPanel {
 		// Sets up all the itemPanels needed
 		int n = 3;
 		int numberOfItems = 6;
-		super.setLayout(new GridLayout(n, n, 10, 10));
+		super.setLayout(new GridLayout(n, n, 3, 3));
 
 		for (int i = 0; i < numberOfItems; i++) {
 			JPanel itemPanel = createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba");
@@ -72,6 +61,40 @@ public class ContentShop extends JPanel {
 		super.add(createItemPanel(7, "Armor", "20", "", "", ""), new Integer(7));
 		super.add(createItemPanel(8, "Health Potion", "40", "3", "", ""), new Integer(8));
 		super.add(createItemPanel(9, "Boots", "30", "", "", ""), new Integer(9));
+		
+		JButton closeButton = new JButton("Close");
+		//super.add(closeButton);
+
+	} 
+
+	static void transactionState(boolean state, Player p) {
+		// Player opens the shop (Presses B)
+		if (state == true) {
+			int currentMoney = p.getMoney();
+			try {
+				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop)).start();
+				System.out.println("The shop-thread has started!\n");
+				channelPlayerShop.put(currentMoney);
+				System.out.println("Player sent the money to the shop!\n");
+				System.out.println("Amount: " + currentMoney);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		// Player closes the shop (Presses B again)
+		else {
+			try {
+				channelPlayerShop.put("CloseShop", -1);
+				channelShopPlayer.get(new ActualField("ConnectionTerminated"));
+				System.out.println("Shop was terminated correctly!\n");
+			} catch (InterruptedException e) {
+				System.out.println("Player could NOT terminate the connection with the shop!\n");
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 
@@ -93,7 +116,7 @@ public class ContentShop extends JPanel {
 		// Sets up the specifications of the item, based on the item type
 		JTextArea itemStats = new JTextArea();
 		if (name.equals("Armor")) {
-			itemStats.setText("Reduction:\t" + arg1 + "%");
+			itemStats.setText("Armor points:\t" + arg1);
 		} else if (name.equals("Health Potion")) {
 			itemStats.setText("Heals:\t" + arg1 + "\nCharges:\t" + arg2);
 		} else if (name.equals("Boots")) {
@@ -113,49 +136,60 @@ public class ContentShop extends JPanel {
 
 		buyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button pressed!");
+
+
 
 				// The reason for removing/adding the same components is because the player got
 				// stuck when pressing a buy button.
 				// By re-adding the components, the problem is somehow fixed
+
+				
+				try {
+					
+					channelPlayerShop.put("Buy", itemID);
+					System.out.println("Button pressed!\n");
+
+					// Gets signal from the shop, informing the player of the branch taken
+					Object[] responseBuyOrQuit = channelShopPlayer.get(new FormalField(String.class));
+
+					Object[] responseBuy = channelShopPlayer.get(new FormalField(String.class), new ActualField(itemID));
+					
+					System.out.println("Both responses received!\n");
+
+			
+					if (responseBuy[0].equals("ItemBought")) {
+						Object[] moneyBack = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
+						int currentMoney = (int) moneyBack[1];
+						
+
+						// Equip the user with the new item //Use the currentMoney variable to update
+						// the players money //Display a message, so that the player knows that he //
+						// successfully bought the item
+						
+						System.out.println("The player received the item!\n");
+
+					} else {
+
+						// Display a message, so that the player know the he did not have enough
+						// money // to buy the item System.out.println("test"); }
+
+					}
+					
+				} catch (InterruptedException e1) {
+					System.out.println("Button did not send command to shop!");
+					e1.printStackTrace();
+				}
+				
+
 				itemPanel.removeAll();
 				itemPanel.add(buyButton);
 				itemPanel.add(itemName);
 				itemPanel.add(itemStats);
 				itemPanel.add(addIcon());
-
+				System.out.println("Reached the end of the button logic!\n");
 			}
 		});
-		/*
-		 * try {
-		 * 
-		 * channel.put("Buy", itemID);
-		 * 
-		 * // Gets signal from the shop, informing the player of the branch taken
-		 * Object[] responseBuyOrQuit = channel.get(new FormalField(String.class));
-		 * 
-		 * Object[] responseBuy = channel.get(new FormalField(String.class), new
-		 * ActualField(itemID));
-		 * 
-		 * if (responseBuy[0].equals("ItemBought")) { Object[] moneyBack =
-		 * channel.get(new FormalField(String.class), new FormalField(Integer.class));
-		 * int currentMoney = (int) moneyBack[1];
-		 * 
-		 * // Equip the user with the new item //Use the currentMoney variable to update
-		 * // the players money //Display a message, so that the player knows that he //
-		 * successfully bought the item
-		 * 
-		 * } else {
-		 * 
-		 * // Display a message, so that the player know the he did not have enough
-		 * money // to buy the item System.out.println("test"); }
-		 * 
-		 * } catch (InterruptedException e1) {
-		 * System.out.println("Button did not send command to shop!");
-		 * e1.printStackTrace(); }
-		 * 
-		 * } });
-		 */
+		
 		itemPanel.add(buyButton);
 		itemPanel.add(itemName);
 		itemPanel.add(itemStats);
@@ -179,56 +213,33 @@ public class ContentShop extends JPanel {
 		}
 		return null;
 	}
-	/*
-	 * @Override public void keyPressed(KeyEvent e) { int keyCode = e.getKeyCode();
-	 * if (keyCode == KeyEvent.VK_B && shopVisible == false) { shopVisible = true;
-	 * super.setVisible(true); System.out.println("B-press registered"); } else if
-	 * (keyCode == KeyEvent.VK_B && shopVisible) { shopVisible = false;
-	 * super.setVisible(false); // sendToBack(super);
-	 * System.out.println("B-press registered"); } }
-	 * 
-	 * @Override public void keyReleased(KeyEvent e) { // TODO Auto-generated method
-	 * stub int keyCode = e.getKeyCode(); if (keyCode == KeyEvent.VK_B &&
-	 * shopVisible == false) { shopVisible = true; super.setVisible(true);
-	 * System.out.println("B-press registered"); } else if (keyCode == KeyEvent.VK_B
-	 * && shopVisible) { shopVisible = false; super.setVisible(false); //
-	 * sendToBack(super); System.out.println("B-press registered"); }
-	 * 
-	 * }
-	 * 
-	 * @Override public void keyTyped(KeyEvent e) { // TODO Auto-generated method
-	 * stub int keyCode = e.getKeyCode(); if (keyCode == KeyEvent.VK_B &&
-	 * shopVisible == false) { shopVisible = true; super.setVisible(true);
-	 * System.out.println("B-press registered"); } else if (keyCode == KeyEvent.VK_B
-	 * && shopVisible) { shopVisible = false; super.setVisible(false); //
-	 * sendToBack(super); System.out.println("B-press registered"); }
-	 * 
-	 * }
-	 */
 }
 
 class setupTransactionLogic implements Runnable {
-	private Space channel;
+	private Space channelSP, channelPS;
 	private int currentMoney;
 	private item[] items;
 	private int totalItems;
 	private String playerID;
 
-	public setupTransactionLogic(Space space, item[] items, String playerID) {
-		this.channel = space;
+	public setupTransactionLogic(Space spaceSP, Space spacePS) {
+		this.channelSP = spaceSP;
+		this.channelPS = spacePS;
 		this.currentMoney = 0;
-		this.items = items;
-		this.totalItems = items.length;
-		this.playerID = playerID;
+		// this.items = items;
+		// this.totalItems = items.length;
+		// this.playerID = playerID;
 	}
 
 	public void run() {
 		try {
 			while (true) {
 
+				System.out.print("Shop was started!\n");
 				// Gets the current money that the player is carrying
-				Object[] objectMoney = channel.get(new FormalField(Integer.class));
+				Object[] objectMoney = channelPS.get(new FormalField(Integer.class));
 				currentMoney = (int) objectMoney[0];
+				System.out.println(currentMoney + " money was received from the player, awaiting commands!\n");
 
 				// The player is expected to already have the data from the start of the game,
 				// as to reduce the amount of data transferred from the host
@@ -237,40 +248,53 @@ class setupTransactionLogic implements Runnable {
 				// when the shop can be opened.
 
 				// Get command from the player
-				Object[] command = channel.get(new FormalField(String.class), new FormalField(Integer.class));
+				Object[] command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 				String stringCommand = command[0].toString();
 				int itemID = (int) command[1];
+				System.out.print("Shop received command: "+stringCommand+"\n");
 
 				// Enters while-loop if the player wants to buy an item
 				while (stringCommand.compareTo("CloseShop") != 0 && itemID != -1) {
 
 					// Inform player of loop taken:
-					channel.put("PlayerWannaBuy");
+					channelSP.put("PlayerWannaBuy");
 
 					// Finds the price of the item
-					int itemCost = items[itemID].getCost();
+					// int itemCost = items[itemID].getCost();
+					int itemCost = 3;
 
 					int moneyLeft = currentMoney - itemCost;
 
 					// Checks if the player can afford the item
 					if (moneyLeft > -1) {
 						// The player can afford the item
-						channel.put("ItemBought", itemID);
-						channel.put("CurrentMoney", moneyLeft);
+						channelSP.put("ItemBought", itemID);
+						channelSP.put("CurrentMoney", moneyLeft);
 						currentMoney = moneyLeft;
+						System.out.println("Player now has " + moneyLeft + " money left!\n");
 						// <Signal this to the graphics/stat component>
 
 					} else {
 						// The player can NOT afford the item
-						channel.put("NotEnoughMoney", itemID);
+						channelSP.put("NotEnoughMoney", itemID);
+						System.out.println("Player had not enough money! " + moneyLeft + "\n");
 					}
 
 					// Gets next command from the player
-					command = channel.get(new FormalField(String.class), new FormalField(Integer.class));
+					System.out.println("Awaiting new commands from the player!\n");
+					//channelPS.put("CloseShop",-1);
+					command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
+					stringCommand=command[0].toString();
+					System.out.println("Read a new command from the player: "+command[0].toString()+"\n");
+					//break;
+					
 				}
 
 				// Inform player that the shop has been closed (by the player himself)
-				channel.put("CloseGUI");
+
+				channelSP.put("ConnectionTerminated");
+				System.out.println("Shop terminated!\n");
+				break;
 			}
 		} catch (InterruptedException e) {
 			System.out.println("Protocol between shop and player failed!\n");

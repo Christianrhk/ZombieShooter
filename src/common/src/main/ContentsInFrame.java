@@ -197,9 +197,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		if (keyCode == KeyEvent.VK_B && shopVisible == false) {
 			shopVisible = true;
 			shop.setVisible(true);
+			ContentShop.transactionState(true, getPlayer());
 		} else if (keyCode == KeyEvent.VK_B && shopVisible) {
 			shopVisible = false;
 			shop.setVisible(false);
+			ContentShop.transactionState(false, getPlayer());
 		}
 	}
 
