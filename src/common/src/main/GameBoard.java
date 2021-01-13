@@ -75,7 +75,7 @@ public class GameBoard extends JFrame {
         layeredBoard.add(gl.getContent(), JLayeredPane.DEFAULT_LAYER); // layer 0
 
         //Adding shop
-        contentShop = new ContentShop();
+        contentShop = new ContentShop(p);
 
         // Adding HUD
         HUD = new ContentOverlayHUD(p);

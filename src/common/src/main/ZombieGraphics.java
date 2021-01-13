@@ -52,16 +52,16 @@ public class ZombieGraphics {
 	public void drawZombie(Graphics g, Zombie z) {
 		switch (z.directionFacing) {
 		case DOWN:
-			ZombieGraphics.zombieDown.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
+			zombieDown.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case UP:
-			ZombieGraphics.zombieUp.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
+			zombieUp.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case RIGHT:
-			ZombieGraphics.zombieRight.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
+			zombieRight.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		case LEFT:
-			ZombieGraphics.zombieLeft.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
+			zombieLeft.drawAnimation(g, z.POSITION.x, z.POSITION.y, z.offset);
 			break;
 		}
 	}

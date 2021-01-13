@@ -7,6 +7,8 @@ import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
 
+import common.src.main.Entity.mode;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +37,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	Space zombieSpace;
 	BufferedImage blood;
 	ZombieGraphics ZG;
+	PlayerGraphics PG;
 
 	ContentShop shop;
 	ContentOverlayHUD HUD;
@@ -55,6 +58,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		sh = new SoundHandler();
 		starBackGroundMusic();
 		ZG = new ZombieGraphics();
+		PG = new PlayerGraphics();
 
 		this.name = name;
 
@@ -105,10 +109,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			List<Object[]> getUpdate = space.queryAll(new FormalField(String.class), new FormalField(Player.class));
 			space.put("token");
 			for (Object[] o : getUpdate) {
-				Player temp = (Player) o[1];
+				Player p = (Player) o[1];
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
-				g2d.setColor(new Color(255, 0, 255));
-				g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
+				//g2d.setColor(new Color(255, 0, 255));
+				//g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
+				PG.drawPlayer(g2d, p);
 			}
 
 		} catch (InterruptedException e) {
@@ -248,10 +253,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void movePlayer() {
 		try {
 			// only update if a key has been pressed
+			
+			space.get(new ActualField("token"));
+			Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
+			Player p = (Player) o[1];
+			
 			if (press[0] || press[1] || press[2] || press[3]) {
-				space.get(new ActualField("token"));
-				Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
-				Player p = (Player) o[1];
 				if (press[0])
 					playerPosChange[0] = p.moveUp();
 				if (press[1])
@@ -260,10 +267,16 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					playerPosChange[2] = p.moveLeft();
 				if (press[3])
 					playerPosChange[3] = p.moveRight();
-
-				space.put(name, p);
-				space.put("token");
+				
+				p.mode = mode.RUNNING;
+			} else {
+				p.mode = mode.IDLE;
 			}
+			
+			space.put(name, p);
+			space.put("token");
+			
+			PG.playerRunAnimation(p);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -296,7 +309,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             for (Object[] o : list) {
                 dead = false;
                 Zombie z = (Zombie) o[0];
-                if (z.collision(x, y)) {
+                if (z.collision(x, y)) { 
+                	// Zombie is hit!
+                	
+                	sh.playSound("src/sounds/zombieDMG.wav");
+                	
                     int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
                     if (z.takeDamage(damage)) {
                         p.giveMoney(2);

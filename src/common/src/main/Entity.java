@@ -17,16 +17,22 @@ public class Entity {
 	int offset;
 	
 	enum state {DEAD, ALIVE};
+	enum mode {RUNNING, IDLE};
 	state state;
+	mode mode;
 	
 	enum direction {UP, DOWN, LEFT, RIGHT};
 	direction directionFacing;
+	direction dir;
 	
 	@SuppressWarnings("static-access")
 	public Entity() {
 		this.MOVEMENT_SPEED = 1;
 		this.directionFacing = direction.DOWN;
+		this.dir = direction.RIGHT;
 		this.state = state.ALIVE;
+		this.mode = mode.IDLE;
+
 		MAX_X = 800;
 		MAX_Y = 800;
 	}
@@ -53,6 +59,7 @@ public class Entity {
 		if (this.POSITION.x < MAX_X) {
 			this.POSITION.x += this.MOVEMENT_SPEED;
 			this.directionFacing = direction.RIGHT;
+			this.dir = direction.RIGHT;
 			return true;
 		}
 		return false;
@@ -62,6 +69,7 @@ public class Entity {
 		if (this.POSITION.x > 0) {
 			this.POSITION.x -= this.MOVEMENT_SPEED;
 			this.directionFacing = direction.LEFT;
+			this.dir = direction.LEFT;
 			return true;
 		}
 		return false;

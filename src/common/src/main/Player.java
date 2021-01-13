@@ -16,6 +16,7 @@ public class Player extends Entity {
 		this.POSITION = new Point(0, 0);
 		this.MOVEMENT_SPEED = 2;
 		this.MONEY = 0;
+		this.offset = 32;
 		/*
 		try {
 			this.IMAGE = ImageIO.read(new File("src/images/clown.png"));
