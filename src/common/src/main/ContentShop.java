@@ -2,6 +2,9 @@
 
 package common.src.main;
 
+import common.src.main.Player.WeaponInHand;
+import common.src.main.item.ItemType;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -22,6 +25,7 @@ public class ContentShop extends JPanel {
 	static Space channelShopPlayer = new SequentialSpace();
 	static Space channelPlayerShop = new SequentialSpace();
 	boolean shopVisible;
+	static item[] items = new item[9];
 
 	public ContentShop(Player p, ContentOverlayHUD HUD) {
 		super.setDoubleBuffered(true);
@@ -41,8 +45,8 @@ public class ContentShop extends JPanel {
 		// Setups up the content of the shop
 		setupShop(p, HUD);
 
-		//item[] items = new item[10];
-		//items[0] = new item("TestItem", "TestType", 100);
+		// item[] items = new item[10];
+		// items[0] = new item("TestItem", "TestType", 100);
 		// String playerName = "FaetterGuf"; // Get data from App
 
 	}
@@ -51,28 +55,55 @@ public class ContentShop extends JPanel {
 
 		// Sets up all the itemPanels needed
 		int n = 3;
-		int numberOfItems = 6;
+		int numberOfWeapons = 6;
 		super.setLayout(new GridLayout(n, n, 3, 3));
 
-		for (int i = 0; i < numberOfItems; i++) {
-			JPanel itemPanel = createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba", p, HUD);
+		/*
+		 * for (int i = 0; i < numberOfItems; i++) { JPanel itemPanel =
+		 * createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba", p, HUD);
+		 * super.add(itemPanel, new Integer(i)); }
+		 */
+
+		for (int i = 0; i < numberOfWeapons; i++) {
+			Weapon weapon = new Weapon(i, WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
+			items[i] = weapon;
+			JPanel itemPanel = createItemPanel(weapon, p, HUD);
 			super.add(itemPanel, new Integer(i));
 		}
-		super.add(createItemPanel(7, "Armor", "20", "", "", "", p, HUD), new Integer(7));
-		super.add(createItemPanel(8, "Health Potion", "40", "3", "", "", p, HUD), new Integer(8));
-		super.add(createItemPanel(9, "Boots", "30", "", "", "", p, HUD), new Integer(9));
-		
-		JButton closeButton = new JButton("Close");
-		//super.add(closeButton);
 
-	} 
+		item armor = new item(ItemType.Armor, 20,2);
+		items[6] = armor;
+		JPanel itemPanel = createItemPanel(armor, p, HUD);
+		super.add(itemPanel, new Integer(6));
+		
+		item potion = new item(ItemType.Potion, 40, 3,2);
+		items[7] = potion;
+		itemPanel = createItemPanel(potion, p, HUD);
+		super.add(itemPanel, new Integer(7));
+		
+		item boots = new item(ItemType.Boots, 30,2);
+		items[8] = boots;
+		itemPanel = createItemPanel(boots, p, HUD);
+		super.add(itemPanel, new Integer(8));
+
+		// super.add(createItemPanel(7, "Armor", "20", "", "", "", p, HUD), new
+		// Integer(7));
+		// super.add(createItemPanel(8, "Health Potion", "40", "3", "", "", p, HUD), new
+		// Integer(8));
+		// super.add(createItemPanel(9, "Boots", "30", "", "", "", p, HUD), new
+		// Integer(9));
+
+		// JButton closeButton = new JButton("Close");
+		// super.add(closeButton);
+
+	}
 
 	static void transactionState(boolean state, Player p) {
 		// Player opens the shop (Presses B)
 		if (state == true) {
 			int currentMoney = p.getMoney();
 			try {
-				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop)).start();
+				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop, items)).start();
 				System.out.println("The shop-thread has started!\n");
 				channelPlayerShop.put(currentMoney);
 				System.out.println("Player sent the money to the shop!\n");
@@ -98,7 +129,7 @@ public class ContentShop extends JPanel {
 
 	}
 
-	private JPanel createItemPanel(int itemID, String name, String arg1, String arg2, String arg3, String arg4, Player p, ContentOverlayHUD HUD) {
+	private JPanel createItemPanel(item itemObject, Player p, ContentOverlayHUD HUD) {
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
@@ -109,25 +140,36 @@ public class ContentShop extends JPanel {
 		itemPanel.setLayout(null);
 
 		// Sets up the name of the item
-		JLabel itemName = new JLabel(name);
+		JLabel itemName = new JLabel(itemObject.getName());
 		itemName.setBounds(10, 10, 150, 25);
 		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 18));
-
-		// Sets up the specifications of the item, based on the item type
-		JTextArea itemStats = new JTextArea();
-		if (name.equals("Armor")) {
-			itemStats.setText("Armor points:\t" + arg1);
-		} else if (name.equals("Health Potion")) {
-			itemStats.setText("Heals:\t" + arg1 + "\nCharges:\t" + arg2);
-		} else if (name.equals("Boots")) {
-			itemStats.setText("Speed:\t+" + arg1 + "%");
-		} else {
-			itemStats.setText(
-					"Damage:\t" + arg1 + "\nRate of Fire:\t" + arg2 + "\nAmmo:\t" + arg3 + "\nRange:\t" + arg4);
+		
+		//Sets up the specifications of the item
+		JTextArea itemSpecs = new JTextArea();
+		itemSpecs.setBounds(10, 40, 164, 100);
+		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
+		itemSpecs.setEditable(false);
+		
+		switch (itemObject.getType()) {
+		
+		case Weapon:
+			Weapon weaponObject = (Weapon) itemObject;
+			itemSpecs.setText("Damage:\t" + weaponObject.getDamage() + "\nRate of Fire:\t" + weaponObject.getRateOfFire()
+			+ "\nAttack Speed:\t" + weaponObject.getAttackSpeed() + "\nRange:\t" + weaponObject.getRange());
+			break;
+		case Armor:
+			itemSpecs.setText("Armor points:\t" + itemObject.getArmor());
+			break;
+		case Potion:
+			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\nCharges:\t" + itemObject.getCharges());
+			break;
+		case Boots:
+			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%");
+			break;
+		default:
+			throw new IllegalStateException("Illegal item type!\n");
 		}
-		itemStats.setBounds(10, 40, 164, 100);
-		itemStats.setFont(new Font("Helvetica", Font.PLAIN, 18));
-		itemStats.setEditable(false);
+		
 
 		// Sets up the buy-button for the item
 		JButton buyButton = new JButton("Buy item");
@@ -137,75 +179,107 @@ public class ContentShop extends JPanel {
 		buyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-
-
 				// The reason for removing/adding the same components is because the player got
 				// stuck when pressing a buy button.
 				// By re-adding the components, the problem is somehow fixed
 
-				
-					try {
-						
-						channelPlayerShop.put("Buy", itemID);
-						System.out.println("Player wants to buy item: "+itemID+"\n");
+				try {
 
-						// Gets signal from the shop, informing the player of the branch taken
-						Object[] responseBuyOrQuit = channelShopPlayer.get(new FormalField(String.class));
-						
-						System.out.println("Player got response: "+responseBuyOrQuit[0].toString());
+					channelPlayerShop.put("Buy", itemObject.getID());
+					System.out.println("Player wants to buy item: " + itemObject.getID() + "\n");
 
-						Object[] responseBuy = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
-						
-						System.out.println("Player got response: "+responseBuy[0].toString()+" "+responseBuy[1].toString());
-						System.out.println("Both responses received!\n");
+					// Gets signal from the shop, informing the player of the branch taken
+					Object[] responseBuyOrQuit = channelShopPlayer.get(new FormalField(String.class));
 
-				
-						if (responseBuy[0].equals("ItemBought")) {
-							Object[] moneyBack = channelShopPlayer.get(new FormalField(String.class), new FormalField(Integer.class));
-							int currentMoney = (int) moneyBack[1];
-							p.setMoney(currentMoney);
-							HUD.updateMoney(p);
-							
-							System.out.println("The player money was set to: "+currentMoney+"\n");
-							
+					System.out.println("Player got response: " + responseBuyOrQuit[0].toString());
 
-							// Equip the user with the new item //Use the currentMoney variable to update
-							// the players money //Display a message, so that the player knows that he //
-							// successfully bought the item
-							
-							System.out.println("The player received the item!\n");
+					Object[] responseBuy = channelShopPlayer.get(new FormalField(String.class),
+							new FormalField(Integer.class));
 
-						} else {
+					System.out.println(
+							"Player got response: " + responseBuy[0].toString() + " " + responseBuy[1].toString());
+					System.out.println("Both responses received!\n");
 
-							// Display a message, so that the player know the he did not have enough
-							// money // to buy the item System.out.println("test"); }
+					if (responseBuy[0].equals("ItemBought")) {
+						Object[] moneyBack = channelShopPlayer.get(new FormalField(String.class),
+								new FormalField(Integer.class));
+						int currentMoney = (int) moneyBack[1];
+						p.setMoney(currentMoney);
+						HUD.updateMoney(p);
 
-						}
-						
-					} catch (InterruptedException e1) {
-						System.out.println("Button did not send command to shop!");
-						e1.printStackTrace();
+						System.out.println("The player money was set to: " + currentMoney + "\n");
+
+						// Equip the user with the new item //Use the currentMoney variable to update
+						// the players money //Display a message, so that the player knows that he //
+						// successfully bought the item
+
+						System.out.println("The player received the item!\n");
+
+					} else {
+
+						// Display a message, so that the player know the he did not have enough
+						// money // to buy the item System.out.println("test"); }
+
 					}
-				
-				
+
+				} catch (InterruptedException e1) {
+					System.out.println("Button did not send command to shop!");
+					e1.printStackTrace();
+				}
 
 				itemPanel.removeAll();
 				itemPanel.add(buyButton);
 				itemPanel.add(itemName);
-				itemPanel.add(itemStats);
+				itemPanel.add(itemSpecs);
 				itemPanel.add(addIcon());
 				System.out.println("Reached the end of the button logic!\n");
 			}
 		});
-		
+
 		itemPanel.add(buyButton);
 		itemPanel.add(itemName);
-		itemPanel.add(itemStats);
+		itemPanel.add(itemSpecs);
 		itemPanel.add(addIcon());
 
 		return itemPanel;
 	}
-	
+
+	public JTextArea createItemSpecs(item itemObject) {
+
+		// Sets up the specifications of the item, based on the item type
+		JTextArea itemSpecs = new JTextArea();
+		itemSpecs.setBounds(10, 40, 164, 100);
+		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
+		itemSpecs.setEditable(false);
+		
+		switch (itemObject.getType()) {
+		
+		case Armor:
+			itemSpecs.setText("Armor points:\t" + itemObject.getArmor());
+			break;
+		case Potion:
+			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\nCharges:\t" + itemObject.getCharges());
+			break;
+		case Boots:
+			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%");
+			break;
+		default:
+			throw new IllegalStateException("Illegal item type!\n");
+		}
+		return itemSpecs;
+	}
+
+	public JTextArea createItemSpecs(Weapon weapon) {
+
+		JTextArea itemSpecs = new JTextArea();
+		itemSpecs.setText("Damage:\t" + weapon.getDamage() + "\nRate of Fire:\t" + weapon.getRateOfFire()
+				+ "\nAttack Speed:\t" + weapon.getAttackSpeed() + "\nRange:\t" + weapon.getRange());
+
+		itemSpecs.setBounds(10, 40, 164, 100);
+		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
+		itemSpecs.setEditable(false);
+		return itemSpecs;
+	}
 
 	public JLabel addIcon() {
 
@@ -222,11 +296,11 @@ public class ContentShop extends JPanel {
 		}
 		return null;
 	}
-	
+
 	public static Space getChannelSP() {
 		return channelShopPlayer;
 	}
-	
+
 	public static Space getChannelPS() {
 		return channelPlayerShop;
 	}
@@ -239,11 +313,11 @@ class setupTransactionLogic implements Runnable {
 	private int totalItems;
 	private String playerID;
 
-	public setupTransactionLogic(Space spaceSP, Space spacePS) {
+	public setupTransactionLogic(Space spaceSP, Space spacePS, item[] items) {
 		this.channelSP = spaceSP;
 		this.channelPS = spacePS;
 		this.currentMoney = 0;
-		// this.items = items;
+		this.items = items;
 		// this.totalItems = items.length;
 		// this.playerID = playerID;
 	}
@@ -268,7 +342,7 @@ class setupTransactionLogic implements Runnable {
 				Object[] command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 				String stringCommand = command[0].toString();
 				int itemID = (int) command[1];
-				System.out.print("Shop received command: "+stringCommand+" "+itemID+"\n");
+				System.out.print("Shop received command: " + stringCommand + " " + itemID + "\n");
 
 				// Enters while-loop if the player wants to buy an item
 				while (stringCommand.compareTo("CloseShop") != 0 && itemID != -1) {
@@ -278,7 +352,7 @@ class setupTransactionLogic implements Runnable {
 
 					// Finds the price of the item
 					// int itemCost = items[itemID].getCost();
-					int itemCost = 3;
+					int itemCost = items[itemID].getCost();
 
 					int moneyLeft = currentMoney - itemCost;
 
@@ -299,13 +373,14 @@ class setupTransactionLogic implements Runnable {
 
 					// Gets next command from the player
 					System.out.println("Awaiting new commands from the player!\n");
-					//channelPS.put("CloseShop",-1);
+					// channelPS.put("CloseShop",-1);
 					command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
-					stringCommand=command[0].toString();
+					stringCommand = command[0].toString();
 					itemID = (int) command[1];
-					System.out.println("Read a new command from the player: "+command[0].toString()+" "+itemID+"\n");
-					//break;
-					
+					System.out.println(
+							"Read a new command from the player: " + command[0].toString() + " " + itemID + "\n");
+					// break;
+
 				}
 
 				// Inform player that the shop has been closed (by the player himself)
@@ -320,5 +395,3 @@ class setupTransactionLogic implements Runnable {
 		}
 	}
 }
-
-
