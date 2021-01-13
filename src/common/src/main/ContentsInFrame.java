@@ -268,70 +268,86 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-	public void addShop(ContentShop contentShop) {
-		shop = contentShop;
-		shop.setVisible(false);
-	}
+    public void addShop(ContentShop contentShop) {
+        shop = contentShop;
+        shop.setVisible(false);
+    }
 
-	public void addHUD(ContentOverlayHUD HUD) {
-		this.HUD = HUD;
-		this.HUD.setVisible(true);
-	}
+    public void addHUD(ContentOverlayHUD HUD) {
+        this.HUD = HUD;
+        this.HUD.setVisible(true);
+    }
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
 
-		sh.playSound("src/sounds/shoot.wav");
-		try {
-			space.get(new ActualField("token"));
-			Object[] k = space.get(new ActualField(name), new FormalField(Player.class));
-			Player p = (Player) k[1];
+        sh.playSound("src/sounds/shoot.wav");
+        try {
 
-			zombieSpace.get(new ActualField("token"));
-			java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
+            Player p = getPlayer();
 
-			for (Object[] o : list) {
-				boolean dead = false;
-				Zombie z = (Zombie) o[0];
-				if (z.collision(x, y)) {
-					int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
-					if (z.takeDamage(damage)) {
-						p.giveMoney(2);
-						this.HUD.updateMoney(p);
-						dead = true;
-					}
-				}
-				if (dead) {
-					zombieSpace.put("updateZombies");
-				} else {
-					zombieSpace.put(z);
-				}
-			}
-			zombieSpace.put("token");
-			space.put(name, p);
-			space.put("token");
+            zombieSpace.get(new ActualField("token"));
+            java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
+            boolean dead;
+            for (Object[] o : list) {
+                dead = false;
+                Zombie z = (Zombie) o[0];
+                if (z.collision(x, y)) {
+                    int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+                    if (z.takeDamage(damage)) {
+                        p.giveMoney(2);
+                        this.HUD.updateMoney(p);
+                        dead = true;
+                    }
+                }
+                if (dead) {
+                    zombieSpace.put("updateZombies");
+                } else {
+                    zombieSpace.put(z);
+                }
+            }
+            zombieSpace.put("token");
 
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-	}
+            updatePlayer(p);
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void updatePlayer(Player p) {
+        try {
+            space.get(new ActualField("token"));
+            space.get(new ActualField(name), new FormalField(Player.class));
+            space.put(name,p);
+            space.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
 }
