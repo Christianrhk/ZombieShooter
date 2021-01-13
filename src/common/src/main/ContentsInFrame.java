@@ -16,12 +16,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener {
+public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +59,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		addKeyListener(this);
 		setFocusable(true);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
 		
@@ -126,6 +129,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
 				//g2d.setColor(new Color(255, 0, 255));
 				//g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
+				//GG.drawGun(g2d, p);
 				GG.drawGun(g2d, p);
 				PG.drawPlayer(g2d, p);
 			}
@@ -387,5 +391,19 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) { // Determine which way gun is pointing
+		int x = GG.getGunPositionX();
+		int y = GG.getGunPositionY();
+		double deltax = e.getX() - x;
+		double deltay = e.getY() - y;
+		GG.setImageAngleRad(Math.atan2(deltay, deltax));
+		
+	}
 
 }
