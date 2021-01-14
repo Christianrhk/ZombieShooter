@@ -71,17 +71,17 @@ public class ContentShop extends JPanel {
 			super.add(itemPanel, new Integer(i));
 		}
 
-		item armor = new item(ItemType.Armor, 20,2);
+		item armor = new item(ItemType.Armor, 20, 2);
 		items[6] = armor;
 		JPanel itemPanel = createItemPanel(armor, p, HUD);
 		super.add(itemPanel, new Integer(6));
-		
-		item potion = new item(ItemType.Potion, 40, 3,2);
+
+		item potion = new item(ItemType.Potion, 40, 3, 2);
 		items[7] = potion;
 		itemPanel = createItemPanel(potion, p, HUD);
 		super.add(itemPanel, new Integer(7));
-		
-		item boots = new item(ItemType.Boots, 30,2);
+
+		item boots = new item(ItemType.Boots, 30, 2);
 		items[8] = boots;
 		itemPanel = createItemPanel(boots, p, HUD);
 		super.add(itemPanel, new Integer(8));
@@ -133,7 +133,6 @@ public class ContentShop extends JPanel {
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
-		itemPanel.setBackground(Color.cyan);
 		itemPanel.setForeground(Color.black);
 		itemPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		itemPanel.setPreferredSize(new Dimension(100, 100));
@@ -142,34 +141,44 @@ public class ContentShop extends JPanel {
 		// Sets up the name of the item
 		JLabel itemName = new JLabel(itemObject.getName());
 		itemName.setBounds(10, 10, 150, 25);
-		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 18));
-		
-		//Sets up the specifications of the item
+		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
+
+		// Sets up the specifications of the item
 		JTextArea itemSpecs = new JTextArea();
 		itemSpecs.setBounds(10, 40, 164, 100);
-		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
+		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
 		itemSpecs.setEditable(false);
-		
+
 		switch (itemObject.getType()) {
-		
+
 		case Weapon:
 			Weapon weaponObject = (Weapon) itemObject;
-			itemSpecs.setText("Damage:\t" + weaponObject.getDamage() + "\nRate of Fire:\t" + weaponObject.getRateOfFire()
-			+ "\nAttack Speed:\t" + weaponObject.getAttackSpeed() + "\nRange:\t" + weaponObject.getRange());
+			//System.out.print("AttackSpeed: " + weaponObject.getAttackSpeed());
+			itemSpecs
+					.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
+							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + itemObject.getCost());
+			itemPanel.setBackground(new Color(196, 196, 196, 255));
 			break;
 		case Armor:
-			itemSpecs.setText("Armor points:\t" + itemObject.getArmor());
+			itemSpecs.setText("Armor points:\t" + itemObject.getArmor() + "\n\n\n\nCost:\t" + itemObject.getCost());
+			itemPanel.setBackground(new Color(250, 252, 140, 255));
 			break;
 		case Potion:
-			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\nCharges:\t" + itemObject.getCharges());
+			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\nCharges:\t" + itemObject.getCharges()
+					+ "\n\n\nCost:\t" + itemObject.getCost());
+			itemPanel.setBackground(new Color(231, 136, 84, 255));
 			break;
 		case Boots:
-			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%");
+			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%" + "\n\n\n\nCost:\t" + itemObject.getCost());
+			itemPanel.setBackground(new Color(167, 131, 112, 255));
 			break;
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
-		
+
+		// Sets up the icon for the item
+		JLabel iconLabel = new JLabel(itemObject.getIcon());
+		iconLabel.setBounds(115, 145, 59, 32);
 
 		// Sets up the buy-button for the item
 		JButton buyButton = new JButton("Buy item");
@@ -231,7 +240,7 @@ public class ContentShop extends JPanel {
 				itemPanel.add(buyButton);
 				itemPanel.add(itemName);
 				itemPanel.add(itemSpecs);
-				itemPanel.add(addIcon());
+				itemPanel.add(iconLabel);
 				System.out.println("Reached the end of the button logic!\n");
 			}
 		});
@@ -239,7 +248,7 @@ public class ContentShop extends JPanel {
 		itemPanel.add(buyButton);
 		itemPanel.add(itemName);
 		itemPanel.add(itemSpecs);
-		itemPanel.add(addIcon());
+		itemPanel.add(iconLabel);
 
 		return itemPanel;
 	}
@@ -251,9 +260,9 @@ public class ContentShop extends JPanel {
 		itemSpecs.setBounds(10, 40, 164, 100);
 		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
 		itemSpecs.setEditable(false);
-		
+
 		switch (itemObject.getType()) {
-		
+
 		case Armor:
 			itemSpecs.setText("Armor points:\t" + itemObject.getArmor());
 			break;
@@ -281,21 +290,16 @@ public class ContentShop extends JPanel {
 		return itemSpecs;
 	}
 
-	public JLabel addIcon() {
-
-		try {
-			Image img = ImageIO.read(new File("src/images/redbox.png"));
-
-			Icon icon = new ImageIcon(img);
-			JLabel iconLabel = new JLabel(icon);
-			iconLabel.setBounds(115, 145, 59, 32);
-			return iconLabel;
-		} catch (IOException e) {
-			System.out.println("Icon for item could not be located!\n");
-			e.printStackTrace();
-		}
-		return null;
-	}
+	/*
+	 * public JLabel addIcon() {
+	 * 
+	 * try { Image img = ImageIO.read(new File("src/images/redbox.png"));
+	 * 
+	 * Icon icon = new ImageIcon(img); JLabel iconLabel = new JLabel(icon);
+	 * iconLabel.setBounds(115, 145, 59, 32); return iconLabel; } catch (IOException
+	 * e) { System.out.println("Icon for item could not be located!\n");
+	 * e.printStackTrace(); } return null; }
+	 */
 
 	public static Space getChannelSP() {
 		return channelShopPlayer;

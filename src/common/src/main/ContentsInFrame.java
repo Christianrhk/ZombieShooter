@@ -68,7 +68,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		bulletSoundHandler = new SoundHandler();
 		new Thread(zombieSoundHandler).start();
 		new Thread(bulletSoundHandler).start();
-		starBackGroundMusic();
+		startBackGroundMusic();
 		
 		// Graphics
 		ZG = new ZombieGraphics();
@@ -97,7 +97,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-	public void starBackGroundMusic() {
+	public void startBackGroundMusic() {
 		zombieSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
 	}
 
