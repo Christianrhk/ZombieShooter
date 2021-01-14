@@ -67,13 +67,32 @@ class item {
 				System.out.println("Icon for the boots item could not be located!\n");
 				e.printStackTrace();
 			}
+			break;
+		case Potion:
+			this.HEALTH = arg;
+			this.NAME = "Restore Health";
 
+			try {
+				Image img = ImageIO.read(new File("src/images/heart.png"));
+
+				Icon icon = new ImageIcon(img);
+				this.ICON = icon;
+				// JLabel iconLabel = new JLabel(icon);
+				// iconLabel.setBounds(115, 145, 59, 32);
+			} catch (IOException e) {
+				System.out.println("Icon for the health item could not be located!\n");
+				e.printStackTrace();
+			}
+			
 			break;
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
 	}
 
+	
+	//Constructor for charge-based health restoration
+	/*
 	// Constructor for potion
 	public item(ItemType itemType, int health, int charges, int cost) {
 		this.ID = count.incrementAndGet();
@@ -104,6 +123,7 @@ class item {
 			throw new IllegalStateException("Illegal item type!\n");
 		}
 	}
+	*/
 
 	public int getCost() {
 		return COST;
