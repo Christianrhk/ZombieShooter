@@ -54,6 +54,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	Player p;
 
+
 	// Constructor for multiplayer
 	public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
 		super.setDoubleBuffered(true);
@@ -245,7 +246,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(p);
 		}
+
+
 	}
+
+
 
 	public void subtractMoneyFromPlayer(int amount) {
 		try {
@@ -295,45 +300,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        
-        System.out.println("Mouse clicked at (" + x + "," + y + ")");
 
-        bulletSoundHandler.playSound("src/sounds/aBullet.wav");
-        try {
-
-            zombieSpace.get(new ActualField("token"));
-            java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-            boolean dead;
-            for (Object[] o : list) {
-                dead = false;
-                Zombie z = (Zombie) o[0];
-                if (z.collision(x, y)) { 
-                	// Zombie is hit!
-                	
-                	zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
-                	
-                    int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
-                    if (z.takeDamage(damage)) {
-                        p.giveMoney(2);
-                        this.HUD.updateMoney(p);
-                        dead = true;
-                    }
-                }
-                if (dead) {
-                    zombieSpace.put("updateZombies");
-                } else {
-                    zombieSpace.put(z);
-                }
-            }
-            zombieSpace.put("token");
-
-            updatePlayer(p);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-    }
+	}
 
     private void updatePlayer(Player p) {
         try {
@@ -345,15 +313,52 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             e.printStackTrace();
         }
 
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+
+		System.out.println("Mouse clicked at (" + x + "," + y + ")");
+
+		bulletSoundHandler.playSound("src/sounds/aBullet.wav");
+		try {
+
+			zombieSpace.get(new ActualField("token"));
+			java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
+			boolean dead;
+			for (Object[] o : list) {
+				dead = false;
+				Zombie z = (Zombie) o[0];
+				if (z.collision(x, y)) {
+					// Zombie is hit!
+					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
+
+					int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+					if (z.takeDamage(damage)) {
+						p.giveMoney(2);
+						this.HUD.updateMoney(p);
+						dead = true;
+					}
+				}
+				if (dead) {
+					zombieSpace.put("updateZombies");
+				} else {
+					zombieSpace.put(z);
+				}
+			}
+			zombieSpace.put("token");
+
+			updatePlayer(p);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
