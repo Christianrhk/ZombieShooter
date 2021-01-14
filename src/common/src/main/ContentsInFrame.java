@@ -142,19 +142,17 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void drawAllPlayers(Graphics2D g2d) {
 		try {
-			playerSpace.get(new ActualField("token"));
-			List<Object[]> getUpdate = playerSpace.queryAll(new FormalField(String.class),
-					new FormalField(Player.class));
-			for (Object[] o : getUpdate) {
-				Player player = (Player) o[1];
+			List<Player> players= getPlayerList();
+			for (Player o : players) {
+
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
 				// g2d.setColor(new Color(255, 0, 255));
 				// g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
 				// GG.drawGun(g2d, p);
-				GG.drawGun(g2d, player);
-				PG.drawPlayer(g2d, player);
+				GG.drawGun(g2d, o);
+				PG.drawPlayer(g2d, o);
 			}
-			playerSpace.put("token");
+
 
 		} catch (InterruptedException e) {
 			System.out.println("failed to get token");
@@ -243,7 +241,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			shopVisible = true;
 			shop.setVisible(true);
 			ContentShop.transactionState(true, p);
-			updatePlayer(p);
+			updatePlayer();
 		} else if (keyCode == KeyEvent.VK_B && shopVisible) {
 			shopVisible = false;
 			shop.setVisible(false);
@@ -356,7 +354,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		} else {
 			p.mode = mode.IDLE;
 		}
-		updatePlayer(p);
+		updatePlayer();
 		PG.playerRunAnimation(p);
 	}
 
@@ -374,20 +372,24 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	private void updatePlayer(Player p) {
-		try {
-			playerSpace.get(new ActualField("token"));
-			playerSpace.get(new ActualField(name), new FormalField(Player.class));
-			playerSpace.put(name, p);
-			playerSpace.put("token");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+
+
+    private void updatePlayer() {
+        try {
+            playerSpace.get(new ActualField("token"));
+            playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
+            playerSpace.put(p.NAME,p);
+            playerSpace.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 	private boolean zombieBulletCollision(int x, int y) {
 		boolean hit = false;
 		try {
+
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
 			boolean dead;

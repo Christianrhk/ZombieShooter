@@ -163,8 +163,6 @@ public class StartScreen {
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 started = true;
-                ArrayList<String> allNames = new ArrayList<>();
-                allNames = getNames(name, hostSpace,allNames);
                 try {
                     hostSpace.put("START");
                 } catch (InterruptedException e1) {
