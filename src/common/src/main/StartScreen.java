@@ -38,8 +38,6 @@ public class StartScreen {
 
         panel.setLayout(null);
 
-
-
         JLabel portLabel = new JLabel("Port");
         portLabel.setBounds(10, 20, 80, 25);
         panel.add(portLabel);

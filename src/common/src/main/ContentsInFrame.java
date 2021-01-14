@@ -93,8 +93,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		this.playerSpace = playerSpace;
 		try {
 			bulletSpace.put("token");
-			if (host) {
-				playerSpace.put("token");
+			if (this.host) {
+				this.playerSpace.put("token");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
