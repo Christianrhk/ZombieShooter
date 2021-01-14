@@ -12,77 +12,92 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ContentOverlayHUD extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	JLabel HP, armor, money;
+	JLabel HP, armor, money, bootsLabel;
 
-	BufferedImage heart, shield, dollar;
-	
+	BufferedImage heart, shield, dollar, boots;
+
 	public ContentOverlayHUD(Player p) {
 		// TODO Auto-generated constructor stub
 		super.setDoubleBuffered(true);
-		
-		//Using RGBA (Red, Green, Blue, Alpha) to set the value of the background to transparent
-		super.setBackground(new Color (0,0,0,0));
+
+		// Using RGBA (Red, Green, Blue, Alpha) to set the value of the background to
+		// transparent
+		super.setBackground(new Color(0, 0, 0, 0));
 		super.setLayout(null);
-		
 
 		// Get images
-        try {
-            heart = ImageIO.read(new File("src/images/heart.png"));
-            shield = ImageIO.read(new File("src/images/shield.png"));
-            dollar = ImageIO.read(new File("src/images/money.png"));
-        } catch (IOException e) {
-        	System.out.println("Couldnt load one or more image icons for HUD");
-        }
-		
-        Icon heartIcon = new ImageIcon(heart);
+		try {
+			heart = ImageIO.read(new File("src/images/heart.png"));
+			shield = ImageIO.read(new File("src/images/shield.png"));
+			dollar = ImageIO.read(new File("src/images/money.png"));
+			boots = ImageIO.read(new File("src/images/boots.png"));
+		} catch (IOException e) {
+			System.out.println("Couldnt load one or more image icons for HUD");
+		}
+
+		Icon heartIcon = new ImageIcon(heart);
 		JLabel heartLabel = new JLabel(heartIcon);
 		heartLabel.setBounds(5, 5, 32, 32);
-		
+
 		this.HP = new JLabel(String.valueOf(p.getHP()));
 		this.HP.setForeground(Color.RED);
 		this.HP.setBounds(37, 5, 50, 32);
-		
+
 		Icon armorIcon = new ImageIcon(shield);
 		JLabel armorLabel = new JLabel(armorIcon);
 		armorLabel.setBounds(87, 5, 32, 32);
-		
+
 		this.armor = new JLabel(String.valueOf(p.getArmor()));
 		this.armor.setForeground(Color.YELLOW);
 		this.armor.setBounds(119, 5, 50, 32);
-		
+
 		Icon moneyIcon = new ImageIcon(dollar);
 		JLabel moneyLabel = new JLabel(moneyIcon);
 		moneyLabel.setBounds(169, 5, 32, 32);
-		
+
 		this.money = new JLabel(String.valueOf(p.getMoney()));
 		this.money.setForeground(Color.GREEN);
 		this.money.setBounds(201, 5, 50, 32);
-		
-		
+
 		super.add(heartLabel);
 		super.add(HP);
 		super.add(armorLabel);
 		super.add(armor);
 		super.add(moneyLabel);
 		super.add(money);
+
+		if (p.getBoots() == true) {
+			super.add(bootsLabel);
+		}
+
 	}
-	
+
 	public void updateHP(Player p) {
 		this.HP.setText(String.valueOf(p.getHP()));
 	}
-	
+
 	public void updateArmor(Player p) {
 		this.armor.setText(String.valueOf(p.getArmor()));
 	}
-	
+
 	public void updateMoney(Player p) {
 		this.money.setText(String.valueOf(p.getMoney()));
 	}
-	
+
+	public void addBootsHUD(Player p) {
+
+		Icon bootsIcon = new ImageIcon(boots);
+		JLabel bootsLabel = new JLabel(bootsIcon);
+		bootsLabel.setBounds(235, 5, 32, 32);
+
+		this.add(bootsLabel);
+
+	}
+
 }
