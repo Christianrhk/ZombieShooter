@@ -19,26 +19,22 @@ public class GameBoard extends JFrame {
 
     // Multiplayer  constructor
     public GameBoard(int width, int height, Space playerSpace, String playerName, Space zombieSpace, boolean host) {
-
-        setGameBoard(width, height, playerName, playerSpace, host);
+        Player player = new Player(playerName);
+        setGameBoard(width, height, player, playerSpace, host);
 
         if (host) super.setTitle("Zombie Shooter - host");
         // adding content
-        gl = new GameLoop(playerName, playerSpace, zombieSpace, host);
+        gl = new GameLoop(player, playerSpace, zombieSpace, host);
         new Thread(gl).start();
 
         //insert shop as a layered board
-        try {
-            Object[] o = playerSpace.query(new ActualField(playerName), new FormalField(Player.class));
-            setLayeredBoard(width, height, (Player) o[1]);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        setLayeredBoard(width, height, player);
+
 
     }
 
 
-    public void setGameBoard(int width, int height, String playerName, Space playerSpace, boolean host) {
+    public void setGameBoard(int width, int height, Player player, Space playerSpace, boolean host) {
         this.WIDTH = width;
         this.HEIGHT = height;
 
@@ -52,11 +48,11 @@ public class GameBoard extends JFrame {
         layeredBoard = new JLayeredPane();
 
         // Adding yourself to the playerSpace
-        Player temp = new Player(playerName);
-        temp.POSITION.x = WIDTH / 2;
-        temp.POSITION.y = HEIGHT / 2;
+
+        player.POSITION.x = WIDTH / 2;
+        player.POSITION.y = HEIGHT / 2;
         try {
-            playerSpace.put(playerName, temp);
+            playerSpace.put(player.NAME, player);
         } catch (InterruptedException e) {
             e.printStackTrace();
 

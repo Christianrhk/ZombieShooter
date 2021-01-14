@@ -11,8 +11,8 @@ public class GameLoop implements Runnable {
 
     ContentsInFrame content;
 
-    public GameLoop(String name, Space playerSpace, Space zombieSpace, boolean host) {
-        content = new ContentsInFrame(name, playerSpace, zombieSpace, host);
+    public GameLoop(Player player, Space playerSpace, Space zombieSpace, boolean host) {
+        content = new ContentsInFrame(player, playerSpace, zombieSpace, host);
         this.playing = true;
     }
 

@@ -52,8 +52,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	String name;
 
+	Player p;
+
 	// Constructor for multiplayer
-	public ContentsInFrame(String name, Space playerSpace, Space zombieSpace, boolean host) {
+	public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
 		super.setDoubleBuffered(true);
 		addKeyListener(this);
 		setFocusable(true);
@@ -74,8 +76,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		ZG = new ZombieGraphics();
 		PG = new PlayerGraphics();
 		GG = new GunGraphics();
-
-		this.name = name;
+		this.p = player;
+		this.name = player.NAME;
 
 		// Get images
 		try {
@@ -222,11 +224,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		if (keyCode == KeyEvent.VK_B && shopVisible == false) {
 			shopVisible = true;
 			shop.setVisible(true);
-			ContentShop.transactionState(true, getPlayer());
+			ContentShop.transactionState(true, p);
+			updatePlayer(p);
 		} else if (keyCode == KeyEvent.VK_B && shopVisible) {
 			shopVisible = false;
 			shop.setVisible(false);
-			ContentShop.transactionState(false, getPlayer());
+			ContentShop.transactionState(false, p);
 		}
 	}
 
@@ -240,20 +243,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		if (host) {
 			// Move zombies and animate
-			ZombieController.moveZombies(getPlayer());
+			ZombieController.moveZombies(p);
 		}
-	}
-
-	private Player getPlayer() {
-		try {
-			space.get(new ActualField("token"));
-			Object[] o = space.query(new ActualField(name), new FormalField(Player.class));
-			space.put("token");
-			return (Player) o[1];
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public void subtractMoneyFromPlayer(int amount) {
@@ -264,6 +255,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			Player p = (Player) o[1];
 			p.subtractMoney(amount);
 			space.put(name, p);
+			space.put("token");
 		} catch (InterruptedException e) {
 			System.out.println("Couldnt find player to subtract money from");
 			e.printStackTrace();
@@ -271,13 +263,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void movePlayer() {
-		try {
+
 			// only update if a key has been pressed
-			
-			space.get(new ActualField("token"));
-			Object[] o = space.get(new ActualField(name), new FormalField(Player.class));
-			Player p = (Player) o[1];
-			
 			if (press[0] || press[1] || press[2] || press[3]) {
 				if (press[0])
 					playerPosChange[0] = p.moveUp();
@@ -289,18 +276,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					playerPosChange[3] = p.moveRight();
 				
 				p.mode = mode.RUNNING;
+				updatePlayer(p);
 			} else {
 				p.mode = mode.IDLE;
 			}
-			
-			space.put(name, p);
-			space.put("token");
-			
 			PG.playerRunAnimation(p);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
 	}
 
     public void addShop(ContentShop contentShop) {
@@ -322,8 +302,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
         bulletSoundHandler.playSound("src/sounds/aBullet.wav");
         try {
-
-            Player p = getPlayer();
 
             zombieSpace.get(new ActualField("token"));
             java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
@@ -352,11 +330,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
             zombieSpace.put("token");
 
             updatePlayer(p);
-
-
-
-
-
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }

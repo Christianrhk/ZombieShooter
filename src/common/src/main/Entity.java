@@ -10,7 +10,7 @@ public class Entity {
 	double ATTACK_SPEED;
 	Point POSITION;
 	int MAX_X, MAX_Y;
-		
+
 	int offset;
 	
 	enum state {DEAD, ALIVE};
