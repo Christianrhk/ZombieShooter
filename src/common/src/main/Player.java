@@ -60,5 +60,14 @@ public class Player extends Entity {
 	public void setMoney(int amount) {
 		this.MONEY = amount;
 	}
+	
+	public void setArmor(int amount) {
+		this.ARMOR = amount;
+	}
+	
+	public void setHealth(int amount) {
+		this.HEALTH_POINTS = amount;
+	}
+
 
 }

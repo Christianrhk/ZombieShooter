@@ -54,6 +54,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	Player p;
 
+
 	// Constructor for multiplayer
 	public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
 		super.setDoubleBuffered(true);
@@ -245,7 +246,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(p);
 		}
+
+
 	}
+
+
 
 	public void subtractMoneyFromPlayer(int amount) {
 		try {
@@ -297,6 +302,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     public void mouseClicked(MouseEvent e) {
     }
 
+
     private void updatePlayer(Player p) {
         try {
             space.get(new ActualField("token"));
@@ -306,7 +312,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -354,6 +359,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
     }
 
     @Override
