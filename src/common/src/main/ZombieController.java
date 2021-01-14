@@ -67,12 +67,6 @@ public class ZombieController {
 				z.POSITION.x += ddx;
 				z.POSITION.y += ddy;
 
-				if (dx == 0 && dy == 0){
-					p.HEALTH_POINTS--;
-					System.out.println(p.getHP());
-				}
-
-
 				if (max == Math.abs(dx)) {
 					if (dx >= 0) {
 						z.directionFacing = direction.RIGHT;
