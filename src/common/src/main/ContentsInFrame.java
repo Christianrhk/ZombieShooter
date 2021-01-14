@@ -354,7 +354,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			playerSpace.put(name, p);
 			playerSpace.put("token");
 		} catch (InterruptedException e) {
-			System.out.println("Couldnt find player to subtract money from");
+			System.out.println("Couldn't find player to subtract money from");
 			e.printStackTrace();
 		}
 	}
