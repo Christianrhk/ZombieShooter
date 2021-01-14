@@ -14,7 +14,7 @@ public class Shop {
 
 		// Items in storage
 		item[] items = new item[10];
-		items[0] = new item("TestItem", "TestType", 100);
+		//items[0] = new item("TestItem", "TestType", 100);
 		// <Add more and correct items to storage>;
 
 		// Logic for buying
