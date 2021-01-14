@@ -295,44 +295,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        
-        System.out.println("Mouse clicked at (" + x + "," + y + ")");
-
-        bulletSoundHandler.playSound("src/sounds/aBullet.wav");
-        try {
-
-            zombieSpace.get(new ActualField("token"));
-            java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-            boolean dead;
-            for (Object[] o : list) {
-                dead = false;
-                Zombie z = (Zombie) o[0];
-                if (z.collision(x, y)) { 
-                	// Zombie is hit!
-                	
-                	zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
-                	
-                    int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
-                    if (z.takeDamage(damage)) {
-                        p.giveMoney(2);
-                        this.HUD.updateMoney(p);
-                        dead = true;
-                    }
-                }
-                if (dead) {
-                    zombieSpace.put("updateZombies");
-                } else {
-                    zombieSpace.put(z);
-                }
-            }
-            zombieSpace.put("token");
-
-            updatePlayer(p);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
     }
 
     private void updatePlayer(Player p) {
@@ -350,6 +312,44 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void mousePressed(MouseEvent e) {
+    	  int x = e.getX();
+          int y = e.getY();
+          
+          System.out.println("Mouse clicked at (" + x + "," + y + ")");
+
+          bulletSoundHandler.playSound("src/sounds/aBullet.wav");
+          try {
+
+              zombieSpace.get(new ActualField("token"));
+              java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
+              boolean dead;
+              for (Object[] o : list) {
+                  dead = false;
+                  Zombie z = (Zombie) o[0];
+                  if (z.collision(x, y)) { 
+                  	// Zombie is hit!
+                  	
+                  	zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
+                  	
+                      int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+                      if (z.takeDamage(damage)) {
+                          p.giveMoney(2);
+                          this.HUD.updateMoney(p);
+                          dead = true;
+                      }
+                  }
+                  if (dead) {
+                      zombieSpace.put("updateZombies");
+                  } else {
+                      zombieSpace.put(z);
+                  }
+              }
+              zombieSpace.put("token");
+
+              updatePlayer(p);
+          } catch (InterruptedException e1) {
+              e1.printStackTrace();
+          }
     }
 
     @Override
