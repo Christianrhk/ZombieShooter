@@ -72,7 +72,7 @@ public class GameBoard extends JFrame {
 
         // Adding HUD
         HUD = new ContentOverlayHUD(p);
-        HUD.setBounds(0, 0, 251, 40);
+        HUD.setBounds(0, 0, 301, 40);
         HUD.setVisible(true);
         
       //Adding shop

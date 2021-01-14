@@ -57,7 +57,7 @@ class item {
 			this.NAME = "Boots";
 
 			try {
-				Image img = ImageIO.read(new File("src/images/redbox.png"));
+				Image img = ImageIO.read(new File("src/images/boots.png"));
 
 				Icon icon = new ImageIcon(img);
 				this.ICON = icon;
