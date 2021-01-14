@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import org.jspace.ActualField;
 import org.jspace.FormalField;
+import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 import common.src.main.Entity.mode;
@@ -37,12 +38,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	boolean press[] = { false, false, false, false };
 	BufferedImage bg;
 	Space zombieSpace;
-	
-	
+	Space bulletSpace;
+
 	// Graphic controllers
 	ZombieGraphics ZG;
 	PlayerGraphics PG;
 	GunGraphics GG;
+	BulletGraphics BG;
 
 	ContentShop shop;
 	ContentOverlayHUD HUD;
@@ -54,7 +56,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	Player p;
 
-
 	// Constructor for multiplayer
 	public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
 		super.setDoubleBuffered(true);
@@ -64,19 +65,20 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		addMouseMotionListener(this);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
-		
+
 		// Sounds
-		
+
 		zombieSoundHandler = new SoundHandler();
 		bulletSoundHandler = new SoundHandler();
 		new Thread(zombieSoundHandler).start();
 		new Thread(bulletSoundHandler).start();
 		startBackGroundMusic();
-		
+
 		// Graphics
 		ZG = new ZombieGraphics();
 		PG = new PlayerGraphics();
 		GG = new GunGraphics();
+		BG = new BulletGraphics();
 		this.p = player;
 		this.name = player.NAME;
 
@@ -88,15 +90,19 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		this.zombieSpace = zombieSpace;
 		this.host = host;
 
-		// this.zombie = new Zombie(100,100);
+		this.bulletSpace = new SequentialSpace();
 		this.space = playerSpace;
-		if (host) {
-			try {
+		try {
+			bulletSpace.put("token");
+			if(host) {
 				space.put("token");
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+	
+		
 
 	}
 
@@ -112,13 +118,29 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		// Draw background
 		g2d.drawImage(bg, 0, 0, this);
 
+		// Draw bullets
+		drawAllBullets(g2d);
+
 		// Draw zombies
 		drawAllZombies(g2d);
 
 		// drawing other players
 		drawAllPlayers(g2d);
-		
 
+	}
+
+	private void drawAllBullets(Graphics2D g2d) {
+		try {
+			bulletSpace.get(new ActualField("token"));
+			List<Object[]> list = bulletSpace.queryAll(new FormalField(Bullet.class));
+			bulletSpace.put("token");
+			for (Object[] o : list) {
+				Bullet b = (Bullet) o[0];
+				BG.drawBullet(g2d, b);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void drawAllPlayers(Graphics2D g2d) {
@@ -129,9 +151,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			for (Object[] o : getUpdate) {
 				Player p = (Player) o[1];
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
-				//g2d.setColor(new Color(255, 0, 255));
-				//g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
-				//GG.drawGun(g2d, p);
+				// g2d.setColor(new Color(255, 0, 255));
+				// g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
+				// GG.drawGun(g2d, p);
 				GG.drawGun(g2d, p);
 				PG.drawPlayer(g2d, p);
 			}
@@ -160,9 +182,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-	
-	
-	
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
@@ -247,10 +266,47 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			ZombieController.moveZombies(p);
 		}
 
+		checkCollision();
+		moveBullets();
 
 	}
+	
+	private void checkCollision() {
+		List<Object[]> list;
+		try {
+			bulletSpace.get(new ActualField("token"));
+			list = bulletSpace.getAll(new FormalField(Bullet.class));
+			for (Object[] o : list) {
+				Bullet b = (Bullet) o[0];
+				if (!zombieBulletCollision(b.getX(), b.getY())) {
+					bulletSpace.put(b);
+				}
+			}
+			bulletSpace.put("token");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-
+	public void moveBullets() {
+		try {
+			bulletSpace.get(new ActualField("token"));
+			List<Object[]> list = bulletSpace.getAll(new FormalField(Bullet.class));
+			for (Object[] o : list) {
+				// System.out.println("Bullets moved");
+				Bullet b = (Bullet) o[0];
+				b.moveInDirection();
+				// System.out.println("Bullet coords: " + b.coords.x + " " + b.coords.y);
+				if (b.coords.x <= 800 && b.coords.y <= 800 && b.coords.x >= 0 && b.coords.y >= 0)
+					bulletSpace.put(b);
+			}
+			bulletSpace.put("token");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void subtractMoneyFromPlayer(int amount) {
 		try {
@@ -269,106 +325,118 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	public void movePlayer() {
 
-			// only update if a key has been pressed
-			if (press[0] || press[1] || press[2] || press[3]) {
-				if (press[0])
-					playerPosChange[0] = p.moveUp();
-				if (press[1])
-					playerPosChange[1] = p.moveDown();
-				if (press[2])
-					playerPosChange[2] = p.moveLeft();
-				if (press[3])
-					playerPosChange[3] = p.moveRight();
-				
-				p.mode = mode.RUNNING;
-				updatePlayer(p);
-			} else {
-				p.mode = mode.IDLE;
-			}
-			PG.playerRunAnimation(p);
+		// only update if a key has been pressed
+		if (press[0] || press[1] || press[2] || press[3]) {
+			if (press[0])
+				playerPosChange[0] = p.moveUp();
+			if (press[1])
+				playerPosChange[1] = p.moveDown();
+			if (press[2])
+				playerPosChange[2] = p.moveLeft();
+			if (press[3])
+				playerPosChange[3] = p.moveRight();
+
+			p.mode = mode.RUNNING;
+			updatePlayer(p);
+		} else {
+			p.mode = mode.IDLE;
+		}
+		PG.playerRunAnimation(p);
 	}
 
-    public void addShop(ContentShop contentShop) {
-        shop = contentShop;
-        shop.setVisible(false);
-    }
+	public void addShop(ContentShop contentShop) {
+		shop = contentShop;
+		shop.setVisible(false);
+	}
 
-    public void addHUD(ContentOverlayHUD HUD) {
-        this.HUD = HUD;
-        this.HUD.setVisible(true);
-    }
+	public void addHUD(ContentOverlayHUD HUD) {
+		this.HUD = HUD;
+		this.HUD.setVisible(true);
+	}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
 
+	private void updatePlayer(Player p) {
+		try {
+			space.get(new ActualField("token"));
+			space.get(new ActualField(name), new FormalField(Player.class));
+			space.put(name, p);
+			space.put("token");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-    private void updatePlayer(Player p) {
-        try {
-            space.get(new ActualField("token"));
-            space.get(new ActualField(name), new FormalField(Player.class));
-            space.put(name,p);
-            space.put("token");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	}
 
-    }
+	private boolean zombieBulletCollision(int x, int y) {
+		boolean hit = false;
+		try {
+			zombieSpace.get(new ActualField("token"));
+			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
+			boolean dead;
+			for (Object[] o : zombies) {
+				dead = false;
+				Zombie z = (Zombie) o[0];
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-    	  int x = e.getX();
-          int y = e.getY();
-          
-          System.out.println("Mouse clicked at (" + x + "," + y + ")");
+				if (z.collision(x, y)) {
+					hit = true;
 
-          bulletSoundHandler.playSound("src/sounds/aBullet.wav");
-          try {
+					// Zombie is hit!
+					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
 
-              zombieSpace.get(new ActualField("token"));
-              java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-              boolean dead;
-              for (Object[] o : list) {
-                  dead = false;
-                  Zombie z = (Zombie) o[0];
-                  if (z.collision(x, y)) { 
-                  	// Zombie is hit!
-                  	
-                  	zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
-                  	
-                      int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
-                      if (z.takeDamage(damage)) {
-                          p.giveMoney(2);
-                          this.HUD.updateMoney(p);
-                          dead = true;
-                      }
-                  }
-                  if (dead) {
-                      zombieSpace.put("updateZombies");
-                  } else {
-                      zombieSpace.put(z);
-                  }
-              }
-              zombieSpace.put("token");
+					int damage = 5; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+					if (z.takeDamage(damage)) {
+						p.giveMoney(1);
+						this.HUD.updateMoney(p);
+						dead = true;
+					}
+				}
+				if (dead) {
+					zombieSpace.put("updateZombies");
+				} else {
+					zombieSpace.put(z);
+				}
+			}
+			zombieSpace.put("token");
+			updatePlayer(p);
 
-              updatePlayer(p);
-          } catch (InterruptedException e1) {
-              e1.printStackTrace();
-          }
-    }
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return hit;
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
+	@Override
+	public void mousePressed(MouseEvent e) {
 
-    }
+		Bullet b = new Bullet(GG.getGunPositionX(), GG.getGunPositionY(), 200, 10, GG.getImageAngleRad());
+		try {
+			bulletSpace.get(new ActualField("token"));
+			bulletSpace.put(b);
+			bulletSpace.put("token");
+		} catch (InterruptedException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+		bulletSoundHandler.playSound("src/sounds/aBullet.wav");
+	}
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -381,7 +449,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		double deltax = e.getX() - x;
 		double deltay = e.getY() - y;
 		GG.setImageAngleRad(Math.atan2(deltay, deltax));
-		
+
 	}
 
 }

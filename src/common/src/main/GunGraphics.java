@@ -13,8 +13,6 @@ public class GunGraphics {
 
 	String SPACEGUN_PATH;
 	BufferedImage SPACEGUN;
-
-	Animation spaceGun;
 	
 	int imagePositionX;
 	int imagePositionY;
@@ -35,7 +33,6 @@ public class GunGraphics {
 		imagePositionX = 0;
 		imagePositionY = 0;
 		imageAngleRad = 0;
-		setSpriteSheetAnimations();
 	}
 	
 	public int getGunPositionX() {
@@ -70,12 +67,4 @@ public class GunGraphics {
 		g2d.setTransform(oldAT);
 	}
 	
-	public void setSpriteSheetAnimations() {
-		// Setting which sprites from spritesheet to use for a certain animation
-		spaceGun = getAnim(SPACEGUN);
-	}
-
-	public Animation getAnim(BufferedImage img) {
-		return new Animation(1, img);
-	}
 }
