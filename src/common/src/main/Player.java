@@ -44,6 +44,10 @@ public class Player extends Entity {
 	public int getY() {
 		return this.POSITION.y;
 	}
+	
+	public WeaponInHand getWIH() {
+		return weapon;
+	}
 
 	public int getHP() {
 		return this.HEALTH_POINTS;

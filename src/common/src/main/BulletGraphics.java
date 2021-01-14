@@ -34,7 +34,7 @@ public class BulletGraphics {
 		g2d.translate(cx+b.getX(), cy+b.getY());
 		g2d.rotate(b.getAngle());
 		g2d.translate(-cx, -cy);
-		g2d.drawImage(bulletImage, 20,-10, null);
+		g2d.drawImage(this.bulletImage, 20,-10, null);
 		g2d.setTransform(oldAT);
 		//g2d.drawImage(bulletImage, b.coords.x, b.coords.y, null);
 	}
