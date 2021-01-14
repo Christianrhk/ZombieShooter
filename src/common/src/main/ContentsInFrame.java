@@ -142,18 +142,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void drawAllPlayers(Graphics2D g2d) {
 		try {
-			playerSpace.get(new ActualField("token"));
-			List<Object[]> getUpdate = playerSpace.queryAll(new FormalField(String.class),
-					new FormalField(Player.class));
-			playerSpace.put("token");
-			for (Object[] o : getUpdate) {
-				Player player = (Player) o[1];
-				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
-				// g2d.setColor(new Color(255, 0, 255));
-				// g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
-				// GG.drawGun(g2d, p);
-				GG.drawGun(g2d, player);
-				PG.drawPlayer(g2d, player);
+			List<Player> players= getPlayerList();
+			for (Player o : players) {
+
+				GG.drawGun(g2d, o);
+				PG.drawPlayer(g2d, o);
 			}
 
 		} catch (InterruptedException e) {
@@ -399,20 +392,22 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	private void updatePlayer() {
-		try {
-			playerSpace.get(new ActualField("token"));
-			playerSpace.get(new ActualField(name), new FormalField(Player.class));
-			playerSpace.put(name, p);
-			playerSpace.put("token");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    private void updatePlayer() {
+        try {
+            playerSpace.get(new ActualField("token"));
+            playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
+            playerSpace.put(p.NAME,p);
+            playerSpace.put("token");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 	private boolean zombieBulletCollision(int x, int y) {
 		boolean hit = false;
 		try {
+
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
 			boolean dead;

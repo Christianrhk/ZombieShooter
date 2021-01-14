@@ -56,7 +56,6 @@ public class ZombieController {
 
 				int dx = p.getX() - z.POSITION.x;
 				int dy = p.getY() - z.POSITION.y;
-				// System.out.println("Zombiespawn at: " + z.POSITION.x + "," + z.POSITION.y);
 
 				double max = Math.max(Math.abs(dx), Math.abs(dy));
 
@@ -67,6 +66,12 @@ public class ZombieController {
 
 				z.POSITION.x += ddx;
 				z.POSITION.y += ddy;
+
+				if (dx == 0 && dy == 0){
+					p.HEALTH_POINTS--;
+					System.out.println(p.getHP());
+				}
+
 
 				if (max == Math.abs(dx)) {
 					if (dx >= 0) {
@@ -137,7 +142,7 @@ class WaveController implements Runnable {
         	// update zombies to check id any has been shot
 			while (ZombieController.numberOfZombies > 0) {
 				try {
-					// Only update when there has been shot.
+					// Only update when a zombie has been shot
 					Object[] s = ZombieController.zombieSpace.get(new ActualField("updateZombies"));
 					System.out.println((String) s[0]);
 					ZombieController.numberOfZombies--;
