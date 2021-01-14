@@ -57,9 +57,7 @@ public class ContentShop extends JPanel {
 	private void setupShop(Player p, ContentOverlayHUD HUD) {
 
 		// Sets up all the itemPanels needed
-		int n = 3;
-		int numberOfWeapons = 6;
-		super.setLayout(new GridLayout(n, n, 3, 3));
+		super.setLayout(new GridLayout(3, 3, 3, 3));
 
 		/*
 		 * for (int i = 0; i < numberOfItems; i++) { JPanel itemPanel =
@@ -67,27 +65,50 @@ public class ContentShop extends JPanel {
 		 * super.add(itemPanel, new Integer(i)); }
 		 */
 
-		for (int i = 0; i < numberOfWeapons; i++) {
-			Weapon weapon = new Weapon(i, WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
-			items[i] = weapon;
-			JPanel itemPanel = createItemPanel(weapon, p, HUD);
-			super.add(itemPanel, new Integer(i));
-		}
+		Weapon PistolWeapon = new Weapon(0, WeaponInHand.PISTOL, 1, 2, 3, 4, 5);
+		items[0] = PistolWeapon;
+		JPanel itemPanel0 = createItemPanel(PistolWeapon, p, HUD);
+		super.add(itemPanel0, new Integer(0));
+		
+		Weapon AssaultWeapon = new Weapon(1, WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4, 5);
+		items[1] = AssaultWeapon;
+		JPanel itemPanel1 = createItemPanel(AssaultWeapon, p, HUD);
+		super.add(itemPanel1, new Integer(1));
+		
+		Weapon SMGWeapon = new Weapon(2, WeaponInHand.SMG, 1, 2, 3, 4, 5);
+		items[2] = SMGWeapon;
+		JPanel itemPanel2 = createItemPanel(SMGWeapon, p, HUD);
+		super.add(itemPanel2, new Integer(2));
+		
+		Weapon ShotgunWeapon = new Weapon(3, WeaponInHand.SHOTGUN, 1, 2, 3, 4, 5);
+		items[3] = ShotgunWeapon;
+		JPanel itemPanel3 = createItemPanel(ShotgunWeapon, p, HUD);
+		super.add(itemPanel3, new Integer(3));
 
+		Weapon SniperWeapon = new Weapon(4, WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4, 5);
+		items[4] = SniperWeapon;
+		JPanel itemPanel4 = createItemPanel(SniperWeapon, p, HUD);
+		super.add(itemPanel4, new Integer(4));
+		
+		Weapon SpaceWeapon = new Weapon(5, WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
+		items[5] = SpaceWeapon;
+		JPanel itemPanel5 = createItemPanel(SpaceWeapon, p, HUD);
+		super.add(itemPanel5, new Integer(5));
+		
 		item armor = new item(ItemType.Armor, 50, 10);
 		items[6] = armor;
-		JPanel itemPanel = createItemPanel(armor, p, HUD);
-		super.add(itemPanel, new Integer(6));
+		JPanel itemPanel6 = createItemPanel(armor, p, HUD);
+		super.add(itemPanel6, new Integer(6));
 
 		item potion = new item(ItemType.Potion, 40, 8);
 		items[7] = potion;
-		itemPanel = createItemPanel(potion, p, HUD);
-		super.add(itemPanel, new Integer(7));
+		JPanel itemPanel7 = createItemPanel(potion, p, HUD);
+		super.add(itemPanel7, new Integer(7));
 
 		item boots = new item(ItemType.Boots, 50, 50);
 		items[8] = boots;
-		itemPanel = createItemPanel(boots, p, HUD);
-		super.add(itemPanel, new Integer(8));
+		JPanel itemPanel8 = createItemPanel(boots, p, HUD);
+		super.add(itemPanel8, new Integer(8));
 
 		// super.add(createItemPanel(7, "Armor", "20", "", "", "", p, HUD), new
 		// Integer(7));
@@ -143,7 +164,7 @@ public class ContentShop extends JPanel {
 
 		// Sets up the name of the item
 		JLabel itemName = new JLabel(itemObject.getName());
-		itemName.setBounds(10, 10, 150, 25);
+		itemName.setBounds(10, 8, 150, 30);
 		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
 
 		// Sets up the specifications of the item

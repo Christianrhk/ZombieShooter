@@ -8,7 +8,12 @@ public class Player extends Entity {
 	boolean BOOTS;
 
 	enum WeaponInHand {
-		SPACE_GUN
+		SPACE_GUN,
+		SNIPER_RIFLE,
+		ASSAULT_RIFLE,
+		PISTOL,
+		SMG,
+		SHOTGUN
 	}; // ADD POSSIBLE WEAPONS HERE.
 
 	WeaponInHand weapon;
