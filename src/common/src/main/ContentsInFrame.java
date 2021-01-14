@@ -22,17 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 1L;
-
-	boolean multiplayer = false;
 
 	// SoundHandler
 	SoundHandler zombieSoundHandler;
 	SoundHandler bulletSoundHandler;
 
-	Space space;
+	Space playerSpace;
 	boolean playerPosChange[] = { false, false, false, false };
 	boolean press[] = { false, false, false, false };
 	BufferedImage bg;
@@ -89,10 +88,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		this.host = host;
 
 		// this.zombie = new Zombie(100,100);
-		this.space = playerSpace;
+		this.playerSpace = playerSpace;
 		if (host) {
 			try {
-				space.put("token");
+				System.out.println("Put token in playerSpace");
+				playerSpace.put("token");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -123,9 +123,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void drawAllPlayers(Graphics2D g2d) {
 		try {
-			space.get(new ActualField("token"));
-			List<Object[]> getUpdate = space.queryAll(new FormalField(String.class), new FormalField(Player.class));
-			space.put("token");
+			playerSpace.get(new ActualField("token"));
+			List<Object[]> getUpdate = playerSpace.queryAll(new FormalField(String.class), new FormalField(Player.class));
 			for (Object[] o : getUpdate) {
 				Player p = (Player) o[1];
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
@@ -135,14 +134,15 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				GG.drawGun(g2d, p);
 				PG.drawPlayer(g2d, p);
 			}
+			playerSpace.put("token");
 
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("failed to get token");
 		}
 
 	}
 
-	private void drawAllZombies(Graphics g) {
+	private void drawAllZombies(Graphics2D g2d) {
 		try {
 			// System.out.println("I try to print the zombies ");
 			zombieSpace.get(new ActualField("token"));
@@ -150,7 +150,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 			for (Object[] o : zombies) {
 				Zombie z = (Zombie) o[0];
-				ZG.drawZombie(g, z);
+				ZG.drawZombie(g2d, z);
 			}
 
 			zombieSpace.put("token");
@@ -246,21 +246,17 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(p);
 		}
-
-
 	}
-
-
 
 	public void subtractMoneyFromPlayer(int amount) {
 		try {
-			space.get(new ActualField("token"));
+			playerSpace.get(new ActualField("token"));
 			Object[] o;
-			o = space.get(new ActualField(name), new FormalField(Player.class));
+			o = playerSpace.get(new ActualField(name), new FormalField(Player.class));
 			Player p = (Player) o[1];
 			p.subtractMoney(amount);
-			space.put(name, p);
-			space.put("token");
+			playerSpace.put(name, p);
+			playerSpace.put("token");
 		} catch (InterruptedException e) {
 			System.out.println("Couldnt find player to subtract money from");
 			e.printStackTrace();
@@ -268,7 +264,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void movePlayer() {
-
 			// only update if a key has been pressed
 			if (press[0] || press[1] || press[2] || press[3]) {
 				if (press[0])
@@ -281,10 +276,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					playerPosChange[3] = p.moveRight();
 				
 				p.mode = mode.RUNNING;
-				updatePlayer(p);
+
 			} else {
 				p.mode = mode.IDLE;
 			}
+			updatePlayer(p);
 			PG.playerRunAnimation(p);
 	}
 
@@ -305,10 +301,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     private void updatePlayer(Player p) {
         try {
-            space.get(new ActualField("token"));
-            space.get(new ActualField(name), new FormalField(Player.class));
-            space.put(name,p);
-            space.put("token");
+            playerSpace.get(new ActualField("token"));
+            playerSpace.get(new ActualField(name), new FormalField(Player.class));
+            playerSpace.put(name,p);
+            playerSpace.put("token");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -352,8 +348,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 			updatePlayer(p);
 		} catch (InterruptedException e1) {
+			System.out.println("I fail here ");
 			e1.printStackTrace();
 		}
+
+
     }
 
     @Override
