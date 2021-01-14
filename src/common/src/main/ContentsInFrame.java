@@ -450,7 +450,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void mousePressed(MouseEvent e) {
 
-		Bullet b = new Bullet(p.getX(), p.getY(), 200, 10, GG.getImageAngleRad());
+		Bullet b = new Bullet(p.getX(), p.getY(), 200, 10, GG.getImageAngleRad(), p.getWIH());
 		try {
 			bulletSpace.get(new ActualField("token"));
 			bulletSpace.put(b);

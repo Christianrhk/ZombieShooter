@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-	
+
 	String NAME;
 	int HEALTH_POINTS, ARMOR, DAMAGE, MOVEMENT_SPEED;
 	double ATTACK_SPEED;
@@ -12,16 +12,25 @@ public class Entity {
 	int MAX_X, MAX_Y;
 
 	int offset;
-	
-	enum state {DEAD, ALIVE};
-	enum mode {RUNNING, IDLE};
+
+	enum state {
+		DEAD, ALIVE
+	};
+
+	enum mode {
+		RUNNING, IDLE
+	};
+
 	state state;
 	mode mode;
-	
-	enum direction {UP, DOWN, LEFT, RIGHT};
+
+	enum direction {
+		UP, DOWN, LEFT, RIGHT
+	};
+
 	direction directionFacing;
 	direction dir;
-	
+
 	@SuppressWarnings("static-access")
 	public Entity() {
 		this.MOVEMENT_SPEED = 1;
@@ -33,7 +42,7 @@ public class Entity {
 		MAX_X = 800;
 		MAX_Y = 800;
 	}
-	
+
 	public boolean moveUp() {
 		if (this.POSITION.y > 0) {
 			this.POSITION.y -= this.MOVEMENT_SPEED;
@@ -71,22 +80,22 @@ public class Entity {
 		}
 		return false;
 	}
-	
-	// Take damage based on incoming damage and armor left
-		public boolean takeDamage(int damage) { //Return true if dead
-			if (damage <= this.ARMOR) {
-				this.ARMOR -= damage;
-			} else if (this.ARMOR > 0 && damage > this.ARMOR) {
-				this.HEALTH_POINTS -= (damage - this.ARMOR);
-				this.ARMOR = 0;
-			} else {
-				this.HEALTH_POINTS -= damage;
-			}
 
-			if (this.HEALTH_POINTS <= 0) {
-				return true;
-			} else {
-				return false;
-			}
+	// Take damage based on incoming damage and armor left
+	public boolean takeDamage(int damage) { // Return true if dead
+		if (damage <= this.ARMOR) {
+			this.ARMOR -= damage;
+		} else if (this.ARMOR > 0 && damage > this.ARMOR) {
+			this.HEALTH_POINTS -= (damage - this.ARMOR);
+			this.ARMOR = 0;
+		} else {
+			this.HEALTH_POINTS -= damage;
 		}
+
+		if (this.HEALTH_POINTS <= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
