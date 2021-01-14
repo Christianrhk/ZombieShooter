@@ -20,6 +20,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -244,11 +245,30 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		if (host) {
 			// Move zombies and animate
-			ZombieController.moveZombies(p);
-		}
+            try {
+                ZombieController.moveZombies(getPlayerList());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 
 	}
+
+	private List getPlayerList() throws InterruptedException {
+	    playerSpace.get(new ActualField("token"));
+        List<Object[]> list = playerSpace.queryAll(new FormalField(String.class), new FormalField(Player.class));
+        playerSpace.put("token");
+        ArrayList<Player> players = new ArrayList<Player>();
+        for (Object[] o : list){
+            players.add((Player)o[1]);
+        }
+        return players;
+
+
+
+
+    }
 
 
 
@@ -327,7 +347,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		try {
 
 			zombieSpace.get(new ActualField("token"));
-			java.util.List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
+			List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
 			boolean dead;
 			for (Object[] o : list) {
 				dead = false;

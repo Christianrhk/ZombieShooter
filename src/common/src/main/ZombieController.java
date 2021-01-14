@@ -4,11 +4,14 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.math.*;
+
 
 import common.src.main.Entity.direction;
 import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
+
 
 public class ZombieController {
 
@@ -30,20 +33,34 @@ public class ZombieController {
 		new Thread(new WaveController()).start();
 	}
 
-	public static void moveZombies(Player p) {
+	public static void moveZombies(List<Player> playerList) {
+
 
 		// have zombies move towards closest player (really simple AI)
 		// remmeber to update direction for animation
-
 		try {
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> list = zombieSpace.getAll(new FormalField(Zombie.class));
-
+			Player p = playerList.get(0);
+			int tempDistance,  maxDistance = Integer.MAX_VALUE;
 			for (Object[] o : list) {
 				Zombie z = (Zombie) o[0];
+				for (Player q : playerList){
+					tempDistance = calculateDistance(q.getX() - z.POSITION.x,q.getY() - z.POSITION.y );
+					if (maxDistance>tempDistance){
+						p = q;
+						maxDistance = tempDistance;
+					}
+				}
+
+
 				int dx = p.getX() - z.POSITION.x;
 				int dy = p.getY() - z.POSITION.y;
 				// System.out.println("Zombiespawn at: " + z.POSITION.x + "," + z.POSITION.y);
+				if (dx == 0 && dy == 0){
+					p.HEALTH_POINTS--;
+					System.out.println(p.getHP());
+				}
 
 				double max = Math.max(Math.abs(dx), Math.abs(dy));
 
@@ -78,7 +95,10 @@ public class ZombieController {
 		}
 	}
 
-	
+	private static int calculateDistance(int x, int y){
+		return (int) Math.sqrt(x*x+y*y);
+	}
+
 
 	public static void spawnNewZombies() {
 
