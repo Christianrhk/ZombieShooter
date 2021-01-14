@@ -130,6 +130,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			bulletSpace.get(new ActualField("token"));
 			List<Object[]> list = bulletSpace.queryAll(new FormalField(Bullet.class));
 			bulletSpace.put("token");
+
 			for (Object[] o : list) {
 				Bullet b = (Bullet) o[0];
 				BG.drawBullet(g2d, b);
@@ -145,13 +146,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			List<Object[]> getUpdate = playerSpace.queryAll(new FormalField(String.class),
 					new FormalField(Player.class));
 			for (Object[] o : getUpdate) {
-				Player p = (Player) o[1];
+				Player player = (Player) o[1];
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
 				// g2d.setColor(new Color(255, 0, 255));
 				// g2d.fillRect(temp.POSITION.x, temp.POSITION.y, 15, 20);
 				// GG.drawGun(g2d, p);
-				GG.drawGun(g2d, p);
-				PG.drawPlayer(g2d, p);
+				GG.drawGun(g2d, player);
+				PG.drawPlayer(g2d, player);
 			}
 			playerSpace.put("token");
 
@@ -400,9 +401,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					// Zombie is hit!
 					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
 
-					int damage = 10; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+					int damage = 5; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
 					if (z.takeDamage(damage)) {
-						p.giveMoney(2);
+						p.giveMoney(1);
 						this.HUD.updateMoney(p);
 						dead = true;
 					}
@@ -425,7 +426,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void mousePressed(MouseEvent e) {
 
-		Bullet b = new Bullet(GG.getGunPositionX(), GG.getGunPositionY(), 200, 10, GG.getImageAngleRad());
+		Bullet b = new Bullet(p.getX(), p.getY(), 200, 10, GG.getImageAngleRad());
 		try {
 			bulletSpace.get(new ActualField("token"));
 			bulletSpace.put(b);
@@ -457,12 +458,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mouseMoved(MouseEvent e) { // Determine which way gun is pointing
-		int x = GG.getGunPositionX();
-		int y = GG.getGunPositionY();
+		int x = p.getX();
+		int y = p.getY();
 		double deltax = e.getX() - x;
 		double deltay = e.getY() - y;
 		GG.setImageAngleRad(Math.atan2(deltay, deltax));
-
 	}
 
 }
