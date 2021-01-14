@@ -3,9 +3,11 @@ import java.awt.Point;
 
 public class Zombie extends Entity {
 	boolean HIT;// Used to determine if a zombie has been hit by a player
-
+	int damageDelay;
 	public Zombie(int x, int y) {
 		super();
+		
+		this.damageDelay = 0;
 		this.POSITION = new Point(x, y);
 		initZombie();
 	}
@@ -32,6 +34,18 @@ public class Zombie extends Entity {
 			hit = true;
 		}
 		return hit;
+	}
+	
+	public int getDmgDelay() {
+		return this.damageDelay;
+	}
+	
+	public void resetDmgDelay() {
+		this.damageDelay = 0;
+	}
+	
+	public void increaseDmgDelay() {
+		this.damageDelay++;
 	}
 
 }

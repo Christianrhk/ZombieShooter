@@ -57,10 +57,6 @@ public class ZombieController {
 				int dx = p.getX() - z.POSITION.x;
 				int dy = p.getY() - z.POSITION.y;
 				// System.out.println("Zombiespawn at: " + z.POSITION.x + "," + z.POSITION.y);
-				if (dx == 0 && dy == 0){
-					p.HEALTH_POINTS--;
-					System.out.println(p.getHP());
-				}
 
 				double max = Math.max(Math.abs(dx), Math.abs(dy));
 

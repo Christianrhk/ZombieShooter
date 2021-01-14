@@ -145,6 +145,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			playerSpace.get(new ActualField("token"));
 			List<Object[]> getUpdate = playerSpace.queryAll(new FormalField(String.class),
 					new FormalField(Player.class));
+			playerSpace.put("token");
 			for (Object[] o : getUpdate) {
 				Player player = (Player) o[1];
 				// g2d.drawImage(temp.IMAGE, temp.getX(), temp.getY(), this);
@@ -154,7 +155,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				GG.drawGun(g2d, player);
 				PG.drawPlayer(g2d, player);
 			}
-			playerSpace.put("token");
 
 		} catch (InterruptedException e) {
 			System.out.println("failed to get token");
@@ -243,7 +243,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			shopVisible = true;
 			shop.setVisible(true);
 			ContentShop.transactionState(true, p);
-			updatePlayer(p);
+			updatePlayer();
 		} else if (keyCode == KeyEvent.VK_B && shopVisible) {
 			shopVisible = false;
 			shop.setVisible(false);
@@ -268,12 +268,37 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 		}
 
-		checkCollision();
+		checkPlayerCollision();
+		checkBulletCollision();
 		moveBullets();
 
 	}
 
-	private void checkCollision() {
+	private void checkPlayerCollision() {
+		List<Object[]> list;
+		try {
+			zombieSpace.get(new ActualField("token"));
+			list = zombieSpace.queryAll(new FormalField(Zombie.class));
+			zombieSpace.put("token");
+			for (Object[] o : list) {
+				Zombie z = (Zombie) o[0];
+				z.increaseDmgDelay();
+				if (z.collision(p.getX(), p.getY())) {
+					if (z.getDmgDelay() > 50) {
+						p.takeDamage(z.DAMAGE);
+						this.HUD.updateArmor(p);
+						this.HUD.updateHP(p);
+						updatePlayer();
+						z.resetDmgDelay();
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void checkBulletCollision() {
 		List<Object[]> list;
 		try {
 			bulletSpace.get(new ActualField("token"));
@@ -356,7 +381,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		} else {
 			p.mode = mode.IDLE;
 		}
-		updatePlayer(p);
+		updatePlayer();
 		PG.playerRunAnimation(p);
 	}
 
@@ -374,7 +399,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	private void updatePlayer(Player p) {
+	private void updatePlayer() {
 		try {
 			playerSpace.get(new ActualField("token"));
 			playerSpace.get(new ActualField(name), new FormalField(Player.class));

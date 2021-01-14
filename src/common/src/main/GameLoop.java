@@ -33,12 +33,10 @@ public class GameLoop implements Runnable {
 
             if (content.shopVisible) {
                 content.shop.repaint();
-            } else {
+            } 
                 // update jFrame
                 content.repaint();
-            }
         }
-
     }
 
     public ContentsInFrame getContent() {

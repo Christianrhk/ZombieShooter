@@ -74,7 +74,7 @@ public class Entity {
 	
 	// Take damage based on incoming damage and armor left
 		public boolean takeDamage(int damage) { //Return true if dead
-			if (damage < this.ARMOR) {
+			if (damage <= this.ARMOR) {
 				this.ARMOR -= damage;
 			} else if (this.ARMOR > 0 && damage > this.ARMOR) {
 				this.HEALTH_POINTS -= (damage - this.ARMOR);
