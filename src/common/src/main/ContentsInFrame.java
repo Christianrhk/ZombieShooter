@@ -31,6 +31,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	// SoundHandler
 	SoundHandler zombieSoundHandler;
 	SoundHandler bulletSoundHandler;
+	SoundHandler playerSoundHandler;
 
 	Space playerSpace;
 	boolean playerPosChange[] = { false, false, false, false };
@@ -69,8 +70,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		zombieSoundHandler = new SoundHandler();
 		bulletSoundHandler = new SoundHandler();
+		playerSoundHandler = new SoundHandler();
 		new Thread(zombieSoundHandler).start();
 		new Thread(bulletSoundHandler).start();
+		new Thread(playerSoundHandler).start();
 		startBackGroundMusic();
 
 		// Graphics
@@ -103,7 +106,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void startBackGroundMusic() {
-		zombieSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
+		playerSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
 	}
 
 	@Override
@@ -278,6 +281,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				z.increaseDmgDelay();
 				if (z.collision(p.getX(), p.getY())) {
 					if (z.getDmgDelay() > 50) {
+						playerSoundHandler.playSound("src/sounds/hit.wav");
 						p.takeDamage(z.DAMAGE);
 						this.HUD.updateArmor(p);
 						this.HUD.updateHP(p);
