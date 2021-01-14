@@ -246,7 +246,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(p);
 		}
+
+
 	}
+
+
 
 	public void subtractMoneyFromPlayer(int amount) {
 		try {
@@ -264,6 +268,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void movePlayer() {
+
 			// only update if a key has been pressed
 			if (press[0] || press[1] || press[2] || press[3]) {
 				if (press[0])
@@ -296,8 +301,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
 
-	}
 
     private void updatePlayer(Player p) {
         try {
@@ -346,13 +351,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 			zombieSpace.put("token");
 
-			updatePlayer(p);
-		} catch (InterruptedException e1) {
-			System.out.println("I fail here ");
-			e1.printStackTrace();
-		}
-
-
+              updatePlayer(p);
+          } catch (InterruptedException e1) {
+              e1.printStackTrace();
+          }
     }
 
     @Override
