@@ -17,7 +17,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +68,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		bulletSoundHandler = new SoundHandler();
 		new Thread(zombieSoundHandler).start();
 		new Thread(bulletSoundHandler).start();
-		starBackGroundMusic();
+		startBackGroundMusic();
 		
 		// Graphics
 		ZG = new ZombieGraphics();
@@ -98,7 +97,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-	public void starBackGroundMusic() {
+	public void startBackGroundMusic() {
 		zombieSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
 	}
 
