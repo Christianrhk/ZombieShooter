@@ -12,8 +12,6 @@ import javax.swing.JLabel;
 
 class item {
 	String NAME;
-	Icon ICON;
-	// <Add more variables depending on item type >
 	static final AtomicInteger count = new AtomicInteger(-1);
 	int COST, ID, ARMOR, HEALTH, CHARGES, SPEED;
 
@@ -40,90 +38,21 @@ class item {
 			this.ARMOR = arg;
 			this.NAME = "Armor";
 
-			try {
-				Image img = ImageIO.read(new File("src/images/shield.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the armor item could not be located!\n");
-				e.printStackTrace();
-			}
 			break;
 		case Boots:
 			this.SPEED = arg;
 			this.NAME = "Boots";
 
-			try {
-				Image img = ImageIO.read(new File("src/images/boots.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the boots item could not be located!\n");
-				e.printStackTrace();
-			}
 			break;
 		case Potion:
 			this.HEALTH = arg;
 			this.NAME = "Restore Health";
 
-			try {
-				Image img = ImageIO.read(new File("src/images/heart.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the health item could not be located!\n");
-				e.printStackTrace();
-			}
-			
 			break;
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
 	}
-
-	
-	//Constructor for charge-based health restoration
-	/*
-	// Constructor for potion
-	public item(ItemType itemType, int health, int charges, int cost) {
-		this.ID = count.incrementAndGet();
-		this.ITEM_TYPE = itemType;
-
-		switch (itemType) {
-
-		case Potion:
-			this.HEALTH = health;
-			this.CHARGES = charges;
-			this.COST = cost;
-			this.NAME = "Health Potions";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/heart.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the armor item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-		default:
-			throw new IllegalStateException("Illegal item type!\n");
-		}
-	}
-	*/
 
 	public int getCost() {
 		return COST;
@@ -156,9 +85,4 @@ class item {
 	public int getSpeed() {
 		return SPEED;
 	}
-
-	public Icon getIcon() {
-		return ICON;
-	}
-
 }
