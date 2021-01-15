@@ -263,6 +263,19 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				e.printStackTrace();
 			}
 		}
+		List<Object[]> list = null;
+		try {
+			zombieSpace.get(new ActualField("token"));
+			list = zombieSpace.queryAll(new FormalField(Zombie.class));
+			zombieSpace.put("token");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (Object[] o : list) {
+			Zombie z = (Zombie) o[0];
+			ZombieGraphics.zombieRunAnimation(z);
+		}
 
 		moveBullets();
 		checkPlayerCollision();
