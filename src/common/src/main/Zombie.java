@@ -4,8 +4,15 @@ import java.awt.Point;
 public class Zombie extends Entity {
 	boolean HIT;// Used to determine if a zombie has been hit by a player
 	int damageDelay;
-	public Zombie(int x, int y) {
+
+	enum type {
+		NORMAL, ELITE
+	}
+	type t;
+
+	public Zombie(int x, int y, type t) {
 		super();
+		this.t = t;
 		
 		this.damageDelay = 0;
 		this.POSITION = new Point(x, y);
@@ -19,13 +26,26 @@ public class Zombie extends Entity {
 	}
 	
 	public void initZombie() {
-		this.HEALTH_POINTS = 20;
-		this.ARMOR = 0;
-		this.ATTACK_SPEED = 1.2;
-		this.DAMAGE = 10;
-		this.NAME = "ZOMBIE";
-		this.HIT = false;
-		this.offset = 32;
+		switch (t){
+			case ELITE:
+				this.HEALTH_POINTS = 50;
+				this.ARMOR = 0;
+				this.ATTACK_SPEED = 1.5;
+				this.DAMAGE = 20;
+				this.NAME = "ZOMBIE";
+				this.HIT = false;
+				this.offset = 32;
+			default:
+				this.HEALTH_POINTS = 20;
+				this.ARMOR = 0;
+				this.ATTACK_SPEED = 1.2;
+				this.DAMAGE = 10;
+				this.NAME = "ZOMBIE";
+				this.HIT = false;
+				this.offset = 32;
+
+		}
+
 	}
 
 	public boolean collision(int x, int y) {
