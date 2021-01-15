@@ -17,7 +17,6 @@ public class ZombieGraphics {
 
     public ZombieGraphics() {
         this.spriteSize = 64;
-
         this.AnimationSpeed = 16;
 
         this.IMAGE_PATH = "src/images/fat-zombie-png-64.png";

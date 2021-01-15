@@ -36,6 +36,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	Space playerSpace;
 	boolean playerPosChange[] = { false, false, false, false };
 	boolean press[] = { false, false, false, false };
+	boolean shooting;
 	BufferedImage bg;
 	Space zombieSpace;
 	Space bulletSpace;
@@ -82,6 +83,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		BG = new BulletGraphics();
 		this.p = player;
 		this.name = player.NAME;
+		this.shooting = false;
 
 		// Get images
 		try {
@@ -253,6 +255,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void updateGame() {
 		// Move players
 		movePlayer();
+		
+		if(shooting) {
+			spawnBullets();
+		}
 
 		if (host) {
 			// Move zombies and animate
@@ -275,7 +281,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			Zombie z = (Zombie) o[0];
 			ZombieGraphics.zombieRunAnimation(z);
 		}
-
+		
+		
 		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
@@ -360,10 +367,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-
 	public void movePlayer() {
 
 		PG.playerRunAnimation(p);
+		p.bulletDelay++;
 		// only update if a key has been pressed
 		if (press[0] || press[1] || press[2] || press[3]) {
 			if (press[0])
@@ -429,7 +436,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					int damage = p.getDamage();
 
 					System.out.println("Hit zombie for " + damage + " damage");
-					
+
 					if (z.takeDamage(damage)) {
 						p.giveMoney(1);
 						this.HUD.updateMoney(p);
@@ -451,37 +458,49 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		return hit;
 	}
 
+	private void spawnBullets() {
+		try {
+
+			double as = p.getAttackSpeed();
+			double count = 1.0 / as * 50.0; // 50 because there is 50 game ticks / second
+			//System.out.println("Count is" + count + " AS is " + as);
+
+			if (p.bulletDelay >= count) {
+				bulletSpace.get(new ActualField("token"));
+				switch (p.getWIH()) {
+				case SHOTGUN:
+					Bullet b1 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() + 0.2,
+							p.getDamage(), p.getAttackSpeed(), p.getWIH());
+					Bullet b2 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() - 0.2,
+							p.getDamage(), p.getAttackSpeed(), p.getWIH());
+					bulletSpace.put(b1);
+					bulletSpace.put(b2);
+				default:
+					Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(),
+							p.getDamage(), p.getAttackSpeed(), p.getWIH());
+					bulletSpace.put(b);
+					break;
+				}
+				bulletSoundHandler.playSound("src/sounds/aBullet.wav");
+				p.bulletDelay = 0;
+				updatePlayer();
+				bulletSpace.put("token");
+			}
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (p.getWIH() != common.src.main.Weapon.WeaponInHand.SHOTGUN) {
-			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed(), p.getWIH());
-			try {
-				bulletSpace.get(new ActualField("token"));
-				bulletSpace.put(b);
-				bulletSpace.put("token");
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
-			}
-			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
-		} else { // idea for how to implement shotgun
-			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() + 0.2, p.getDamage(), p.getAttackSpeed(), p.getWIH());
-			Bullet b1 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() - 0.2, p.getDamage(), p.getAttackSpeed(), p.getWIH());
-			Bullet b2 = new Bullet(p.getX(), p.getY(), p.getWeaponRange() , 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed(), p.getWIH());
-			try {
-				bulletSpace.get(new ActualField("token"));
-				bulletSpace.put(b);
-				bulletSpace.put(b1);
-				bulletSpace.put(b2);
-				bulletSpace.put("token");
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
-			}
-			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
-		}
+		this.shooting = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		this.shooting = false;
 	}
 
 	@Override
@@ -494,6 +513,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		int x = p.getX();
+		int y = p.getY();
+		double deltax = e.getX() - x;
+		double deltay = e.getY() - y;
+		GG.setImageAngleRad(Math.atan2(deltay, deltax));
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class Player extends Entity {
 		this.MOVEMENT_SPEED = 2;
 		this.MONEY = 0;
 		this.offset = 20;
-		this.weapon = StandardWeapons.getAssaultrifle();
+		this.weapon = StandardWeapons.getSmg();
 		this.BOOTS = false;
 		this.bulletDelay = 0;
 	}
@@ -83,6 +83,7 @@ public class Player extends Entity {
 	
 	public void setWeapon(Weapon w) {
 		this.weapon = w;
+		this.bulletDelay = (int)(1.0 / w.getAttackSpeed() * 50.0);
 	}
 	
 	public int getWeaponRange() {
