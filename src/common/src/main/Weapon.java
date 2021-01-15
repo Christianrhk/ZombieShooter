@@ -28,118 +28,53 @@ public class Weapon extends item {
 		this.WEAPON_TYPE = name;
 		this.ID = id;
 
-		switch (name) {
+		setWeaponInHand();
 
-		case SHOTGUN:
+	}
 
-			this.NAME = "Shotgun";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/shotgunShop.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the SHOTGUN item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-
-		case SMG:
-
-			this.NAME = "Submachine gun";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/smg.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the SMG item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-		case PISTOL:
-
-			this.NAME = "Pistol";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/pistol.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the PISTOL item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-
-		case SNIPER_RIFLE:
-
-			this.NAME = "Sniper gun";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/sniperrifle.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the SNIPER_GUN item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-
-		case ASSAULT_RIFLE:
-
-			this.NAME = "Assault rifle";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/assaultrifleShop.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the ASSAULT_RIFLE_SHOP item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-
-		case SPACE_GUN:
-
-			this.NAME = "Space gun";
-
-			try {
-				Image img = ImageIO.read(new File("src/images/spacegun.png"));
-
-				Icon icon = new ImageIcon(img);
-				this.ICON = icon;
-				// JLabel iconLabel = new JLabel(icon);
-				// iconLabel.setBounds(115, 145, 59, 32);
-			} catch (IOException e) {
-				System.out.println("Icon for the SPACEGUN item could not be located!\n");
-				e.printStackTrace();
-			}
-
-			break;
-
-		default:
-			throw new IllegalStateException("Illegal weapon type!\n");
+	public void setWeaponInHand(){
+		switch (WEAPON_TYPE) {
+			case SHOTGUN:
+				this.NAME = "Shotgun";
+				setGunImage("src/images/shotgunShop.png");
+				break;
+			case SMG:
+				this.NAME = "Submachine gun";
+				setGunImage("src/images/smg.png");
+				break;
+			case PISTOL:
+				this.NAME = "Pistol";
+				setGunImage("src/images/pistol.png");
+				break;
+			case SNIPER_RIFLE:
+				this.NAME = "Sniper rifle";
+				setGunImage("src/images/sniperrifle.png");
+				break;
+			case ASSAULT_RIFLE:
+				this.NAME = "Assault rifle";
+				setGunImage("src/images/assaultrifleShop.png");
+				break;
+			case SPACE_GUN:
+				this.NAME = "Space gun";
+				setGunImage("src/images/spacegun.png");
+				break;
+			default:
+				throw new IllegalStateException("Illegal weapon type!\n");
 		}
+
+
+	}
+
+	private void setGunImage(String path){
+		try {
+			Image img = ImageIO.read(new File(path));
+			Icon icon = new ImageIcon(img);
+			this.ICON = icon;
+		} catch (IOException e) {
+			System.out.println(path + ": Icon could not be located!\n");
+			e.printStackTrace();
+		}
+
 
 	}
 
@@ -157,6 +92,10 @@ public class Weapon extends item {
 
 	public int getRateOfFire() {
 		return RATE_OF_FIRE;
+	}
+	
+	public WeaponInHand getWeaponType() {
+		return WEAPON_TYPE;
 	}
 
 }

@@ -102,9 +102,8 @@ public class ZombieController {
 			zombieSpace.get(new ActualField("token"));
 			Random rand = new Random();
 			for (int i = 0; i < numberOfZombies; i++) {
+				// adding a new zombie with a random generated spawn location
 				Zombie z = new Zombie(getRandomSpawnLocation(rand));
-				//System.out.println("Zombie added at " + z.POSITION.x + ", " + z.POSITION.y);
-				// Zombie z = new Zombie(new Point(100,100));
 				zombieSpace.put(z);
 			}
 
@@ -120,28 +119,28 @@ public class ZombieController {
 	private static Point getRandomSpawnLocation(Random ran){
 		int caseRan = ran.nextInt(4);
 		int[] temp = {ran.nextInt(300),ran.nextInt(300)};
-		System.out.println("Case = " +caseRan);
+		//System.out.println("Case = " +caseRan);
 		Point p = new Point();
 		switch (caseRan){
 			case 0:
 				p.x = temp[0];
 				p.y = temp[1];
-				System.out.println("x = " + p.x + " ;y = " + p.y);
+				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 1:
 				p.x = 800-temp[0];
 				p.y = temp[1];
-				System.out.println("x = " + p.x + " ;y = " + p.y);
+				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 2:
 				p.x = temp[0];
 				p.y = 800-temp[1];
-				System.out.println("x = " + p.x + " ;y = " + p.y);
+				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 3:
 				p.x = 800-temp[0];
 				p.y = 800-temp[1];
-				System.out.println("x = " + p.x + " ;y = " + p.y);
+				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 		}
 		return p;

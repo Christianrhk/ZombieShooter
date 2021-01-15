@@ -91,5 +91,9 @@ public class Player extends Entity {
 		this.MOVEMENT_SPEED = amount;
 	}
 	
+	public void setWeapon(WeaponInHand amount) {
+		this.weapon = amount;
+	}
+	
 
 }
