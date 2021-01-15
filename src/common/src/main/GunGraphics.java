@@ -26,6 +26,8 @@ public class GunGraphics {
 		this.ASSAULTRIFLE_PATH = "src/images/assaultrifle.png";
 		this.SMG_PATH = "src/images/smg.png";
 		this.SHOTGUN_PATH = "src/images/shotgun.png";
+		
+		System.out.println("marcus er en spasmager");
 
 		try {
 			this.SPACEGUN = ImageIO.read(new File(this.SPACEGUN_PATH));
