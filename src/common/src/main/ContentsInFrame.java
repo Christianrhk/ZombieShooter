@@ -360,20 +360,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
-	public void subtractMoneyFromPlayer(int amount) {
-		try {
-			playerSpace.get(new ActualField("token"));
-			Object[] o;
-			o = playerSpace.get(new ActualField(name), new FormalField(Player.class));
-			Player p = (Player) o[1];
-			p.subtractMoney(amount);
-			playerSpace.put(name, p);
-			playerSpace.put("token");
-		} catch (InterruptedException e) {
-			System.out.println("Couldn't find player to subtract money from");
-			e.printStackTrace();
-		}
-	}
 
 	public void movePlayer() {
 

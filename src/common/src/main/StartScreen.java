@@ -288,6 +288,7 @@ class UpdateChecker implements Runnable {
 
         System.out.println("Thread has finished");
 
+
     }
 
 }
