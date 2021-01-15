@@ -9,7 +9,6 @@ import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 import common.src.main.Entity.mode;
-import common.src.main.Player.WeaponInHand;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -441,8 +440,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					// Zombie is hit!
 					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
 
-					int damage = 5;
+					int damage = p.getDamage();
 
+					System.out.println("Hit zombie for " + damage + " damage");
+					
 					if (z.takeDamage(damage)) {
 						p.giveMoney(1);
 						this.HUD.updateMoney(p);
@@ -466,8 +467,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (p.getWIH() != WeaponInHand.SHOTGUN) {
-			Bullet b = new Bullet(p.getX(), p.getY(), 400, 10, GG.getImageAngleRad(), p.getWIH());
+		if (p.getWIH() != common.src.main.Weapon.WeaponInHand.SHOTGUN) {
+			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);
@@ -477,9 +478,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 		} else { // idea for how to implement shotgun
-			Bullet b = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
-			Bullet b1 = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
-			Bullet b2 = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad(), p.getWIH());
+			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() + 0.2, p.getDamage(), p.getAttackSpeed());
+			Bullet b1 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() - 0.2, p.getDamage(), p.getAttackSpeed());
+			Bullet b2 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);

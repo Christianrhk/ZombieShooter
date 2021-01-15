@@ -2,26 +2,23 @@ package common.src.main;
 
 import java.awt.Point;
 
-import common.src.main.Player.WeaponInHand;
-
 public class Bullet {
 
-	int fireX, fireY;
+	int fireX, fireY, range, speed, damage;
 	Point coords;
-	int range;
-	int speed;
-	double angle;
+	double angle, attackspeed;
 
-	WeaponInHand weaponFiredFrom;
 
-	public Bullet(int x, int y, int range, int speed, double angle, WeaponInHand w) {
+	public Bullet(int x, int y, int range, int speed, double angle, int damage, double attackspeed) {
 		this.fireX = x;
 		this.fireY = y;
 		coords = new Point(x, y);
 		this.range = range;
 		this.speed = speed;
 		this.angle = angle;
-		this.weaponFiredFrom = w;
+		this.damage = damage;
+		this.attackspeed = attackspeed;
+
 	}
 
 	public void moveInDirection() {

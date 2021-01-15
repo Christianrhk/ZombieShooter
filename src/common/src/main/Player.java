@@ -8,29 +8,19 @@ public class Player extends Entity {
 	boolean BOOTS;
 	int bulletDelay;
 
-	enum WeaponInHand {
-		SPACE_GUN,
-		SNIPER_RIFLE,
-		ASSAULT_RIFLE,
-		PISTOL,
-		SMG,
-		SHOTGUN
-	}; // ADD POSSIBLE WEAPONS HERE.
-
-	WeaponInHand weapon;
+	Weapon weapon;
 
 	public Player(String name) {
 		super();
 		this.HEALTH_POINTS = 100;
 		this.ARMOR = 50;
-		this.ATTACK_SPEED = 1.2;
-		this.DAMAGE = 10;
+		this.DAMAGE = 1;
 		this.NAME = name;
 		this.POSITION = new Point(0, 0);
 		this.MOVEMENT_SPEED = 2;
 		this.MONEY = 0;
 		this.offset = 20;
-		this.weapon = WeaponInHand.SPACE_GUN;
+		this.weapon = StandardWeapons.getShotgun();
 		this.BOOTS = false;
 		this.bulletDelay = 0;
 	}
@@ -41,10 +31,6 @@ public class Player extends Entity {
 
 	public int getY() {
 		return this.POSITION.y;
-	}
-	
-	public WeaponInHand getWIH() {
-		return weapon;
 	}
 
 	public int getHP() {
@@ -83,17 +69,32 @@ public class Player extends Entity {
 		this.HEALTH_POINTS = amount;
 	}
 
-	public void setBoots(boolean amount) {
-		this.BOOTS = amount;
+	public void setBoots(boolean b) {
+		this.BOOTS = b;
 	}
 	
 	public void setMovementSpeed(int amount) {
 		this.MOVEMENT_SPEED = amount;
 	}
 	
-	public void setWeapon(WeaponInHand amount) {
-		this.weapon = amount;
+	public Weapon.WeaponInHand getWIH(){
+		return this.weapon.getWeaponType();
 	}
 	
+	public void setWeapon(Weapon w) {
+		this.weapon = w;
+	}
+	
+	public int getWeaponRange() {
+		return this.weapon.getRange();
+	}
+	
+	public int getDamage() {
+		return this.DAMAGE + this.weapon.getDamage();
+	}
+	
+	public double getAttackSpeed() {
+		return this.weapon.getAttackSpeed();
+	}
 
 }

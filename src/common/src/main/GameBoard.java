@@ -19,6 +19,7 @@ public class GameBoard extends JFrame {
 
     // Multiplayer  constructor
     public GameBoard(int width, int height, Space playerSpace, String playerName, Space zombieSpace, boolean host) {
+    	StandardWeapons SW = new StandardWeapons();
         Player player = new Player(playerName);
         setGameBoard(width, height, player, playerSpace, host);
 

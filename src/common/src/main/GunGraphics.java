@@ -68,7 +68,7 @@ public class GunGraphics {
 		
 		BufferedImage img = null;
 
-		switch (p.weapon) {
+		switch (p.weapon.getWeaponType()) {
 		case SPACE_GUN:
 			img = SPACEGUN;
 			break;

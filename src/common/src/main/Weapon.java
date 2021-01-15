@@ -8,21 +8,29 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import common.src.main.Player.WeaponInHand;
 
 public class Weapon extends item {
+	
+	enum WeaponInHand {
+		SPACE_GUN,
+		SNIPER_RIFLE,
+		ASSAULT_RIFLE,
+		PISTOL,
+		SMG,
+		SHOTGUN
+	}; // ADD POSSIBLE WEAPONS HERE.
 
-	private int DAMAGE, ATTACK_SPEED, RANGE, RATE_OF_FIRE;
+	private int DAMAGE, RANGE;
+	private double ATTACK_SPEED;
 	WeaponInHand WEAPON_TYPE;
 
-	public Weapon(WeaponInHand name, int damage, int attackspeed, int range, int rateOfFire, int cost) {
+	public Weapon(WeaponInHand name, int damage, double attackspeed, int range, int cost) {
 
 		// Use switch statement on WeaponInHand to set different values depending on
 		// enum-value
 		this.DAMAGE = damage;
 		this.ATTACK_SPEED = attackspeed;
 		this.RANGE = range;
-		this.RATE_OF_FIRE = rateOfFire;
 		this.COST = cost;
 		this.ITEM_TYPE = ItemType.Weapon;
 		this.WEAPON_TYPE = name;
@@ -61,16 +69,12 @@ public class Weapon extends item {
 		return DAMAGE;
 	}
 
-	public int getAttackSpeed() {
+	public double getAttackSpeed() {
 		return ATTACK_SPEED;
 	}
 
 	public int getRange() {
 		return RANGE;
-	}
-
-	public int getRateOfFire() {
-		return RATE_OF_FIRE;
 	}
 	
 	public WeaponInHand getWeaponType() {

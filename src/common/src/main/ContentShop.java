@@ -2,7 +2,7 @@
 
 package common.src.main;
 
-import common.src.main.Player.WeaponInHand;
+import common.src.main.Weapon.WeaponInHand;
 import common.src.main.item.ItemType;
 
 import javax.imageio.ImageIO;
@@ -49,32 +49,32 @@ public class ContentShop extends JPanel {
 		// Sets up all the itemPanels needed
 		super.setLayout(new GridLayout(3, 3, 3, 3));
 
-		Weapon PistolWeapon = new Weapon(WeaponInHand.PISTOL, 1, 2, 3, 4, 5);
+		Weapon PistolWeapon = new Weapon(Weapon.WeaponInHand.PISTOL, 1, 2, 3, 4);
 		items[0] = PistolWeapon;
 		JPanel itemPanel0 = createItemPanel(PistolWeapon, p, HUD);
 		super.add(itemPanel0, new Integer(0));
 
-		Weapon AssaultWeapon = new Weapon(WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4, 5);
+		Weapon AssaultWeapon = new Weapon(Weapon.WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4);
 		items[1] = AssaultWeapon;
 		JPanel itemPanel1 = createItemPanel(AssaultWeapon, p, HUD);
 		super.add(itemPanel1, new Integer(1));
 
-		Weapon SMGWeapon = new Weapon(WeaponInHand.SMG, 1, 2, 3, 4, 5);
+		Weapon SMGWeapon = new Weapon(Weapon.WeaponInHand.SMG, 1, 2, 3, 4);
 		items[2] = SMGWeapon;
 		JPanel itemPanel2 = createItemPanel(SMGWeapon, p, HUD);
 		super.add(itemPanel2, new Integer(2));
 
-		Weapon ShotgunWeapon = new Weapon(WeaponInHand.SHOTGUN, 1, 2, 3, 4, 5);
+		Weapon ShotgunWeapon = new Weapon(Weapon.WeaponInHand.SHOTGUN, 1, 2, 3, 4);
 		items[3] = ShotgunWeapon;
 		JPanel itemPanel3 = createItemPanel(ShotgunWeapon, p, HUD);
 		super.add(itemPanel3, new Integer(3));
 
-		Weapon SniperWeapon = new Weapon(WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4, 5);
+		Weapon SniperWeapon = new Weapon(Weapon.WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4);
 		items[4] = SniperWeapon;
 		JPanel itemPanel4 = createItemPanel(SniperWeapon, p, HUD);
 		super.add(itemPanel4, new Integer(4));
 
-		Weapon SpaceWeapon = new Weapon(WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
+		Weapon SpaceWeapon = new Weapon(Weapon.WeaponInHand.SPACE_GUN, 1, 2, 3, 4);
 		items[5] = SpaceWeapon;
 		JPanel itemPanel5 = createItemPanel(SpaceWeapon, p, HUD);
 		super.add(itemPanel5, new Integer(5));
@@ -304,9 +304,8 @@ public class ContentShop extends JPanel {
 						switch (itemType) {
 						case Weapon:
 							Weapon weaponObject = (Weapon) itemObject;
-							WeaponInHand weaponType = weaponObject.getWeaponType();
 
-							p.setWeapon(weaponType);
+							p.setWeapon(weaponObject);
 							break;
 
 						case Armor:
