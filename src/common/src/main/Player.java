@@ -6,6 +6,7 @@ public class Player extends Entity {
 
 	int MONEY;
 	boolean BOOTS;
+	int bulletDelay;
 
 	enum WeaponInHand {
 		SPACE_GUN,
@@ -31,10 +32,7 @@ public class Player extends Entity {
 		this.offset = 20;
 		this.weapon = WeaponInHand.SPACE_GUN;
 		this.BOOTS = false;
-		/*
-		 * try { this.IMAGE = ImageIO.read(new File("src/images/clown.png")); } catch
-		 * (IOException e) { e.printStackTrace(); }
-		 */
+		this.bulletDelay = 0;
 	}
 
 	public int getX() {

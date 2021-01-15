@@ -66,8 +66,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
 
-		// Sounds
-
+		// Init Sounds
 		zombieSoundHandler = new SoundHandler();
 		bulletSoundHandler = new SoundHandler();
 		playerSoundHandler = new SoundHandler();
@@ -76,7 +75,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		new Thread(playerSoundHandler).start();
 		startBackGroundMusic();
 
-		// Graphics
+		// Init Graphics
 		ZG = new ZombieGraphics();
 		PG = new PlayerGraphics();
 		GG = new GunGraphics();
@@ -145,7 +144,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void drawAllPlayers(Graphics2D g2d) {
 		try {
-			List<Player> players= getPlayerList();
+			List<Player> players = getPlayerList();
 			for (Player o : players) {
 
 				GG.drawGun(g2d, o);
@@ -270,6 +269,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	}
 
+	// Check collision between the player and zombies
 	private void checkPlayerCollision() {
 		List<Object[]> list;
 		try {
@@ -295,6 +295,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 	}
 
+	// Check collision between each bullet and zombie
 	private void checkBulletCollision() {
 		List<Object[]> list;
 		try {
@@ -318,16 +319,17 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			bulletSpace.get(new ActualField("token"));
 			List<Object[]> list = bulletSpace.getAll(new FormalField(Bullet.class));
 			for (Object[] o : list) {
-				// System.out.println("Bullets moved");
+
 				Bullet b = (Bullet) o[0];
 				b.moveInDirection();
-				// System.out.println("Bullet coords: " + b.coords.x + " " + b.coords.y);
-				if (b.coords.x <= 800 && b.coords.y <= 800 && b.coords.x >= 0 && b.coords.y >= 0)
+
+				// If bullet is still within the screen and has not travelled its full range
+				// yet, put it back into the space
+				if (b.coords.x <= 800 && b.coords.y <= 800 && b.coords.x >= 0 && b.coords.y >= 0 && !b.outOfRange())
 					bulletSpace.put(b);
 			}
 			bulletSpace.put("token");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -396,22 +398,21 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 	}
 
-    private void updatePlayer() {
-        try {
-            playerSpace.get(new ActualField("token"));
-            playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
-            playerSpace.put(p.NAME,p);
-            playerSpace.put("token");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	private void updatePlayer() {
+		try {
+			playerSpace.get(new ActualField("token"));
+			playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
+			playerSpace.put(p.NAME, p);
+			playerSpace.put("token");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
 	private boolean zombieBulletCollision(int x, int y) {
 		boolean hit = false;
 		try {
-
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.getAll(new FormalField(Zombie.class));
 			boolean dead;
@@ -424,8 +425,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 					// Zombie is hit!
 					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
-
-					int damage = 5; // GET THIS FROM PLAYER WEAPON WHEN IMPLEMENTED <------
+					
+					int damage = 5;
+					
 					if (z.takeDamage(damage)) {
 						p.giveMoney(1);
 						this.HUD.updateMoney(p);
@@ -446,26 +448,23 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 		return hit;
 	}
-
+	
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
-
-		Bullet b = new Bullet(p.getX(), p.getY(), 200, 10, GG.getImageAngleRad(), p.getWIH());
+		Bullet b = new Bullet(p.getX(), p.getY(), 400, 10, GG.getImageAngleRad(), p.getWIH());
 		try {
 			bulletSpace.get(new ActualField("token"));
 			bulletSpace.put(b);
 			bulletSpace.put("token");
 		} catch (InterruptedException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-
 		bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
 	}
 
 	@Override
