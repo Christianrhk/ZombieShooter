@@ -35,22 +35,12 @@ public class ContentShop extends JPanel {
 
 		bHasBeenPressed = false;
 
-		// p.setHealth(50); //REMOVE WHEN BUG HAS BEEN FIXED!
-		// HUD.updateHP(p);
-
 		// Create border:
 		Border windowsBorder = BorderFactory.createLineBorder(Color.black, 10);
 		super.setBorder(BorderFactory.createTitledBorder(windowsBorder, "Shop", TitledBorder.CENTER, TitledBorder.TOP));
 
-		// Initialize by sending the amount of money the
-		// player is currently carrying
-
 		// Setups up the content of the shop
 		setupShop(p, HUD);
-
-		// item[] items = new item[10];
-		// items[0] = new item("TestItem", "TestType", 100);
-		// String playerName = "FaetterGuf"; // Get data from App
 
 	}
 
@@ -59,42 +49,36 @@ public class ContentShop extends JPanel {
 		// Sets up all the itemPanels needed
 		super.setLayout(new GridLayout(3, 3, 3, 3));
 
-		/*
-		 * for (int i = 0; i < numberOfItems; i++) { JPanel itemPanel =
-		 * createItemPanel(i, "Good weapon", "tons", "fast", "69", "Cuba", p, HUD);
-		 * super.add(itemPanel, new Integer(i)); }
-		 */
-
-		Weapon PistolWeapon = new Weapon(0, WeaponInHand.PISTOL, 1, 2, 3, 4, 5);
+		Weapon PistolWeapon = new Weapon(WeaponInHand.PISTOL, 1, 2, 3, 4, 5);
 		items[0] = PistolWeapon;
 		JPanel itemPanel0 = createItemPanel(PistolWeapon, p, HUD);
 		super.add(itemPanel0, new Integer(0));
-		
-		Weapon AssaultWeapon = new Weapon(1, WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4, 5);
+
+		Weapon AssaultWeapon = new Weapon(WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4, 5);
 		items[1] = AssaultWeapon;
 		JPanel itemPanel1 = createItemPanel(AssaultWeapon, p, HUD);
 		super.add(itemPanel1, new Integer(1));
-		
-		Weapon SMGWeapon = new Weapon(2, WeaponInHand.SMG, 1, 2, 3, 4, 5);
+
+		Weapon SMGWeapon = new Weapon(WeaponInHand.SMG, 1, 2, 3, 4, 5);
 		items[2] = SMGWeapon;
 		JPanel itemPanel2 = createItemPanel(SMGWeapon, p, HUD);
 		super.add(itemPanel2, new Integer(2));
-		
-		Weapon ShotgunWeapon = new Weapon(3, WeaponInHand.SHOTGUN, 1, 2, 3, 4, 5);
+
+		Weapon ShotgunWeapon = new Weapon(WeaponInHand.SHOTGUN, 1, 2, 3, 4, 5);
 		items[3] = ShotgunWeapon;
 		JPanel itemPanel3 = createItemPanel(ShotgunWeapon, p, HUD);
 		super.add(itemPanel3, new Integer(3));
 
-		Weapon SniperWeapon = new Weapon(4, WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4, 5);
+		Weapon SniperWeapon = new Weapon(WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4, 5);
 		items[4] = SniperWeapon;
 		JPanel itemPanel4 = createItemPanel(SniperWeapon, p, HUD);
 		super.add(itemPanel4, new Integer(4));
-		
-		Weapon SpaceWeapon = new Weapon(5, WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
+
+		Weapon SpaceWeapon = new Weapon(WeaponInHand.SPACE_GUN, 1, 2, 3, 4, 5);
 		items[5] = SpaceWeapon;
 		JPanel itemPanel5 = createItemPanel(SpaceWeapon, p, HUD);
 		super.add(itemPanel5, new Integer(5));
-		
+
 		item armor = new item(ItemType.Armor, 50, 10);
 		items[6] = armor;
 		JPanel itemPanel6 = createItemPanel(armor, p, HUD);
@@ -109,17 +93,6 @@ public class ContentShop extends JPanel {
 		items[8] = boots;
 		JPanel itemPanel8 = createItemPanel(boots, p, HUD);
 		super.add(itemPanel8, new Integer(8));
-
-		// super.add(createItemPanel(7, "Armor", "20", "", "", "", p, HUD), new
-		// Integer(7));
-		// super.add(createItemPanel(8, "Health Potion", "40", "3", "", "", p, HUD), new
-		// Integer(8));
-		// super.add(createItemPanel(9, "Boots", "30", "", "", "", p, HUD), new
-		// Integer(9));
-
-		// JButton closeButton = new JButton("Close");
-		// super.add(closeButton);
-
 	}
 
 	static void transactionState(boolean state, Player p) {
@@ -127,30 +100,26 @@ public class ContentShop extends JPanel {
 		if (state == true) {
 			int currentMoney = p.getMoney();
 			try {
+				// Starts the shop thread
 				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop, items)).start();
-				// System.out.println("The shop-thread has started!\n");
+				// Sends the shop the money the player currently has
 				channelPlayerShop.put(currentMoney);
-				// System.out.println("Player sent the money to the shop!\n");
-				// System.out.println("Amount: " + currentMoney);
 			} catch (InterruptedException e) {
 				System.out.println("Player could NOT connect to the shop!\n");
 				e.printStackTrace();
 			}
-
 		}
 		// Player closes the shop (Presses B again)
 		else {
 			try {
+				// Initiates termination of the shop thread
 				channelPlayerShop.put("CloseShop", -1);
 				channelShopPlayer.get(new ActualField("ConnectionTerminated"));
-				// System.out.println("Shop was terminated correctly!\n");
 			} catch (InterruptedException e) {
 				System.out.println("Player could NOT terminate the connection with the shop!\n");
 				e.printStackTrace();
 			}
-
 		}
-
 	}
 
 	private JPanel createItemPanel(item itemObject, Player p, ContentOverlayHUD HUD) {
@@ -173,36 +142,75 @@ public class ContentShop extends JPanel {
 		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
 		itemSpecs.setEditable(false);
 
+		// Objects used for checking the items
+		ItemType itemType = itemObject.getType();
+		Icon shopIcon = null;
+
+		// Sets up the text for the items based on their item and/or weapon types
 		switch (itemObject.getType()) {
 
 		case Weapon:
+			
 			Weapon weaponObject = (Weapon) itemObject;
-			// System.out.print("AttackSpeed: " + weaponObject.getAttackSpeed());
+			WeaponInHand weaponType = weaponObject.getWeaponType();
 			itemSpecs
 					.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
 							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + itemObject.getCost());
 			itemPanel.setBackground(new Color(196, 196, 196, 255));
+			
+			switch (weaponType) {
+			
+			case PISTOL:
+				shopIcon = setShopImage("pistol");
+				break;
+				
+			case ASSAULT_RIFLE:
+				shopIcon = setShopImage("assaultrifleShop");
+				break;
+				
+			case SNIPER_RIFLE:
+				shopIcon = setShopImage("sniperrifle");
+				break;
+				
+			case SHOTGUN:
+				shopIcon = setShopImage("shotgunShop");
+				break;
+				
+			case SMG:
+				shopIcon = setShopImage("smg");
+				break;
+				
+			case SPACE_GUN:
+				shopIcon = setShopImage("spacegun");
+				break;
+			
+			default:
+			}
+			
 			break;
 		case Armor:
 			itemSpecs.setText("Armor points:\t" + itemObject.getArmor() + "\n\n\n\nCost:\t" + itemObject.getCost());
 			itemPanel.setBackground(new Color(250, 252, 140, 255));
+			shopIcon = setShopImage("shield");
 			break;
 		case Potion:
 			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\n\n\n\nCost:\t" + itemObject.getCost());
 			itemPanel.setBackground(new Color(231, 136, 84, 255));
+			shopIcon = setShopImage("heart");
 			break;
 		case Boots:
 			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%" + "\n\n\n\nCost:\t" + itemObject.getCost());
 			itemPanel.setBackground(new Color(167, 131, 112, 255));
+			shopIcon = setShopImage("boots");
 			break;
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
 
-		// Sets up the icon for the item
-		JLabel iconLabel = new JLabel(itemObject.getIcon());
+		//Sets up the icon for the item in the shop
+		JLabel iconLabel = new JLabel(shopIcon);
 		iconLabel.setBounds(115, 145, 59, 32);
-
+		
 		// Sets up the buy-button for the item
 		JButton buyButton = new JButton("Buy item");
 		buyButton.setBounds(10, 145, 100, 32);
@@ -217,15 +225,31 @@ public class ContentShop extends JPanel {
 
 				try {
 
-					// Tests if the player can buy this item locally
-					ItemType itemType = itemObject.getType();
-
+					// Checks to see if the player even buy the item. If not, the shop is not
+					// contacted with a buy command.
 					switch (itemType) {
 
 					case Weapon:
-						// To-do
-						channelPlayerShop.put("Buy", itemObject.getID());
-						// System.out.println("Player wants to buy item: " + itemObject.getID() + "\n");
+						Weapon weaponObject = (Weapon) itemObject;
+						WeaponInHand weaponType = weaponObject.getWeaponType();
+
+						weaponObject = (Weapon) itemObject;
+						weaponType = weaponObject.getWeaponType();
+
+						if (p.getWIH().equals(weaponType)) {
+
+							System.out.println("You already have this weapon equipped!\n");
+							itemPanel.removeAll();
+							itemPanel.add(buyButton);
+							itemPanel.add(itemName);
+							itemPanel.add(itemSpecs);
+							itemPanel.add(iconLabel);
+							return;
+
+						} else {
+
+							channelPlayerShop.put("Buy", itemObject.getID());
+						}
 						break;
 					case Armor:
 						int currentArmor = p.getArmor();
@@ -308,14 +332,6 @@ public class ContentShop extends JPanel {
 						p.setMoney(currentMoney);
 						HUD.updateMoney(p);
 
-						// System.out.println("The player money was set to: " + currentMoney + "\n");
-
-						// Equip the user with the new item //Use the currentMoney variable to update
-						// the players money //Display a message, so that the player knows that he //
-						// successfully bought the item
-
-						// System.out.println("The player received the item!\n");
-
 						// Gives the item
 						switch (itemType) {
 
@@ -323,9 +339,9 @@ public class ContentShop extends JPanel {
 							
 							Weapon weaponObject = (Weapon) itemObject;
 							WeaponInHand weaponType = weaponObject.getWeaponType();
-							
+
 							p.setWeapon(weaponType);
-							
+
 							break;
 						case Armor:
 							int currentArmor = p.getArmor();
@@ -396,54 +412,18 @@ public class ContentShop extends JPanel {
 
 		return itemPanel;
 	}
-
-	public JTextArea createItemSpecs(item itemObject) {
-
-		// Sets up the specifications of the item, based on the item type
-		JTextArea itemSpecs = new JTextArea();
-		itemSpecs.setBounds(10, 40, 164, 100);
-		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
-		itemSpecs.setEditable(false);
-
-		switch (itemObject.getType()) {
-
-		case Armor:
-			itemSpecs.setText("Armor points:\t" + itemObject.getArmor());
-			break;
-		case Potion:
-			itemSpecs.setText("Heals:\t" + itemObject.getHealth() + "\nCharges:\t" + itemObject.getCharges());
-			break;
-		case Boots:
-			itemSpecs.setText("Speed:\t+" + itemObject.getSpeed() + "%");
-			break;
-		default:
-			throw new IllegalStateException("Illegal item type!\n");
+	
+	private Icon setShopImage(String path) {
+		try {
+			Image img = ImageIO.read(new File("src/images/"+path+".png"));
+			Icon icon = new ImageIcon(img);
+			return icon;
+		} catch (IOException e) {
+			System.out.println(path + ": Icon could not be located!\n");
+			e.printStackTrace();
 		}
-		return itemSpecs;
+		return null;
 	}
-
-	public JTextArea createItemSpecs(Weapon weapon) {
-
-		JTextArea itemSpecs = new JTextArea();
-		itemSpecs.setText("Damage:\t" + weapon.getDamage() + "\nRate of Fire:\t" + weapon.getRateOfFire()
-				+ "\nAttack Speed:\t" + weapon.getAttackSpeed() + "\nRange:\t" + weapon.getRange());
-
-		itemSpecs.setBounds(10, 40, 164, 100);
-		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 18));
-		itemSpecs.setEditable(false);
-		return itemSpecs;
-	}
-
-	/*
-	 * public JLabel addIcon() {
-	 * 
-	 * try { Image img = ImageIO.read(new File("src/images/redbox.png"));
-	 * 
-	 * Icon icon = new ImageIcon(img); JLabel iconLabel = new JLabel(icon);
-	 * iconLabel.setBounds(115, 145, 59, 32); return iconLabel; } catch (IOException
-	 * e) { System.out.println("Icon for item could not be located!\n");
-	 * e.printStackTrace(); } return null; }
-	 */
 
 	public static Space getChannelSP() {
 		return channelShopPlayer;
