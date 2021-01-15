@@ -9,6 +9,7 @@ import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 import common.src.main.Entity.mode;
+import common.src.main.Zombie.type;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +43,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	Space bulletSpace;
 
 	// Graphic controllers
-	ZombieGraphics ZG;
+	ZombieGraphics ZG, ZGElite;
 	PlayerGraphics PG;
 	GunGraphics GG;
 	BulletGraphics BG;
@@ -77,7 +78,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		startBackGroundMusic();
 
 		// Init Graphics
-		ZG = new ZombieGraphics();
+		ZG = new ZombieGraphics("src/images/fat-zombie-png-64.png");
+		ZGElite = new ZombieGraphics("src/images/fat-zombie-elite.png");
 		PG = new PlayerGraphics();
 		GG = new GunGraphics();
 		BG = new BulletGraphics();
@@ -167,7 +169,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 			for (Object[] o : zombies) {
 				Zombie z = (Zombie) o[0];
-				ZG.drawZombie(g2d, z);
+				switch (z.getType()) {
+				case NORMAL:
+					ZG.drawZombie(g2d, z);
+					break;
+				case ELITE:
+					ZGElite.drawZombie(g2d, z);
+					break;
+				}
 			}
 
 			zombieSpace.put("token");
@@ -255,8 +264,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void updateGame() {
 		// Move players
 		movePlayer();
-		
-		if(shooting) {
+
+		if (shooting) {
 			spawnBullets();
 		}
 
@@ -279,10 +288,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 		for (Object[] o : list) {
 			Zombie z = (Zombie) o[0];
-			ZombieGraphics.zombieRunAnimation(z);
+			ZG.zombieRunAnimation(z);
+			ZGElite.zombieRunAnimation(z);
 		}
-		
-		
+
 		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
@@ -438,7 +447,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					System.out.println("Hit zombie for " + damage + " damage");
 
 					if (z.takeDamage(damage)) {
-						p.giveMoney(1);
+						if(z.getType() == type.NORMAL) {
+							p.giveMoney(1);
+						} else {
+							p.giveMoney(3);
+						}
 						this.HUD.updateMoney(p);
 						dead = true;
 					}
@@ -463,7 +476,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 			double as = p.getAttackSpeed();
 			double count = 1.0 / as * 50.0; // 50 because there is 50 game ticks / second
-			//System.out.println("Count is" + count + " AS is " + as);
+			// System.out.println("Count is" + count + " AS is " + as);
 
 			if (p.bulletDelay >= count) {
 				bulletSpace.get(new ActualField("token"));

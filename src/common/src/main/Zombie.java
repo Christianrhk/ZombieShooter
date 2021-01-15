@@ -34,7 +34,7 @@ public class Zombie extends Entity {
 				this.DAMAGE = 20;
 				this.NAME = "ZOMBIE";
 				this.HIT = false;
-				this.offset = 32;
+				this.offset = 48;
 				break;
 			default:
 				this.HEALTH_POINTS = 20;
@@ -65,6 +65,10 @@ public class Zombie extends Entity {
 	
 	public void increaseDmgDelay() {
 		this.damageDelay++;
+	}
+	
+	public type getType() {
+		return this.t;
 	}
 
 }
