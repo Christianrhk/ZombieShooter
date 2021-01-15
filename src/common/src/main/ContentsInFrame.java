@@ -477,9 +477,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 		} else { // idea for how to implement shotgun
-			Bullet b = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
-			Bullet b1 = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
-			Bullet b2 = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad(), p.getWIH());
+			Bullet b = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
+			Bullet b1 = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
+			Bullet b2 = new Bullet(p.getX(), p.getY(), 65, 10, GG.getImageAngleRad(), p.getWIH());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);
