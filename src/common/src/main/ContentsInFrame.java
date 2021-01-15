@@ -264,9 +264,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 		}
 
+		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
-		moveBullets();
 
 	}
 
