@@ -32,7 +32,7 @@ public class Weapon extends item {
 
 	}
 
-	private void setWeaponInHand(){
+	public void setWeaponInHand(){
 		switch (WEAPON_TYPE) {
 			case SHOTGUN:
 				this.NAME = "Shotgun";
@@ -47,7 +47,7 @@ public class Weapon extends item {
 				setGunImage("src/images/pistol.png");
 				break;
 			case SNIPER_RIFLE:
-				this.NAME = "Sniper gun";
+				this.NAME = "Sniper rifle";
 				setGunImage("src/images/sniperrifle.png");
 				break;
 			case ASSAULT_RIFLE:
@@ -92,6 +92,10 @@ public class Weapon extends item {
 
 	public int getRateOfFire() {
 		return RATE_OF_FIRE;
+	}
+	
+	public WeaponInHand getWeaponType() {
+		return WEAPON_TYPE;
 	}
 
 }

@@ -320,7 +320,12 @@ public class ContentShop extends JPanel {
 						switch (itemType) {
 
 						case Weapon:
-							// To-do
+							
+							Weapon weaponObject = (Weapon) itemObject;
+							WeaponInHand weaponType = weaponObject.getWeaponType();
+							
+							p.setWeapon(weaponType);
+							
 							break;
 						case Armor:
 							int currentArmor = p.getArmor();
