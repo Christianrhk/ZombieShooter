@@ -49,32 +49,32 @@ public class ContentShop extends JPanel {
 		// Sets up all the itemPanels needed
 		super.setLayout(new GridLayout(3, 3, 3, 3));
 
-		Weapon PistolWeapon = new Weapon(Weapon.WeaponInHand.PISTOL, 1, 2, 3, 4);
+		Weapon PistolWeapon = StandardWeapons.getPistol();
 		items[0] = PistolWeapon;
 		JPanel itemPanel0 = createItemPanel(PistolWeapon, p, HUD);
 		super.add(itemPanel0, new Integer(0));
 
-		Weapon AssaultWeapon = new Weapon(Weapon.WeaponInHand.ASSAULT_RIFLE, 1, 2, 3, 4);
+		Weapon AssaultWeapon = StandardWeapons.getAssaultrifle();
 		items[1] = AssaultWeapon;
 		JPanel itemPanel1 = createItemPanel(AssaultWeapon, p, HUD);
 		super.add(itemPanel1, new Integer(1));
 
-		Weapon SMGWeapon = new Weapon(Weapon.WeaponInHand.SMG, 1, 2, 3, 4);
+		Weapon SMGWeapon = StandardWeapons.getSmg();
 		items[2] = SMGWeapon;
 		JPanel itemPanel2 = createItemPanel(SMGWeapon, p, HUD);
 		super.add(itemPanel2, new Integer(2));
 
-		Weapon ShotgunWeapon = new Weapon(Weapon.WeaponInHand.SHOTGUN, 1, 2, 3, 4);
+		Weapon ShotgunWeapon = StandardWeapons.getShotgun();
 		items[3] = ShotgunWeapon;
 		JPanel itemPanel3 = createItemPanel(ShotgunWeapon, p, HUD);
 		super.add(itemPanel3, new Integer(3));
 
-		Weapon SniperWeapon = new Weapon(Weapon.WeaponInHand.SNIPER_RIFLE, 1, 2, 3, 4);
+		Weapon SniperWeapon = StandardWeapons.getSniper();
 		items[4] = SniperWeapon;
 		JPanel itemPanel4 = createItemPanel(SniperWeapon, p, HUD);
 		super.add(itemPanel4, new Integer(4));
 
-		Weapon SpaceWeapon = new Weapon(Weapon.WeaponInHand.SPACE_GUN, 1, 2, 3, 4);
+		Weapon SpaceWeapon = StandardWeapons.getSpacegun();
 		items[5] = SpaceWeapon;
 		JPanel itemPanel5 = createItemPanel(SpaceWeapon, p, HUD);
 		super.add(itemPanel5, new Integer(5));
@@ -343,7 +343,7 @@ public class ContentShop extends JPanel {
 						}
 
 					} else {
-						System.out.println("Player had not enough money!\n");
+						System.out.println("Player has not enough money!\n");
 
 					}
 
