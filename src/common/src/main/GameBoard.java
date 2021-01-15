@@ -2,8 +2,6 @@ package common.src.main;
 
 import javax.swing.*;
 
-import org.jspace.ActualField;
-import org.jspace.FormalField;
 import org.jspace.Space;
 
 public class GameBoard extends JFrame {

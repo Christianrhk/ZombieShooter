@@ -28,15 +28,44 @@ public class BulletGraphics {
 
 	public void drawBullet(Graphics2D g2d, Bullet b) {
 
+		int bulletSpawnX = 0, bulletSpawnY = 0;
+
+		switch (b.getWeaponType()) {
+			case SNIPER_RIFLE:
+				bulletSpawnX = 58;
+				bulletSpawnY = -11;
+				break;
+			case SMG:
+				bulletSpawnX = 38;
+				bulletSpawnY = -15;
+				break;
+			case SHOTGUN:
+				bulletSpawnX = 46;
+				bulletSpawnY = -15;	
+				break;
+			case PISTOL:
+				bulletSpawnX = 34;
+				bulletSpawnY = -15;	
+				break;
+			case ASSAULT_RIFLE:
+				bulletSpawnX = 45;
+				bulletSpawnY = -12;	
+				break;
+			case SPACE_GUN:
+				bulletSpawnX = 20;
+				bulletSpawnY = -10;	
+				break;
+		}
+		
+
 		int cx = 0;
 		int cy = 0;
 		AffineTransform oldAT = g2d.getTransform();
-		g2d.translate(cx+b.getX(), cy+b.getY());
+		g2d.translate(cx + b.getX(), cy + b.getY());
 		g2d.rotate(b.getAngle());
 		g2d.translate(-cx, -cy);
-		g2d.drawImage(this.bulletImage, 20,-10, null);
+		g2d.drawImage(this.bulletImage, bulletSpawnX, bulletSpawnY, null);
 		g2d.setTransform(oldAT);
-		//g2d.drawImage(bulletImage, b.coords.x, b.coords.y, null);
 	}
 
 }

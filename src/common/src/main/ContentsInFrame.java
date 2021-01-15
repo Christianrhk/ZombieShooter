@@ -339,7 +339,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 				// If bullet is still within the screen and has not travelled its full range
 				// yet, put it back into the space
-				if (b.coords.x <= 800 && b.coords.y <= 800 && b.coords.x >= 0 && b.coords.y >= 0 && !b.outOfRange())
+				if (b.getX() <= 800 && b.getY() <= 800 && b.getX() >= 0 && b.getY() >= 0 && !b.outOfRange())
 					bulletSpace.put(b);
 			}
 			bulletSpace.put("token");
@@ -454,7 +454,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (p.getWIH() != common.src.main.Weapon.WeaponInHand.SHOTGUN) {
-			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed());
+			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed(), p.getWIH());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);
@@ -464,9 +464,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 		} else { // idea for how to implement shotgun
-			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() + 0.2, p.getDamage(), p.getAttackSpeed());
-			Bullet b1 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() - 0.2, p.getDamage(), p.getAttackSpeed());
-			Bullet b2 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed());
+			Bullet b = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() + 0.2, p.getDamage(), p.getAttackSpeed(), p.getWIH());
+			Bullet b1 = new Bullet(p.getX(), p.getY(), p.getWeaponRange(), 10, GG.getImageAngleRad() - 0.2, p.getDamage(), p.getAttackSpeed(), p.getWIH());
+			Bullet b2 = new Bullet(p.getX(), p.getY(), p.getWeaponRange() , 10, GG.getImageAngleRad(), p.getDamage(), p.getAttackSpeed(), p.getWIH());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);
