@@ -19,8 +19,9 @@ public class Zombie extends Entity {
 		initZombie();
 	}
 	
-	public Zombie(Point p) {
+	public Zombie(Point p, type t) {
 		super();
+		this.t = t;
 		this.POSITION = p;
 		initZombie();
 	}
@@ -35,6 +36,7 @@ public class Zombie extends Entity {
 				this.NAME = "ZOMBIE";
 				this.HIT = false;
 				this.offset = 32;
+				break;
 			default:
 				this.HEALTH_POINTS = 20;
 				this.ARMOR = 0;

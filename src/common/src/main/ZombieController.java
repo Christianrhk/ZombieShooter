@@ -12,6 +12,8 @@ import org.jspace.ActualField;
 import org.jspace.FormalField;
 import org.jspace.Space;
 
+import static common.src.main.Zombie.type;
+
 
 public class ZombieController {
 
@@ -100,10 +102,19 @@ public class ZombieController {
 		try {
 			zombieSpace.get(new ActualField("token"));
 			Random rand = new Random();
-			for (int i = 0; i < numberOfZombies; i++) {
-				// adding a new zombie with a random generated spawn location
-				Zombie z = new Zombie(getRandomSpawnLocation(rand));
+			// Spawn elite zombies
+			int numberOfElites = numberOfZombies/5;
+			for (int i = 0; i<numberOfElites;i++){
+				System.out.println("Spawned an elite");
+				Zombie z = new Zombie(getRandomSpawnLocation(rand),type.ELITE);
 				zombieSpace.put(z);
+			}
+			// spawn normal zombies
+			for (int i = 0; i < numberOfZombies-numberOfElites; i++) {
+				// adding a new zombie with a random generated spawn location
+				Zombie z = new Zombie(getRandomSpawnLocation(rand),type.NORMAL);
+				zombieSpace.put(z);
+
 			}
 
 			zombieSpace.put("token");
