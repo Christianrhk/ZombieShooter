@@ -288,8 +288,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		List<Object[]> list;
 		try {
 			zombieSpace.get(new ActualField("token"));
-			list = zombieSpace.queryAll(new FormalField(Zombie.class));
-			zombieSpace.put("token");
+			list = zombieSpace.getAll(new FormalField(Zombie.class));
 			for (Object[] o : list) {
 				Zombie z = (Zombie) o[0];
 				z.increaseDmgDelay();
@@ -303,7 +302,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 						z.resetDmgDelay();
 					}
 				}
+				zombieSpace.put(z);
 			}
+			zombieSpace.put("token");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -476,9 +477,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			}
 			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 		} else { // idea for how to implement shotgun
-			Bullet b = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
-			Bullet b1 = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
-			Bullet b2 = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad(), p.getWIH());
+			Bullet b = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
+			Bullet b1 = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
+			Bullet b2 = new Bullet(p.getX(), p.getY(), 70, 10, GG.getImageAngleRad(), p.getWIH());
 			try {
 				bulletSpace.get(new ActualField("token"));
 				bulletSpace.put(b);
