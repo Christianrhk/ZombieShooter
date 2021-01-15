@@ -7,10 +7,10 @@ public class StandardWeapons {
 	// public Weapon(WeaponInHand name, int damage, int attackspeed, int range, int cost) 
 	public StandardWeapons() {
 		pistol = new Weapon(Weapon.WeaponInHand.PISTOL, 3, 2, 400, 10);
-		sniper = new Weapon(Weapon.WeaponInHand.SNIPER_RIFLE, 50, 0.4, 800, 50);
+		assaultrifle = new Weapon(Weapon.WeaponInHand.ASSAULT_RIFLE, 5, 5, 500, 30);
 		smg = new Weapon(Weapon.WeaponInHand.SMG, 3, 8, 250, 25);
 		shotgun = new Weapon(Weapon.WeaponInHand.SHOTGUN, 6, 2, 70, 15);
-		assaultrifle = new Weapon(Weapon.WeaponInHand.ASSAULT_RIFLE, 5, 5, 500, 30);
+		sniper = new Weapon(Weapon.WeaponInHand.SNIPER_RIFLE, 50, 0.4, 800, 50);
 		spacegun = new Weapon(Weapon.WeaponInHand.SPACE_GUN, 100, 10, 800, 10000);
 	}
 
