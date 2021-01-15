@@ -9,6 +9,7 @@ import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 import common.src.main.Entity.mode;
+import common.src.main.Player.WeaponInHand;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -425,9 +426,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 					// Zombie is hit!
 					zombieSoundHandler.playSound("src/sounds/zombieDMG.wav");
-					
+
 					int damage = 5;
-					
+
 					if (z.takeDamage(damage)) {
 						p.giveMoney(1);
 						this.HUD.updateMoney(p);
@@ -448,19 +449,34 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 		return hit;
 	}
-	
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Bullet b = new Bullet(p.getX(), p.getY(), 400, 10, GG.getImageAngleRad(), p.getWIH());
-		try {
-			bulletSpace.get(new ActualField("token"));
-			bulletSpace.put(b);
-			bulletSpace.put("token");
-		} catch (InterruptedException e2) {
-			e2.printStackTrace();
+		if (p.getWIH() != WeaponInHand.SHOTGUN) {
+			Bullet b = new Bullet(p.getX(), p.getY(), 400, 10, GG.getImageAngleRad(), p.getWIH());
+			try {
+				bulletSpace.get(new ActualField("token"));
+				bulletSpace.put(b);
+				bulletSpace.put("token");
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
+		} else { // idea for how to implement shotgun
+			Bullet b = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad() + 0.2, p.getWIH());
+			Bullet b1 = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad() - 0.2, p.getWIH());
+			Bullet b2 = new Bullet(p.getX(), p.getY(), 50, 10, GG.getImageAngleRad(), p.getWIH());
+			try {
+				bulletSpace.get(new ActualField("token"));
+				bulletSpace.put(b);
+				bulletSpace.put(b1);
+				bulletSpace.put(b2);
+				bulletSpace.put("token");
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 		}
-		bulletSoundHandler.playSound("src/sounds/aBullet.wav");
 	}
 
 	@Override
