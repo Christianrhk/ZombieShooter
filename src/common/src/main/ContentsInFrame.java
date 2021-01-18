@@ -153,6 +153,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 				GG.drawGun(g2d, o);
 				PG.drawPlayer(g2d, o);
+				g2d.drawString(o.NAME, o.getX() - o.offset, o.getY() + o.offset);
 			}
 
 		} catch (InterruptedException e) {
