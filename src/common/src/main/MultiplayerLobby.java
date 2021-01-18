@@ -102,6 +102,7 @@ public class MultiplayerLobby {
             public void actionPerformed(ActionEvent e) {
                 currJoined.setText("");
                 port = Integer.parseInt(portText.getText());
+                host = hostText.getText();
                 name = nameText.getText();
 
                 if (name.matches("")){
@@ -111,8 +112,8 @@ public class MultiplayerLobby {
 
 
                 System.out.println("Host pressed");
-
                 SpaceRepository rep = App.initHostGame(port, name);
+
                 hostSpace = rep.get("initHost");
 
                 System.out.println("Got space");
@@ -144,7 +145,8 @@ public class MultiplayerLobby {
                 }
 
                 try {
-                    joinSpace = App.initJoinGame(port, host, name);
+                    System.out.println("host = " +host);
+                    joinSpace = App.initJoinGame(port, host);
                     joinSpace.put("NAME", name);
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);

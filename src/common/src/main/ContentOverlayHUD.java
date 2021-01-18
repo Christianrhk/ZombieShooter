@@ -74,8 +74,8 @@ public class ContentOverlayHUD extends JPanel {
 
 		if (p.getBoots() == true) {
 			super.add(bootsLabel);
-		}
 
+		}
 	}
 
 	public void updateHP(Player p) {
