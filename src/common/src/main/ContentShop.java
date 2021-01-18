@@ -219,7 +219,6 @@ public class ContentShop extends JPanel {
 
 		buyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				try {
 
 					// Checks to see if the player even buy the item. If not, the shop is not

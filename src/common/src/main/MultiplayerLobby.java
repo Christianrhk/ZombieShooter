@@ -43,6 +43,13 @@ public class MultiplayerLobby {
 
         JPanel panel = new JPanel();
         frame.add(panel);
+        
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            	MainMenu.multiplayerLobbyOpen = false;
+            }
+        });
 
         panel.setLayout(null);
 
@@ -254,6 +261,7 @@ public class MultiplayerLobby {
 
         return allNames;
     }
+    
   
 }
 

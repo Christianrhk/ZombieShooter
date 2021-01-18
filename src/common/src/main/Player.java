@@ -20,7 +20,7 @@ public class Player extends Entity {
 		this.MOVEMENT_SPEED = 2;
 		this.MONEY = 0;
 		this.offset = 20;
-		this.weapon = StandardWeapons.getPistol();
+		this.weapon = StandardWeapons.getSpacegun();
 		this.BOOTS = false;
 		this.bulletDelay = 0;
 	}
