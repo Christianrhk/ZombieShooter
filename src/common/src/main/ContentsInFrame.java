@@ -150,10 +150,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
     private void drawAllPlayers(Graphics2D g2d) {
         try {
-            System.out.println("Trying to get token");
+            //System.out.println("Trying to get token");
             playerSpace.get(new ActualField("token"));
-            System.out.println("I got them token");
-            System.out.println("I get stuck here ");
+            //System.out.println("I got them token");
+            //System.out.println("I get stuck here ");
             List<Object[]> list = playerSpace.queryAll(new FormalField(String.class), new FormalField(Player.class));
             for (Object[] o : list) {
                 Player player = (Player) o[1];
@@ -433,13 +433,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
                 // Check that player is not dead
                 if (p.getHP() > 0) {
-                    System.out.println("Player is dead");
+                    //System.out.println("Player is dead");
                     playerSpace.put(p.NAME, p);
                 } else {
                     hasRemovedPlayer = true;
                 }
                 playerSpace.put("token");
-                System.out.println("Has inserted token ");
+               // System.out.println("Has inserted token ");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
