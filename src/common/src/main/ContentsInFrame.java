@@ -396,18 +396,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		
 		PG.playerRunAnimation(p);
 		
-		/*
-		try {
-			List<Player> pp = getPlayerList();
-			for(Player p : pp) {
-				PG.playerRunAnimation(p);
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
 	}
 
 	public void addShop(ContentShop contentShop) {
