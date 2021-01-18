@@ -145,7 +145,8 @@ public class MultiplayerLobby {
                 }
 
                 try {
-                    joinSpace = App.initJoinGame(port, host, name);
+                    System.out.println("host = " +host);
+                    joinSpace = App.initJoinGame(port, host);
                     joinSpace.put("NAME", name);
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);
