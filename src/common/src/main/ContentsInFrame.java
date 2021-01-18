@@ -175,12 +175,21 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                         e.printStackTrace();
                     }
                 }
+                closeAllThreads();
                 App.restart();
             }
             playerSpace.put("token");
         } catch (InterruptedException e) {
             System.out.println("failed to get token");
         }
+    }
+
+    private void closeAllThreads() {
+        zombieSoundHandler.stop();
+        bulletSoundHandler.stop();
+        playerSoundHandler.stop();
+        playerSoundHandler.BG.stop();
+
     }
 
     private void drawAllZombies(Graphics2D g2d) {
@@ -449,13 +458,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
                 playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
                 // Check that player is not dead
                 if (p.getHP() > 0) {
-                    System.out.println("Player is dead");
                     playerSpace.put(p.NAME, p);
                 } else {
                     hasRemovedPlayer = true;
                 }
                 playerSpace.put("token");
-                System.out.println("Has inserted token ");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

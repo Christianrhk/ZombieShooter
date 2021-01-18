@@ -16,15 +16,17 @@ import org.jspace.SequentialSpace;
 import org.jspace.Space;
 
 public class SoundHandler implements Runnable {
-
+	Boolean run;
 	Space soundSpace;
+	BackGroundMusicPlayer BG;
 
 	public SoundHandler() {
 		soundSpace = new SequentialSpace();
 	}
 
 	public void playBackGroundMusic(String filePath) {
-		new Thread(new BackGroundMusicPlayer(filePath)).start();
+		BG = new BackGroundMusicPlayer(filePath);
+		new Thread(BG).start();
 	}
 
 	public void playSound(String path) {
@@ -39,9 +41,9 @@ public class SoundHandler implements Runnable {
 
 	@Override
 	public void run() {
-		
+		run = true;
 		System.out.println("Sound Thread Started");
-		while (true) {
+		while (run) {
 			//System.out.println("Going");
 			Object[] o = null;
 			try {
@@ -64,6 +66,10 @@ public class SoundHandler implements Runnable {
 
 		}
 	}
+
+    public void stop() {
+		run = false;
+    }
 }
 
 class BackGroundMusicPlayer implements Runnable {
@@ -90,14 +96,20 @@ class BackGroundMusicPlayer implements Runnable {
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 				while (playing) {
+
 					// making sure the daemon thread doesnt kill itself
-					// System.out.println("playing");
+					 //System.out.println("playing");
 				}
+				clip.close();
 			} else {
 				System.out.print("Music path didnt exist");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void stop(){
+		playing = false;
 	}
 }

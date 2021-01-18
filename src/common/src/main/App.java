@@ -50,6 +50,10 @@ public class App {
           
           System.out.println("THIS IS THE HOST");
           return repository;
+
+
+
+
     }
     
     public static Space initJoinGame(int port, String host, String name) throws UnknownHostException, IOException {
@@ -81,8 +85,6 @@ public class App {
 
         new ZombieController(zombies);
 		G = new GameBoard(WIDTH,HEIGHT, player, name, zombies, true);
-
-
     }
 
 
@@ -93,6 +95,7 @@ public class App {
     we should be able to set port and ip in gui
     */
     public static void connectToGame(int port, String host, String name) {
+
         // peer to peer communication
         String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
         String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
@@ -105,17 +108,21 @@ public class App {
 				Space zombies = new RemoteSpace(uriZombies);
 
 	            G = new GameBoard(WIDTH,HEIGHT, player, name, zombies, false);
-	            
+
 			} catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
     }
 
 
     public static void restart(){
         G.dispose();
-        System.exit(0);
+
+        System.gc(); // this is a big fucker that doesnt work!!!!!
+        StartScreen.runStartScreen();
+
     }
 
 }
