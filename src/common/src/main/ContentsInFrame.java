@@ -89,7 +89,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		// Get images
 		try {
-			bg = ImageIO.read(new File("src/images/zombiebanen.png"));
+			bg = ImageIO.read(new File("src/images/map.png"));
 		} catch (IOException e) {
 		}
 		this.zombieSpace = zombieSpace;
@@ -448,7 +448,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					System.out.println("Hit zombie for " + damage + " damage");
 
 					if (z.takeDamage(damage)) {
-						if(z.getType() == type.NORMAL) {
+						if (z.getType() == type.NORMAL) {
 							p.giveMoney(1);
 						} else {
 							p.giveMoney(3);
