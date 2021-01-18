@@ -33,20 +33,21 @@ public class App {
           String uri = "tcp://" + host + ":" + port + "/?keep";
 
           repository = new SpaceRepository();
-          // peer to peer communication
-          repository.addGate(uri);
 
           //creating spaces
           Space initHost = new SequentialSpace();
-          repository.add("init", initHost);
+          repository.add("initHost", initHost);
+          
+          // peer to peer communication
+          repository.addGate(uri);
           
           return repository;
 
     }
     
     public static Space initJoinGame(int port, String host, String name) throws UnknownHostException, IOException {
-    	String uriInit = "tcp://" + host + ":" + port + "/init?keep";
-    	Space initConnect = new RemoteSpace(uriInit);
+    	String uriInit = "tcp://" + host + ":" + port + "/initHost?keep";
+    	RemoteSpace initConnect = new RemoteSpace(uriInit);
 
   		return initConnect;
     }

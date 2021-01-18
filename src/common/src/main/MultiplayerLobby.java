@@ -113,7 +113,7 @@ public class MultiplayerLobby {
                 System.out.println("Host pressed");
 
                 SpaceRepository rep = App.initHostGame(port, name);
-                hostSpace = rep.get("init");
+                hostSpace = rep.get("initHost");
 
                 System.out.println("Got space");
                 try {
