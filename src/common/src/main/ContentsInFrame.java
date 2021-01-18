@@ -134,24 +134,24 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     private void drawAllPlayers(Graphics2D g2d) {
-            for (Player player : localPlayerList) {
-                GG.drawGun(g2d, player);
-                PG.drawPlayer(g2d, player);
-            }
-            if (localPlayerList.size() == 0) {
-                // all players are dead.
-                if (host) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(100);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        System.out.println("This is fucked ");
-                        e.printStackTrace();
-                    }
+        for (Player player : localPlayerList) {
+            GG.drawGun(g2d, player);
+            PG.drawPlayer(g2d, player);
+        }
+        if (localPlayerList.size() == 0) {
+            // all players are dead.
+            if (host) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    System.out.println("This is fucked ");
+                    e.printStackTrace();
                 }
-                closeAllThreads();
-                App.restart();
             }
+            closeAllThreads();
+            App.restart();
+        }
     }
 
     private void closeAllThreads() {
@@ -272,10 +272,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         if (shooting && !hasRemovedPlayer) {
             spawnBullets();
         }
-        if (host) {
-            // Move zombies and animate
-            ZombieController.moveZombies(localPlayerList);
-        }
+
         moveZombies();
         moveBullets();
         checkPlayerCollision();
@@ -289,6 +286,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     }
 
     private void moveZombies() {
+        if (host) {
+            // Move zombies and animate
+            ZombieController.moveZombies(localPlayerList);
+        }
+
+
         List<Object[]> list = null;
         try {
             zombieSpace.get(new ActualField("token"));
@@ -300,8 +303,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
         }
         for (Object[] o : list) {
             Zombie z = (Zombie) o[0];
-            ZG.zombieRunAnimation(z);
-            ZGElite.zombieRunAnimation(z);
+            if (z.getType() == type.NORMAL) {
+                ZG.zombieRunAnimation(z);
+            } else {
+                ZGElite.zombieRunAnimation(z);
+            }
         }
     }
 
@@ -529,6 +535,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
     @Override
     public void mouseExited(MouseEvent e) {
         mouseInWindow = false;
+
 
     }
 

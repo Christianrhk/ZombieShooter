@@ -28,8 +28,7 @@ public class App {
     	G = new GameBoard(WIDTH, HEIGHT,playerSpace,"player1",zombieSpace,true);
     }
     
-    public static SpaceRepository initHostGame(int port, String name) {
-    	  String host = "localhost";
+    public static SpaceRepository initHostGame(int port, String host) {
           String uri = "tcp://" + host + ":" + port + "/?keep";
 
           repository = new SpaceRepository();
