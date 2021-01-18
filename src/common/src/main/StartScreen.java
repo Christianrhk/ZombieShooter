@@ -1,5 +1,7 @@
 package common.src.main;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -34,8 +36,11 @@ public class StartScreen {
         System.out.println("Started Game");
 
         frame = new JFrame("Zombie Shooter");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setSize(300, 350);
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
 
         frame.setResizable(false);
 
@@ -159,7 +164,7 @@ public class StartScreen {
                 System.out.println("Done finding names");
 
                 App.connectToGame(port, host, name);
-
+                MainMenu.disposeOfFrame();
                 frame.dispose();
             }
         });
@@ -177,7 +182,7 @@ public class StartScreen {
                 }
 
                 App.hostGame(port, name);
-
+                MainMenu.disposeOfFrame();
 
                 frame.dispose();
             }
@@ -259,12 +264,6 @@ public class StartScreen {
             currHOST.paintImmediately(currJoined.getVisibleRect());
         }
 
-
-
-        /*
-        for (String s : allNames) {
-            System.out.println(s);
-        }*/
         return allNames;
     }
 }

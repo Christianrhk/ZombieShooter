@@ -99,9 +99,6 @@ public class App {
         // peer to peer communication
         String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
         String uriZombies = "tcp://" + host + ":" + port + "/zombies?keep";
-        //String uriEnvironment = "tcp://" + host + ":" + port + "/environment?keep";
-        //String uriShop = "tcp://" + host + ":" + port + "/shop?keep";
-        //String uriInit = "tcp://" + host + ":" + port + "/init?conn";
 
             try {
                 Space player = new RemoteSpace(uriPlayer);
@@ -120,8 +117,8 @@ public class App {
     public static void restart(){
         G.dispose();
 
-        System.gc(); // this is a big fucker that doesnt work!!!!!
-        StartScreen.runStartScreen();
+        System.gc(); 
+        MainMenu.frame.setVisible(true);
 
     }
 

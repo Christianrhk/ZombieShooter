@@ -1,5 +1,8 @@
 package common.src.main;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.*;
 
 import org.jspace.Space;
@@ -41,6 +44,8 @@ public class GameBoard extends JFrame {
         super.setSize(WIDTH, HEIGHT);
         super.setTitle("Zombie Shooter");
         super.setResizable(false);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		super.setLocation(dim.width/2-super.getSize().width/2, dim.height/2-super.getSize().height/2);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //create layered pane

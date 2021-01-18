@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ContentsInFrame extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
+	
 	private static final long serialVersionUID = 1L;
+	
 	// SoundHandler
 	SoundHandler zombieSoundHandler;
 	SoundHandler bulletSoundHandler;
@@ -36,6 +38,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	BufferedImage bg;
 	Space zombieSpace;
 	Space bulletSpace;
+	
 	// Graphic controllers
 	ZombieGraphics ZG, ZGElite;
 	PlayerGraphics PG;
@@ -58,6 +61,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		addMouseMotionListener(this);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
+		
 		// Init Sounds
 		zombieSoundHandler = new SoundHandler();
 		bulletSoundHandler = new SoundHandler();
@@ -65,7 +69,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		new Thread(zombieSoundHandler).start();
 		new Thread(bulletSoundHandler).start();
 		new Thread(playerSoundHandler).start();
-		startBackGroundMusic();
+		//startBackGroundMusic();
+		
 		// Init Graphics
 		ZG = new ZombieGraphics("src/images/fat-zombie-png-64.png");
 		ZGElite = new ZombieGraphics("src/images/fat-zombie-elite.png");
@@ -75,6 +80,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		this.p = player;
 		this.name = player.NAME;
 		this.shooting = false;
+		
 		// Get images
 		try {
 			bg = ImageIO.read(new File("src/images/map.png"));
@@ -94,10 +100,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 	}
 
+	/*
 	public void startBackGroundMusic() {
 		playerSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
 	}
 
+	*/
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -164,8 +172,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		zombieSoundHandler.stop();
 		bulletSoundHandler.stop();
 		playerSoundHandler.stop();
-		playerSoundHandler.BG.stop();
-
 	}
 
 	private void drawAllZombies(Graphics2D g2d) {
