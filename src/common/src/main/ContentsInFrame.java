@@ -100,12 +100,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 	}
 
-	/*
-	public void startBackGroundMusic() {
-		playerSoundHandler.playBackGroundMusic("src/sounds/backgroundMusic.WAV");
-	}
-
-	*/
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -383,7 +377,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void movePlayer() {
-		PG.playerRunAnimation(p);
 		p.bulletDelay++;
 		// only update if a key has been pressed
 		if (press[0] || press[1] || press[2] || press[3]) {
@@ -400,7 +393,21 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			p.mode = mode.IDLE;
 		}
 		updatePlayer();
+		
 		PG.playerRunAnimation(p);
+		
+		/*
+		try {
+			List<Player> pp = getPlayerList();
+			for(Player p : pp) {
+				PG.playerRunAnimation(p);
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
 	}
 
 	public void addShop(ContentShop contentShop) {
