@@ -17,6 +17,7 @@ public class MainMenu extends Canvas implements MouseListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	static boolean multiplayerLobbyOpen = false;
 	static JFrame frame;
 
 	public MainMenu() {
@@ -68,9 +69,12 @@ public class MainMenu extends Canvas implements MouseListener {
 
 	public void startMultiPlayer() {
 		System.out.println("Multiplayer started");
-		MultiplayerLobby.runStartScreen();
+		if (!multiplayerLobbyOpen) {
+			multiplayerLobbyOpen = true;
+			MultiplayerLobby.runStartScreen();
+		}
 	}
-	
+
 	public static void disposeOfFrame() {
 		frame.setVisible(false);
 	}
