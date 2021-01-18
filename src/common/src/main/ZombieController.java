@@ -34,7 +34,7 @@ public class ZombieController {
 	}
 
 	public static void moveZombies(List<Player> playerList) {
-
+		if (playerList.size() == 0) return;
 
 		// have zombies move towards closest player (really simple AI)
 		// remmeber to update direction for animation
