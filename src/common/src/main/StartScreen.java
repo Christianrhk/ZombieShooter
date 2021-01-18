@@ -22,12 +22,18 @@ public class StartScreen {
     public volatile static JLabel currHOST;
     public volatile static JLabel currJoined;
     public static Space hostSpace, joinSpace;
+    public static JFrame frame;
 
     public static void main(String[] args) throws IOException {
+        runStartScreen();
+
+    }
+
+    public static void runStartScreen() {
         started = false;
         System.out.println("Started Game");
 
-        JFrame frame = new JFrame("Zombie Shooter");
+        frame = new JFrame("Zombie Shooter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 350);
 
@@ -135,6 +141,7 @@ public class StartScreen {
                     joinSpace.put("CONNECT", name);
                     currJoined.setText(name);
                 } catch (InterruptedException e1) {
+                    System.out.println("Already connected to space");
                     e1.printStackTrace();
                 } catch (UnknownHostException e1) {
                     e1.printStackTrace();
@@ -187,7 +194,6 @@ public class StartScreen {
         });
 
         frame.setVisible(true);
-
     }
 
     public static boolean queryStart(Space init) {
