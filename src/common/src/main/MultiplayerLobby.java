@@ -120,7 +120,6 @@ public class MultiplayerLobby {
                 new Thread(new UpdateChecker(name, hostSpace)).start();
 
                //System.out.println("We never get here!");
-
             }
         });
 
@@ -144,7 +143,7 @@ public class MultiplayerLobby {
                     currJoined.setText(name);
                 } catch (InterruptedException e1) {
                     System.out.println("Already connected to space");
-                    e1.printStackTrace();
+                    return;
                 } catch (UnknownHostException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
