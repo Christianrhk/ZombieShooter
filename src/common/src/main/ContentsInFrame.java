@@ -508,6 +508,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println(x + " " + y);
 		this.shooting = true;
 	}
 

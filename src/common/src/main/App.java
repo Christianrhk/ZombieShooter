@@ -11,8 +11,10 @@ public class App {
 
 	public static boolean started = false;
 	
-	public static SpaceRepository repository;
+	public static int WIDTH = 815;
+	public static int HEIGHT = 835;
 	
+	public static SpaceRepository repository;
     /*
 
    Singleplayer mode
@@ -22,7 +24,7 @@ public class App {
         Space zombieSpace = new SequentialSpace();
         Space playerSpace = new SequentialSpace();
     	new ZombieController(zombieSpace);
-    	new GameBoard(800, 800,playerSpace,"player1",zombieSpace,true);
+    	new GameBoard(WIDTH, HEIGHT,playerSpace,"player1",zombieSpace,true);
     }
 
 
@@ -77,7 +79,7 @@ public class App {
 
 
         new ZombieController(zombies);
-		new GameBoard(800,800, player, name, zombies, true);
+		new GameBoard(WIDTH,HEIGHT, player, name, zombies, true);
 
 
     }
@@ -101,7 +103,7 @@ public class App {
                 Space player = new RemoteSpace(uriPlayer);
 				Space zombies = new RemoteSpace(uriZombies);
 
-	            new GameBoard(800,800, player, name, zombies, false);
+	            new GameBoard(WIDTH,HEIGHT, player, name, zombies, false);
 	            
 			} catch (IOException e) {
                 // TODO Auto-generated catch block
