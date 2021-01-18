@@ -58,15 +58,17 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	Player p;
 
-	// Constructor for multiplayer
-	public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
-		super.setDoubleBuffered(true);
-		addKeyListener(this);
-		setFocusable(true);
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		requestFocusInWindow();
-		setFocusTraversalKeysEnabled(false);
+    Boolean hasRemovedPlayer = false;
+
+    // Constructor for multiplayer
+    public ContentsInFrame(Player player, Space playerSpace, Space zombieSpace, boolean host) {
+        super.setDoubleBuffered(true);
+        addKeyListener(this);
+        setFocusable(true);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        requestFocusInWindow();
+        setFocusTraversalKeysEnabled(false);
 
 		// Init Sounds
 		zombieSoundHandler = new SoundHandler();
@@ -146,21 +148,28 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		}
 	}
 
-	private void drawAllPlayers(Graphics2D g2d) {
-		try {
-			List<Player> players = getPlayerList();
-			for (Player o : players) {
-
-				GG.drawGun(g2d, o);
-				PG.drawPlayer(g2d, o);
-				g2d.drawString(o.NAME, o.getX() - o.offset, o.getY() + o.offset);
-			}
-
-		} catch (InterruptedException e) {
-			System.out.println("failed to get token");
-		}
-
-	}
+    private void drawAllPlayers(Graphics2D g2d) {
+        try {
+            System.out.println("Trying to get token");
+            playerSpace.get(new ActualField("token"));
+            System.out.println("I got them token");
+            System.out.println("I get stuck here ");
+            List<Object[]> list = playerSpace.queryAll(new FormalField(String.class), new FormalField(Player.class));
+            for (Object[] o : list) {
+                Player player = (Player) o[1];
+                GG.drawGun(g2d, player);
+                PG.drawPlayer(g2d, player);
+            }
+            if (list.size() == 0) {
+                System.out.println("Hello i am dead fella");
+                this.setVisible(false); //you can't see me!
+                App.restart();
+            }
+            playerSpace.put("token");
+        } catch (InterruptedException e) {
+            System.out.println("failed to get token");
+        }
+    }
 
 	private void drawAllZombies(Graphics2D g2d) {
 		try {
@@ -415,15 +424,26 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	private void updatePlayer() {
-		try {
-			playerSpace.get(new ActualField("token"));
-			playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
-			playerSpace.put(p.NAME, p);
-			playerSpace.put("token");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+    private void updatePlayer() {
+        if (!hasRemovedPlayer) {
+
+
+            try {
+                playerSpace.get(new ActualField("token"));
+                playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
+                // Check that player is not dead
+                if (p.getHP() > 0) {
+                    System.out.println("Player is dead");
+                    playerSpace.put(p.NAME, p);
+                } else {
+                    hasRemovedPlayer = true;
+                }
+                playerSpace.put("token");
+                System.out.println("Has inserted token ");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
 	}
 
@@ -509,9 +529,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-		System.out.println(x + " " + y);
 		this.shooting = true;
 	}
 
@@ -528,22 +545,22 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void mouseExited(MouseEvent e) {
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		int x = p.getX();
-		int y = p.getY();
-		double deltax = e.getX() - x;
-		double deltay = e.getY() - y;
-		GG.setImageAngleRad(Math.atan2(deltay, deltax));
-	}
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        drawGunGraphics(e);
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent e) { // Determine which way gun is pointing
-		int x = p.getX();
-		int y = p.getY();
-		double deltax = e.getX() - x;
-		double deltay = e.getY() - y;
-		GG.setImageAngleRad(Math.atan2(deltay, deltax));
-	}
+    @Override
+    public void mouseMoved(MouseEvent e) { // Determine which way gun is pointing
+        drawGunGraphics(e);
+    }
+
+    private void drawGunGraphics(MouseEvent e) {
+        int x = p.getX();
+        int y = p.getY();
+        double deltax = e.getX() - x;
+        double deltay = e.getY() - y;
+        GG.setImageAngleRad(Math.atan2(deltay, deltax));
+    }
 
 }

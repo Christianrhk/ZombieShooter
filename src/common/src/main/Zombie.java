@@ -43,7 +43,6 @@ public class Zombie extends Entity {
 				this.NAME = "ZOMBIE";
 				this.HIT = false;
 				this.offset = 32;
-
 		}
 	}
 
