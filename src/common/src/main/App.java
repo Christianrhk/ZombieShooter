@@ -13,7 +13,7 @@ public class App {
 	
 	public static int WIDTH = 815;
 	public static int HEIGHT = 835;
-
+	
 	public static SpaceRepository repository;
 	
     /*
@@ -27,14 +27,7 @@ public class App {
     	new ZombieController(zombieSpace);
     	G = new GameBoard(WIDTH, HEIGHT,playerSpace,"player1",zombieSpace,true);
     }
-
-
-    /*
-
-    # Multiplayer - host game.
-    We should be able to set port in gui
-    */
-
+    
     public static SpaceRepository initHostGame(int port, String name) {
     	  String host = "localhost";
           String uri = "tcp://" + host + ":" + port + "/?keep";
@@ -47,12 +40,7 @@ public class App {
           Space initHost = new SequentialSpace();
           repository.add("init", initHost);
           
-          
-          System.out.println("THIS IS THE HOST");
           return repository;
-
-
-
 
     }
     
@@ -60,12 +48,19 @@ public class App {
     	String uriInit = "tcp://" + host + ":" + port + "/init?keep";
     	Space initConnect = new RemoteSpace(uriInit);
 
-    	
-    	System.out.println("THIS IS THE JOINER");
-		return initConnect;
-    	
+  		return initConnect;
     }
     
+    public static void removeInitSpace() {
+    	repository.closeGates();
+    	repository.remove("init");
+    }
+
+    /*
+
+    # Multiplayer - host game.
+    We should be able to set port in gui
+    */
     
     public static void hostGame(int port, String name) {
         // peer to peer communication

@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import org.jspace.ActualField;
 import org.jspace.FormalField;
+import org.jspace.RemoteSpace;
+import org.jspace.SequentialSpace;
 import org.jspace.Space;
 import org.jspace.SpaceRepository;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartScreen {
+public class MultiplayerLobby {
 
     public static String name, host;
     public static int port;
@@ -26,18 +28,13 @@ public class StartScreen {
     public static Space hostSpace, joinSpace;
     public static JFrame frame;
 
-    public static void main(String[] args) throws IOException {
-        runStartScreen();
-
-    }
-
     public static void runStartScreen() {
         started = false;
         System.out.println("Started Game");
 
         frame = new JFrame("Zombie Shooter");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setSize(300, 350);
+        frame.setSize(300, 300);
         
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
@@ -177,23 +174,15 @@ public class StartScreen {
                 started = true;
                 try {
                     hostSpace.put("START");
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                } catch (InterruptedException | NullPointerException e1) {
+                	return;
                 }
 
                 App.hostGame(port, name);
+                App.removeInitSpace();
                 MainMenu.disposeOfFrame();
+	                
 
-                frame.dispose();
-            }
-        });
-
-        JButton singlePlayer = new JButton("Singleplayer");
-        singlePlayer.setBounds(10, 230, 265, 25);
-        panel.add(singlePlayer);
-        singlePlayer.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                App.singlePlayer();
                 frame.dispose();
             }
         });
@@ -266,6 +255,7 @@ public class StartScreen {
 
         return allNames;
     }
+  
 }
 
 class UpdateChecker implements Runnable {
@@ -286,14 +276,10 @@ class UpdateChecker implements Runnable {
 
     @Override
     public void run() {
-        while (!StartScreen.started) {
-            allNames = StartScreen.getNames(name, space, allNames);
-            StartScreen.started = StartScreen.queryStart(space);
+        while (!MultiplayerLobby.started) {
+            allNames = MultiplayerLobby.getNames(name, space, allNames);
+            MultiplayerLobby.started = MultiplayerLobby.queryStart(space);
         }
-
         System.out.println("Thread has finished");
-
-
     }
-
 }

@@ -13,12 +13,14 @@ import javax.swing.WindowConstants;
 
 public class MainMenu extends Canvas implements MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static JFrame frame;
-	static boolean mpscreenopen;
 
 	public MainMenu() {
 		addMouseListener(this);
-		mpscreenopen = false;
 	}
 
 	@Override
@@ -66,8 +68,7 @@ public class MainMenu extends Canvas implements MouseListener {
 
 	public void startMultiPlayer() {
 		System.out.println("Multiplayer started");
-		mpscreenopen = true;
-		StartScreen.runStartScreen();
+		MultiplayerLobby.runStartScreen();
 	}
 	
 	public static void disposeOfFrame() {
