@@ -7,15 +7,16 @@ public class GameLoop implements Runnable {
 	final int TICKS_PER_SECOND = 50;
 	final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 	final int MAX_FRAMESKIP = 10;
-	final long startingTick;
+	final long startingTick, RTT;
 	boolean playing;
 
 	ContentsInFrame content;
 
-	public GameLoop(Player player, Space playerSpace, Space zombieSpace, boolean host, long startTick) {
+	public GameLoop(Player player, Space playerSpace, Space zombieSpace, boolean host, long startTick, long RTT) {
 		content = new ContentsInFrame(player, playerSpace, zombieSpace, host);
 		this.startingTick = startTick;
 		this.playing = true;
+		this.RTT = RTT;
 	}
 
 	@Override
@@ -28,16 +29,22 @@ public class GameLoop implements Runnable {
 		}
 		System.out.println(next_game_tick + " current time: " + System.currentTimeMillis());
 		int loops;
+		
+		long halfRTT = this.RTT / 2;
 
 		while (playing) {
 			loops = 0;
-			while (System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP) {
+			long time = System.currentTimeMillis() - halfRTT;
+			System.out.println(time);
+			while (time > next_game_tick && loops < MAX_FRAMESKIP) {
 
-				
+				System.out.println(System.currentTimeMillis() + "1");
 				content.updateGame();
+				System.out.println(System.currentTimeMillis() + "2");
+				
 
 				next_game_tick += SKIP_TICKS;
-				System.out.println("Next game tick: " + next_game_tick + " current time: " + System.currentTimeMillis());
+				System.out.println("Next game tick: " + next_game_tick + " current time: " + time);
 				loops++;
 			}
 

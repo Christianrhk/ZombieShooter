@@ -54,6 +54,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	Player p;
 	Boolean hasRemovedPlayer = false;
 	boolean mouseInWindow;
+	String token, token2;
 
 	List<Player> localPlayerList;
 
@@ -66,7 +67,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		addMouseMotionListener(this);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
-
+		
 		// Init Sounds
 		zombieSoundHandler = new SoundHandler();
 		bulletSoundHandler = new SoundHandler();
@@ -98,7 +99,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		try {
 			bulletSpace.put("token");
 			if (this.host) {
-				this.playerSpace.put("token");
+				this.token = "tokenJOIN";
+				this.token2 = "tokenHOST";
+				this.playerSpace.put(token);
+			} else {
+				this.token = "tokenHOST";
+				this.token2 = "tokenJOIN";
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -355,9 +361,9 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	private List getPlayerList() throws InterruptedException {
-		playerSpace.get(new ActualField("token"));
+		playerSpace.get(new ActualField(token));
 		List<Object[]> list = playerSpace.queryAll(new FormalField(String.class), new FormalField(Player.class));
-		playerSpace.put("token");
+		playerSpace.put(token2);
 		ArrayList<Player> players = new ArrayList<Player>();
 		for (Object[] o : list) {
 			players.add((Player) o[1]);
@@ -368,7 +374,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	public void movePlayer() {
 
 		p.bulletDelay++;
-		// only update if a key has been pressed
+		// only  if a key has been pressed
 		if ((press[0] || press[1] || press[2] || press[3]) && mouseInWindow) {
 			if (press[0])
 				playerPosChange[0] = p.moveUp();
@@ -404,7 +410,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	private void updatePlayer() {
 		if (!hasRemovedPlayer) {
 			try {
-				playerSpace.get(new ActualField("token"));
+				playerSpace.get(new ActualField(token));
 				playerSpace.get(new ActualField(p.NAME), new FormalField(Player.class));
 				// Check that player is not dead
 				if (p.getHP() > 0) {
@@ -413,7 +419,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 				} else {
 					hasRemovedPlayer = true;
 				}
-				playerSpace.put("token");
+				playerSpace.put(token2);
 				// System.out.println("Has inserted token ");
 			} catch (InterruptedException e) {
 				e.printStackTrace();

@@ -239,7 +239,7 @@ public class LobbyWithSync {
 			for (Long rtt : RTTs) {
 				total += rtt;
 			}
-			return total / RTTs.size();
+			return total / (long)RTTs.size();
 		} else {
 			return 0;
 		}
@@ -300,7 +300,7 @@ class UpdateCheck implements Runnable {
 						//long startTime = (System.currentTimeMillis() - (RTT/2)) + LobbyWithSync.startDelay;
 						long startTime = (long)o[1];
 						
-						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime);
+						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime, RTT);
 						MainMenu.disposeOfFrame();
 						
 						LobbyWithSync.frame.dispose();
