@@ -50,7 +50,7 @@ public class App {
 
 	public static void removeInitSpace() {
 		repository.closeGates();
-		repository.remove("init");
+		repository.remove("initHost");
 	}
 
 	/*
