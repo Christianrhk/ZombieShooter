@@ -35,12 +35,10 @@ public class GameLoop implements Runnable {
 		while (playing) {
 			loops = 0;
 			long time = System.currentTimeMillis() - halfRTT;
-			System.out.println(time);
 			while (time > next_game_tick && loops < MAX_FRAMESKIP) {
 
-				System.out.println(System.currentTimeMillis() + "1");
 				content.updateGame();
-				System.out.println(System.currentTimeMillis() + "2");
+				
 				
 
 				next_game_tick += SKIP_TICKS;
