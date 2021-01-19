@@ -37,32 +37,11 @@ public class PlayerGraphics {
 		setSpriteSheetAnimations();
 	}
 
-	public void playerRunAnimation(Player p) {
-		switch (p.dir) {
-		case UP:
-		case RIGHT:
-			switch (p.mode) {
-			case RUNNING:
-				runningRight.runAnimation();
-				break;
-			case IDLE:
-				idleRight.runAnimation();
-				break;
-			}
-			break;
-		case DOWN:
-		case LEFT:
-			switch (p.mode) {
-			case RUNNING:
-				runningLeft.runAnimation();
-				break;
-			case IDLE:
-				idleLeft.runAnimation();
-				break;
-			}
-			break;
-		}
-
+	public void playerRunAnimation() {
+		runningRight.runAnimation();
+		idleRight.runAnimation();
+		runningLeft.runAnimation();
+		idleLeft.runAnimation();
 	}
 
 	public void drawPlayer(Graphics g, Player p) {

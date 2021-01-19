@@ -262,12 +262,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		updatePlayerAnimation();
 
-		// Move players
+		// Move players & run animation
 		movePlayer();
+		PG.playerRunAnimation();
+		
 		// only when shooting and the player is still alive
-
 		if (shooting && !hasRemovedPlayer) {
 			spawnBullets();
 		}
@@ -275,17 +275,14 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(localPlayerList);
 		}
+		
 		ZG.zombieRunAnimation();
 		ZGElite.zombieRunAnimation();
+		
+		// Move bullets and check collision
 		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
-	}
-
-	private void updatePlayerAnimation() {
-		for (Player p : localPlayerList) {
-			PG.playerRunAnimation(p);
-		}
 	}
 
 	// Check collision between the player and zombies
@@ -439,8 +436,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 					System.out.println("Hit zombie for " + damage + " damage");
 					if (z.takeDamage(damage)) {
 						if (z.getType() == type.NORMAL) {
+							// If it is a normal zombie, give the player $1
 							p.giveMoney(1);
 						} else {
+							// If it is an elite zombie, give the player 3$
 							p.giveMoney(3);
 						}
 						this.HUD.updateMoney(p);
@@ -463,9 +462,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void spawnBullets() {
 		try {
+			// Calculate number of game ticks to pass, before we can shoot again according to attack speed of weapon.
 			double as = p.getAttackSpeed();
 			double count = 1.0 / as * 50.0; // 50 because there is 50 game ticks / second
-			// System.out.println("Count is" + count + " AS is " + as);
+			
 			if (p.bulletDelay >= count) {
 				bulletSpace.get(new ActualField("token"));
 				switch (p.getWIH()) {
@@ -515,16 +515,17 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		drawGunGraphics(e);
+	public void mouseDragged(MouseEvent e) { // When mouse is moved or draged we determine which way to point the weapon.
+		calculateWeaponAngle(e);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) { // Determine which way gun is pointing
-		drawGunGraphics(e);
+		calculateWeaponAngle(e);
 	}
 
-	private void drawGunGraphics(MouseEvent e) {
+	// Calculates which angle the weapon should be drawn at
+	private void calculateWeaponAngle(MouseEvent e) {
 		int x = p.getX();
 		int y = p.getY();
 		double deltax = e.getX() - x;
