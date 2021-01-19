@@ -23,7 +23,7 @@ public class App {
 		Space zombieSpace = new SequentialSpace();
 		Space playerSpace = new SequentialSpace();
 		new ZombieController(zombieSpace);
-		G = new GameBoard(WIDTH, HEIGHT, playerSpace, "player1", zombieSpace, true, 0, 0);
+		G = new GameBoard(WIDTH, HEIGHT, playerSpace, "player1", zombieSpace, true, 0);
 	}
 
 	public static Space initHostGame(int port, String host) {
@@ -75,7 +75,7 @@ public class App {
 
 		new ZombieController(zombies);
 		System.out.println(System.currentTimeMillis());
-		G = new GameBoard(WIDTH, HEIGHT, player, name, zombies, true, start, 0);
+		G = new GameBoard(WIDTH, HEIGHT, player, name, zombies, true, start);
 	}
 
 	/*
@@ -83,7 +83,7 @@ public class App {
 	 * # Multiplayer - connect to game
 	 * 
 	 */
-	public static void connectToGame(int port, String host, String name, long start, long RTT) {
+	public static void connectToGame(int port, String host, String name, long start) {
 
 		// peer to peer communication
 		String uriPlayer = "tcp://" + host + ":" + port + "/player?keep";
@@ -92,7 +92,7 @@ public class App {
 		try {
 			Space player = new RemoteSpace(uriPlayer);
 			Space zombies = new RemoteSpace(uriZombies);
-			G = new GameBoard(WIDTH, HEIGHT, player, name, zombies, false, start, RTT);
+			G = new GameBoard(WIDTH, HEIGHT, player, name, zombies, false, start);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

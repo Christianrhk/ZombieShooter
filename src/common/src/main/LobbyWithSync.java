@@ -295,7 +295,7 @@ class UpdateCheck implements Runnable {
 						long RTT = LobbyWithSync.avgRTT();
 						long startTime = (System.currentTimeMillis() - (RTT/2)) + LobbyWithSync.startDelay;
 						
-						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime, RTT);
+						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime);
 						MainMenu.disposeOfFrame();
 						
 						LobbyWithSync.frame.dispose();
