@@ -26,7 +26,7 @@ public class GameLoop implements Runnable {
 		} else {
 			next_game_tick = System.currentTimeMillis();
 		}
-		System.out.println(next_game_tick);
+		System.out.println(next_game_tick + " current time: " + System.currentTimeMillis());
 		int loops;
 
 		while (playing) {
