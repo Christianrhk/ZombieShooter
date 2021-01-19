@@ -43,7 +43,7 @@ public class Entity {
 	}
 
 	public boolean moveUp() {
-		if (this.POSITION.y > 0) {
+		if (this.POSITION.y > 0 + this.offset) {
 			this.POSITION.y -= this.MOVEMENT_SPEED;
 			this.directionFacing = direction.UP;
 			return true;
@@ -52,7 +52,7 @@ public class Entity {
 	}
 
 	public boolean moveDown() {
-		if (this.POSITION.y < MAX_Y) {
+		if (this.POSITION.y < MAX_Y - this.offset) {
 			this.POSITION.y += this.MOVEMENT_SPEED;
 			this.directionFacing = direction.DOWN;
 			return true;
@@ -61,7 +61,7 @@ public class Entity {
 	}
 
 	public boolean moveRight() {
-		if (this.POSITION.x < MAX_X) {
+		if (this.POSITION.x < MAX_X - this.offset) {
 			this.POSITION.x += this.MOVEMENT_SPEED;
 			this.directionFacing = direction.RIGHT;
 			this.dir = direction.RIGHT;
@@ -71,7 +71,7 @@ public class Entity {
 	}
 
 	public boolean moveLeft() {
-		if (this.POSITION.x > 0) {
+		if (this.POSITION.x > 0 + this.offset) {
 			this.POSITION.x -= this.MOVEMENT_SPEED;
 			this.directionFacing = direction.LEFT;
 			this.dir = direction.LEFT;
