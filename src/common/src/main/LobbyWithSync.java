@@ -41,7 +41,7 @@ public class LobbyWithSync {
 		initGUI();
 
 		RTTs = new ArrayList<Long>();
-		startDelay = 6000;
+		startDelay = 1000;
 
 		hostButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,6 +108,8 @@ public class LobbyWithSync {
 					started = true;
 					initSpace.put("START");
 					long startTime = System.currentTimeMillis() + startDelay;
+					
+					System.out.println("AVG RTT: " + avgRTT());
 					
 					App.hostGame(port, name, startTime);
 					MainMenu.disposeOfFrame();
@@ -285,6 +287,7 @@ class UpdateCheck implements Runnable {
 					Object[] rtt = initSpace.get(new ActualField("RTTVALUE"), new FormalField(Long.class));
 					LobbyWithSync.RTTs.add((Long) rtt[1]);
 				}
+			
 
 				// Check for start event
 				list = initSpace.queryAll(new ActualField("START"));
@@ -293,6 +296,7 @@ class UpdateCheck implements Runnable {
 						LobbyWithSync.started = true;
 						
 						long RTT = LobbyWithSync.avgRTT();
+						System.out.println("AVG RTT: " + RTT);
 						long startTime = (System.currentTimeMillis() - (RTT/2)) + LobbyWithSync.startDelay;
 						
 						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime);

@@ -31,8 +31,7 @@ public class GameLoop implements Runnable {
 
 		while (playing) {
 			loops = 0;
-			long time = System.currentTimeMillis();
-			while (time > next_game_tick && loops < MAX_FRAMESKIP) {
+			while (System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP) {
 
 				
 				content.updateGame();
