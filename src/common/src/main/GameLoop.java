@@ -33,7 +33,7 @@ public class GameLoop implements Runnable {
 		while (playing) {
 			loops = 0;
 			long time = System.currentTimeMillis() - (this.RTT / 2);
-			if(loops % 250 == 0) {
+			if(250 % loops == 0) {
 				System.out.println(time);
 			}
 			while (time > next_game_tick && loops < MAX_FRAMESKIP) {
