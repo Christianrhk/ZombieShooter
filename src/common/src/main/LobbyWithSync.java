@@ -41,7 +41,7 @@ public class LobbyWithSync {
 		initGUI();
 
 		RTTs = new ArrayList<Long>();
-		startDelay = 1000;
+		startDelay = 6000;
 
 		hostButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -295,7 +295,7 @@ class UpdateCheck implements Runnable {
 						long RTT = LobbyWithSync.avgRTT();
 						long startTime = (System.currentTimeMillis() - (RTT/2)) + LobbyWithSync.startDelay;
 						
-						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime);
+						App.connectToGame(LobbyWithSync.port, LobbyWithSync.host, LobbyWithSync.name, startTime, RTT);
 						MainMenu.disposeOfFrame();
 						
 						LobbyWithSync.frame.dispose();
