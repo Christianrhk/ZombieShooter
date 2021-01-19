@@ -123,6 +123,7 @@ public class ContentShop extends JPanel {
 	}
 
 	private JPanel createItemPanel(item itemObject, Player p, ContentOverlayHUD HUD) {
+		
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
@@ -134,30 +135,29 @@ public class ContentShop extends JPanel {
 		// Sets up the name of the item
 		JLabel itemName = new JLabel(itemObject.getName());
 		itemName.setBounds(10, 8, 150, 30);
-		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
+		//itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
 
 		// Sets up the specifications of the item
 		JTextArea itemSpecs = new JTextArea();
 		itemSpecs.setBounds(10, 40, 164, 100);
-		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
+		//itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
 		itemSpecs.setEditable(false);
 
 		// Objects used for checking the items
 		ItemType itemType = itemObject.getType();
 		Icon shopIcon = null;
+		
 
 		// Sets up the text for the items based on their item and/or weapon types
 		switch (itemObject.getType()) {
 
 		case Weapon:
-
 			Weapon weaponObject = (Weapon) itemObject;
 			WeaponInHand weaponType = weaponObject.getWeaponType();
-			itemSpecs
-					.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
-							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + itemObject.getCost());
+			itemSpecs.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
+							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + weaponObject.getCost());
 			itemPanel.setBackground(new Color(196, 196, 196, 255));
-
+			
 			switch (weaponType) {
 
 			case PISTOL:
@@ -207,6 +207,8 @@ public class ContentShop extends JPanel {
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
+		
+		
 
 		// Sets up the icon for the item in the shop
 		JLabel iconLabel = new JLabel(shopIcon);

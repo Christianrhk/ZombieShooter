@@ -71,7 +71,7 @@ public class MainMenu extends Canvas implements MouseListener {
 		System.out.println("Multiplayer started");
 		if (!multiplayerLobbyOpen) {
 			multiplayerLobbyOpen = true;
-			MultiplayerLobby.runStartScreen();
+			LobbyWithSync.startLobby();
 		}
 	}
 
@@ -85,6 +85,7 @@ public class MainMenu extends Canvas implements MouseListener {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setSize(800, 800);
+		frame.setTitle("Zombie Shooters - Main menu");
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
 		frame.add(menu);

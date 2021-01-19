@@ -134,23 +134,25 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	private void drawAllPlayers(Graphics2D g2d) {
-		for (Player player : localPlayerList) {
-			GG.drawGun(g2d, player);
-			PG.drawPlayer(g2d, player);
-		}
-		if (localPlayerList.size() == 0) {
-			// all players are dead.
-			if (host) {
-				try {
-					TimeUnit.MILLISECONDS.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					System.out.println("This is fucked ");
-					e.printStackTrace();
-				}
+		if (localPlayerList != null) {
+			for (Player player : localPlayerList) {
+				GG.drawGun(g2d, player);
+				PG.drawPlayer(g2d, player);
 			}
-			closeAllThreads();
-			App.restart();
+			if (localPlayerList.size() == 0) {
+				// all players are dead.
+				if (host) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						System.out.println("This is fucked ");
+						e.printStackTrace();
+					}
+				}
+				closeAllThreads();
+				App.restart();
+			}
 		}
 	}
 
@@ -266,7 +268,7 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		// Move players & run animation
 		movePlayer();
 		PG.playerRunAnimation();
-		
+
 		// only when shooting and the player is still alive
 		if (shooting && !hasRemovedPlayer) {
 			spawnBullets();
@@ -275,10 +277,10 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			// Move zombies and animate
 			ZombieController.moveZombies(localPlayerList);
 		}
-		
+
 		ZG.zombieRunAnimation();
 		ZGElite.zombieRunAnimation();
-		
+
 		// Move bullets and check collision
 		moveBullets();
 		checkPlayerCollision();
@@ -462,10 +464,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void spawnBullets() {
 		try {
-			// Calculate number of game ticks to pass, before we can shoot again according to attack speed of weapon.
+			// Calculate number of game ticks to pass, before we can shoot again according
+			// to attack speed of weapon.
 			double as = p.getAttackSpeed();
 			double count = 1.0 / as * 50.0; // 50 because there is 50 game ticks / second
-			
+
 			if (p.bulletDelay >= count) {
 				bulletSpace.get(new ActualField("token"));
 				switch (p.getWIH()) {
@@ -515,7 +518,8 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) { // When mouse is moved or draged we determine which way to point the weapon.
+	public void mouseDragged(MouseEvent e) { // When mouse is moved or draged we determine which way to point the
+												// weapon.
 		calculateWeaponAngle(e);
 	}
 

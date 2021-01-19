@@ -18,20 +18,18 @@ public class GameBoard extends JFrame {
     ContentShop contentShop;
     ContentOverlayHUD HUD;
 
-    // Multiplayer  constructor
-    public GameBoard(int width, int height, Space playerSpace, String playerName, Space zombieSpace, boolean host) {
+    public GameBoard(int width, int height, Space playerSpace, String playerName, Space zombieSpace, boolean host, long start) {
     	StandardWeapons SW = new StandardWeapons();
         Player player = new Player(playerName);
         setGameBoard(width, height, player, playerSpace, host);
 
         if (host) super.setTitle("Zombie Shooter - host");
         // adding content
-        gl = new GameLoop(player, playerSpace, zombieSpace, host);
+        gl = new GameLoop(player, playerSpace, zombieSpace, host, start);
         new Thread(gl).start();
 
         //insert shop as a layered board
         setLayeredBoard(width, height, player);
-
 
     }
 
@@ -79,7 +77,7 @@ public class GameBoard extends JFrame {
         HUD.setBounds(0, 0, 301, 40);
         HUD.setVisible(true);
         
-      //Adding shop
+        //Adding shop
         contentShop = new ContentShop(p, HUD);
 
         //Setting shop on layer 1
