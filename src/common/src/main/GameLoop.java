@@ -37,7 +37,7 @@ public class GameLoop implements Runnable {
 				content.updateGame();
 
 				next_game_tick += SKIP_TICKS;
-				System.out.println("Next game tick: " + next_game_tick);
+				System.out.println("Next game tick: " + next_game_tick + " current time: " + System.currentTimeMillis());
 				loops++;
 			}
 
