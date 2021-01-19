@@ -259,12 +259,16 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void updateGame() {
+		System.out.println(" ---- " + System.currentTimeMillis() + " ---- ");
+		
 		try {
 			localPlayerList = getPlayerList();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
+		System.out.println(" -------- " + System.currentTimeMillis() + " -------- ");
+		
 		// Move players & run animation
 		movePlayer();
 		PG.playerRunAnimation();
@@ -281,10 +285,13 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 		ZG.zombieRunAnimation();
 		ZGElite.zombieRunAnimation();
 
+		System.out.println(" -------- " + System.currentTimeMillis() + " -------- ");
+		
 		// Move bullets and check collision
 		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
+		System.out.println(" ---- " + System.currentTimeMillis() + " ---- ");
 	}
 
 	// Check collision between the player and zombies
