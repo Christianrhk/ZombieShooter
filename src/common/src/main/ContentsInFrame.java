@@ -146,7 +146,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 						TimeUnit.MILLISECONDS.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
-						System.out.println("This is fucked ");
 						e.printStackTrace();
 					}
 				}
@@ -259,15 +258,11 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 	}
 
 	public void updateGame() {
-		System.out.println(" ---- " + System.currentTimeMillis() + " ---- ");
-		
 		try {
 			localPlayerList = getPlayerList();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println(" -------- " + System.currentTimeMillis() + " -------- ");
 		
 		// Move players & run animation
 		movePlayer();
@@ -284,14 +279,12 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 		ZG.zombieRunAnimation();
 		ZGElite.zombieRunAnimation();
-
-		System.out.println(" -------- " + System.currentTimeMillis() + " -------- ");
 		
 		// Move bullets and check collision
 		moveBullets();
 		checkPlayerCollision();
 		checkBulletCollision();
-		System.out.println(" ---- " + System.currentTimeMillis() + " ---- ");
+
 	}
 
 	// Check collision between the player and zombies

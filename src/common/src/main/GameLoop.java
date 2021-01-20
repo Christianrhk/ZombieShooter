@@ -4,9 +4,9 @@ import org.jspace.Space;
 
 public class GameLoop implements Runnable {
 
-	final int TICKS_PER_SECOND = 50;
+	final int TICKS_PER_SECOND = 30;
 	final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-	final int MAX_FRAMESKIP = 10;
+	final int MAX_FRAMESKIP = 6;
 	final long startingTick, RTT;
 	boolean playing;
 
@@ -38,11 +38,7 @@ public class GameLoop implements Runnable {
 			while (time > next_game_tick && loops < MAX_FRAMESKIP) {
 
 				content.updateGame();
-				
-				
-
 				next_game_tick += SKIP_TICKS;
-				System.out.println("Next game tick: " + next_game_tick + " current time: " + time);
 				loops++;
 			}
 
