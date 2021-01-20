@@ -95,35 +95,7 @@ public class ContentShop extends JPanel {
 		super.add(itemPanel8, new Integer(8));
 	}
 
-	static void transactionState(boolean state, Player p) {
-		// Player opens the shop (Presses B)
-		if (state == true) {
-			int currentMoney = p.getMoney();
-			try {
-				// Starts the shop thread
-				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop, items)).start();
-				// Sends the shop the money the player currently has
-				channelPlayerShop.put(currentMoney);
-			} catch (InterruptedException e) {
-				System.out.println("Player could NOT connect to the shop!\n");
-				e.printStackTrace();
-			}
-		}
-		// Player closes the shop (Presses B again)
-		else {
-			try {
-				// Initiates termination of the shop thread
-				channelPlayerShop.put("CloseShop", -1);
-				channelShopPlayer.get(new ActualField("ConnectionTerminated"));
-			} catch (InterruptedException e) {
-				System.out.println("Player could NOT terminate the connection with the shop!\n");
-				e.printStackTrace();
-			}
-		}
-	}
-
 	private JPanel createItemPanel(item itemObject, Player p, ContentOverlayHUD HUD) {
-		
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
@@ -135,29 +107,30 @@ public class ContentShop extends JPanel {
 		// Sets up the name of the item
 		JLabel itemName = new JLabel(itemObject.getName());
 		itemName.setBounds(10, 8, 150, 30);
-		//itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
+		itemName.setFont(new Font("TimesRoman", Font.PLAIN, 22));
 
 		// Sets up the specifications of the item
 		JTextArea itemSpecs = new JTextArea();
 		itemSpecs.setBounds(10, 40, 164, 100);
-		//itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
+		itemSpecs.setFont(new Font("Helvetica", Font.PLAIN, 14));
 		itemSpecs.setEditable(false);
 
 		// Objects used for checking the items
 		ItemType itemType = itemObject.getType();
 		Icon shopIcon = null;
-		
 
 		// Sets up the text for the items based on their item and/or weapon types
 		switch (itemObject.getType()) {
 
 		case Weapon:
+
 			Weapon weaponObject = (Weapon) itemObject;
 			WeaponInHand weaponType = weaponObject.getWeaponType();
-			itemSpecs.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
-							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + weaponObject.getCost());
+			itemSpecs
+					.setText("Damage:\t" + weaponObject.getDamage() + "\nAttackSpeed:\t" + weaponObject.getAttackSpeed()
+							+ "\nRange:\t" + weaponObject.getRange() + "\n\nCost:\t" + itemObject.getCost());
 			itemPanel.setBackground(new Color(196, 196, 196, 255));
-			
+
 			switch (weaponType) {
 
 			case PISTOL:
@@ -207,8 +180,6 @@ public class ContentShop extends JPanel {
 		default:
 			throw new IllegalStateException("Illegal item type!\n");
 		}
-		
-		
 
 		// Sets up the icon for the item in the shop
 		JLabel iconLabel = new JLabel(shopIcon);
@@ -221,6 +192,7 @@ public class ContentShop extends JPanel {
 
 		buyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				try {
 
 					// Checks to see if the player even buy the item. If not, the shop is not
@@ -363,7 +335,7 @@ public class ContentShop extends JPanel {
 
 		return itemPanel;
 	}
-
+	
 	// Function to set the shop image of an item
 	private Icon setShopImage(String path) {
 		try {
@@ -396,6 +368,43 @@ public class ContentShop extends JPanel {
 	public static Space getChannelPS() {
 		return channelPlayerShop;
 	}
+	
+	static void transactionState(boolean state, Player p) {
+		// Player opens the shop (Presses B)
+		if (state == true) {
+			int currentMoney = p.getMoney();
+			try {
+				// Starts the shop thread
+				new Thread(new setupTransactionLogic(channelShopPlayer, channelPlayerShop, items)).start();
+
+				//2-way opening handshake
+				channelPlayerShop.put("IsShopOpen?");
+				Object[] handshakeResponse = channelShopPlayer.get(new ActualField("ShopIsOpen"));
+				
+				// Sends the shop the money the player currently has
+				channelPlayerShop.put(currentMoney);
+				
+				//Gets ACK
+				Object[] currentMoneyACK = channelShopPlayer.get(new ActualField("currentMoneyReceived!"));
+				
+				
+			} catch (InterruptedException e) {
+				System.out.println("Player could NOT connect to the shop!\n");
+				e.printStackTrace();
+			}
+		}
+		// Player closes the shop (Presses B again)
+		else {
+			try {
+				// Initiates termination of the shop thread
+				channelPlayerShop.put("CloseShop", -1);
+				channelShopPlayer.get(new ActualField("ConnectionTerminated"));
+			} catch (InterruptedException e) {
+				System.out.println("Player could NOT terminate the connection with the shop!\n");
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
 //Shop thread
@@ -414,9 +423,17 @@ class setupTransactionLogic implements Runnable {
 	public void run() {
 		try {
 			while (true) {
+				
+				//2-way opening handshake
+				Object[] handshakeMessage = channelPS.get(new ActualField("IsShopOpen?"));			
+				channelSP.put("ShopIsOpen");
+				
 				// Gets the current money that the player is carrying
 				Object[] objectMoney = channelPS.get(new FormalField(Integer.class));
 				currentMoney = (int) objectMoney[0];
+				
+				//Send ACK back to player
+				channelSP.put("currentMoneyReceived!");
 
 				// The player is expected to already have the data from the start of the game,
 				// as to reduce the amount of data transferred from the host
@@ -466,3 +483,4 @@ class setupTransactionLogic implements Runnable {
 		}
 	}
 }
+
