@@ -4,9 +4,9 @@ import org.jspace.Space;
 
 public class GameLoop implements Runnable {
 
-	final int TICKS_PER_SECOND = 30;
+	final int TICKS_PER_SECOND = 50;
 	final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-	final int MAX_FRAMESKIP = 6;
+	final int MAX_FRAMESKIP = 10;
 	final long startingTick, RTT;
 	boolean playing;
 
