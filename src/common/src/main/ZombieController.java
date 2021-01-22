@@ -187,7 +187,6 @@ class WaveController implements Runnable {
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-                System.out.println("This is fucked ");
 				e.printStackTrace();
 			}
 
