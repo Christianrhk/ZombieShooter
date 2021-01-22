@@ -328,6 +328,8 @@ public class ContentShop extends JPanel {
 				resetShop(itemPanel, buyButton, itemName, itemSpecs, iconLabel);
 			}
 		});
+		
+		//Adds the components to the JPanel object
 		itemPanel.add(buyButton);
 		itemPanel.add(itemName);
 		itemPanel.add(itemSpecs);
@@ -435,12 +437,6 @@ class setupTransactionLogic implements Runnable {
 				//Send ACK back to player
 				channelSP.put("currentMoneyReceived!");
 
-				// The player is expected to already have the data from the start of the game,
-				// as to reduce the amount of data transferred from the host
-				// to the player. Instead, the host sends commands to the player, that unlocks
-				// new items to buy in the shop. This is done between each round
-				// when the shop can be opened.
-
 				// Get command from the player
 				Object[] command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 				String stringCommand = command[0].toString();
@@ -455,6 +451,7 @@ class setupTransactionLogic implements Runnable {
 					// Finds the price of the item
 					int itemCost = items[itemID].getCost();
 
+					//Calculates the money left after the transaction
 					int moneyLeft = currentMoney - itemCost;
 
 					// Checks if the player can afford the item
@@ -468,6 +465,8 @@ class setupTransactionLogic implements Runnable {
 						// The player can NOT afford the item
 						channelSP.put("NotEnoughMoney", itemID);
 					}
+					
+					//Ready to receive a new command
 					command = channelPS.get(new FormalField(String.class), new FormalField(Integer.class));
 					stringCommand = command[0].toString();
 					itemID = (int) command[1];
