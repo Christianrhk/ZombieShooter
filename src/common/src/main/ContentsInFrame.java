@@ -163,7 +163,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 
 	private void drawAllZombies(Graphics2D g2d) {
 		try {
-			// System.out.println("I try to print the zombies ");
 			zombieSpace.get(new ActualField("token"));
 			List<Object[]> zombies = zombieSpace.queryAll(new FormalField(Zombie.class));
 			for (Object[] o : zombies) {
@@ -383,8 +382,6 @@ public class ContentsInFrame extends JPanel implements KeyListener, ActionListen
 			p.mode = mode.IDLE;
 		}
 		updatePlayer();
-		// PG.playerRunAnimation(p);
-
 	}
 
 	public void addShop(ContentShop contentShop) {

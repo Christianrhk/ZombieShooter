@@ -29,7 +29,6 @@ public class ZombieController {
 		wave = 0;
 
 		ZombieController.zombieSpace = zombieSpace;
-		//ZG = new ZombieGraphics();
 		new Thread(new WaveController()).start();
 	}
 
@@ -61,8 +60,6 @@ public class ZombieController {
 
 				int ddx = (int) Math.round((double) dx / max);
 				int ddy = (int) Math.round((double) dy / max);
-
-				// System.out.println("DELTAVALUES: " + ddx + ", " + ddy);
 
 				z.POSITION.x += ddx;
 				z.POSITION.y += ddy;
@@ -122,35 +119,29 @@ public class ZombieController {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//System.out.println("New zombies added");
 	}
 
 
 	private static Point getRandomSpawnLocation(Random ran){
 		int caseRan = ran.nextInt(4);
 		int[] temp = {ran.nextInt(300),ran.nextInt(300)};
-		//System.out.println("Case = " +caseRan);
 		Point p = new Point();
 		switch (caseRan){
 			case 0:
 				p.x = temp[0];
 				p.y = temp[1];
-				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 1:
 				p.x = 800-temp[0];
 				p.y = temp[1];
-				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 2:
 				p.x = temp[0];
 				p.y = 800-temp[1];
-				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 			case 3:
 				p.x = 800-temp[0];
 				p.y = 800-temp[1];
-				//System.out.println("x = " + p.x + " ;y = " + p.y);
 				break;
 		}
 		return p;
@@ -161,7 +152,6 @@ class WaveController implements Runnable {
 
 	@Override
 	public void run() {
-		//System.out.println("Thread started");
         try {
 			ZombieController.zombieSpace.put("token");
         } catch (InterruptedException e) {
@@ -183,7 +173,6 @@ class WaveController implements Runnable {
 
 			// Wait 5 seconds before next round
 			try {
-				//System.out.println("Sleeping");
 				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

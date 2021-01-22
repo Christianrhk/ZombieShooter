@@ -1,6 +1,6 @@
 package common.src.main;
 
-public class Weapon extends item {
+public class Weapon extends Item {
 	
 	enum WeaponInHand {
 		SPACE_GUN,
@@ -9,7 +9,7 @@ public class Weapon extends item {
 		PISTOL,
 		SMG,
 		SHOTGUN
-	}; // ADD POSSIBLE WEAPONS HERE.
+	};
 
 	private int DAMAGE, RANGE;
 	private double ATTACK_SPEED;

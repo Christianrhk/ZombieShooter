@@ -30,7 +30,6 @@ public class SoundHandler implements Runnable {
 	}
 
 	public void playSound(String path) {
-		// System.out.println("PLAY SOUND FUNCTION!");
 		try {
 			soundSpace.put("PLAYSOUND", path);
 		} catch (InterruptedException e) {
@@ -44,11 +43,10 @@ public class SoundHandler implements Runnable {
 		run = true;
 		System.out.println("Sound Thread Started");
 		while (run) {
-			//System.out.println("Going");
 			Object[] o = null;
 			try {
 				o = soundSpace.get(new ActualField("PLAYSOUND"), new FormalField(String.class));
-				
+
 				File soundFile = new File((String) o[1]);
 
 				if (soundFile.exists()) {
@@ -60,16 +58,15 @@ public class SoundHandler implements Runnable {
 					clip.start();
 				}
 			} catch (InterruptedException | UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
 		}
 	}
 
-    public void stop() {
+	public void stop() {
 		run = false;
-    }
+	}
 }
 
 class BackGroundMusicPlayer implements Runnable {
@@ -91,14 +88,12 @@ class BackGroundMusicPlayer implements Runnable {
 				Clip clip = AudioSystem.getClip();
 				clip.open(audioInput);
 				FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-				gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
+				gainControl.setValue(-30.0f); // Reduce volume by 10 decibels.
 				clip.start();
 				clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 				while (playing) {
-
 					// making sure the daemon thread doesnt kill itself
-					 //System.out.println("playing");
 				}
 				clip.close();
 			} else {
@@ -109,7 +104,7 @@ class BackGroundMusicPlayer implements Runnable {
 		}
 	}
 
-	public void stop(){
+	public void stop() {
 		playing = false;
 	}
 }

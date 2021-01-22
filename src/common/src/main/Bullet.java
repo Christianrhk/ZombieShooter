@@ -1,7 +1,5 @@
 package common.src.main;
 
-import java.awt.Point;
-
 import common.src.main.Weapon.WeaponInHand;
 
 public class Bullet {

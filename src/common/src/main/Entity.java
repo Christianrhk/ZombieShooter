@@ -1,7 +1,6 @@
 package common.src.main;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 
 public class Entity {
 

@@ -1,9 +1,7 @@
-//Chris lokal fil
-
 package common.src.main;
 
 import common.src.main.Weapon.WeaponInHand;
-import common.src.main.item.ItemType;
+import common.src.main.Item.ItemType;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,26 +12,26 @@ import org.jspace.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
 public class ContentShop extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//private boolean bHasBeenPressed;
 	static Space channelShopPlayer = new SequentialSpace();
 	static Space channelPlayerShop = new SequentialSpace();
 	boolean shopVisible;
-	static item[] items = new item[9];
+	static Item[] items = new Item[9];
 
 	public ContentShop(Player p, ContentOverlayHUD HUD) {
 		super.setDoubleBuffered(true);
 		setFocusable(true);
 		requestFocusInWindow();
 		setFocusTraversalKeysEnabled(false);
-
-		//bHasBeenPressed = false;
 
 		// Create border:
 		Border windowsBorder = BorderFactory.createLineBorder(Color.black, 10);
@@ -79,23 +77,23 @@ public class ContentShop extends JPanel {
 		JPanel itemPanel5 = createItemPanel(SpaceWeapon, p, HUD);
 		super.add(itemPanel5, new Integer(5));
 
-		item armor = new item(ItemType.Armor, 50, 10);
+		Item armor = new Item(ItemType.Armor, 50, 10);
 		items[6] = armor;
 		JPanel itemPanel6 = createItemPanel(armor, p, HUD);
 		super.add(itemPanel6, new Integer(6));
 
-		item potion = new item(ItemType.Potion, 40, 8);
+		Item potion = new Item(ItemType.Potion, 40, 8);
 		items[7] = potion;
 		JPanel itemPanel7 = createItemPanel(potion, p, HUD);
 		super.add(itemPanel7, new Integer(7));
 
-		item boots = new item(ItemType.Boots, 50, 50);
+		Item boots = new Item(ItemType.Boots, 50, 50);
 		items[8] = boots;
 		JPanel itemPanel8 = createItemPanel(boots, p, HUD);
 		super.add(itemPanel8, new Integer(8));
 	}
 
-	private JPanel createItemPanel(item itemObject, Player p, ContentOverlayHUD HUD) {
+	private JPanel createItemPanel(Item itemObject, Player p, ContentOverlayHUD HUD) {
 		// Sets up the panel
 		JPanel itemPanel = new JPanel();
 		itemPanel.setOpaque(true);
@@ -413,9 +411,9 @@ public class ContentShop extends JPanel {
 class setupTransactionLogic implements Runnable {
 	private Space channelSP, channelPS;
 	private int currentMoney;
-	private item[] items;
+	private Item[] items;
 
-	public setupTransactionLogic(Space spaceSP, Space spacePS, item[] items) {
+	public setupTransactionLogic(Space spaceSP, Space spacePS, Item[] items) {
 		this.channelSP = spaceSP;
 		this.channelPS = spacePS;
 		this.currentMoney = 0;
